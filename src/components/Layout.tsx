@@ -27,12 +27,6 @@ export function Layout() {
                         Multiprecios Diego
                     </Link>
 
-                    <div className="hidden md:flex ml-8">
-                        <Link to="/">
-                            <Button variant="ghost">Inicio</Button>
-                        </Link>
-                    </div>
-
                     <div className="flex-1" />
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
@@ -87,9 +81,14 @@ export function Layout() {
                                 </div>
                             </div>
                         ) : (
-                            <Link to="/login">
-                                <Button variant="primary" size="sm">Entrar</Button>
-                            </Link>
+                            <div className="flex items-center gap-2">
+                                <Link to="/register">
+                                    <Button variant="ghost" size="sm">Registrarse</Button>
+                                </Link>
+                                <Link to="/login">
+                                    <Button variant="primary" size="sm">Iniciar Sesión</Button>
+                                </Link>
+                            </div>
                         )}
 
                         {/* Mobile Menu Button */}
@@ -108,9 +107,6 @@ export function Layout() {
                 {isMenuOpen && (
                     <div className="md:hidden border-t p-4 space-y-4 bg-white">
                         <nav className="flex flex-col gap-2">
-                            <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                Inicio
-                            </Link>
                             <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                 Catálogo
                             </Link>
