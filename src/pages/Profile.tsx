@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
-import { Order, Issue, Reservation } from '../types';
+import { PedidoCliente, Incidencia, Reserva, LineaPedido } from '../types';
 import { Button } from '../components/ui/button';
-import { Package, AlertCircle, Clock, CheckCircle, Calendar } from 'lucide-react';
+import { Package, AlertCircle, Calendar, X } from 'lucide-react';
 
 export function Profile() {
     const { profile } = useAuth();
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [issues, setIssues] = useState<Issue[]>([]);
-    const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [orders, setOrders] = useState<PedidoCliente[]>([]);
+    const [issues, setIssues] = useState<Incidencia[]>([]);
+    const [reservations, setReservations] = useState<Reserva[]>([]);
     const [loading, setLoading] = useState(true);
+    const [selectedOrder, setSelectedOrder] = useState<PedidoCliente | null>(null);
+    const [orderItems, setOrderItems] = useState<LineaPedido[]>([]);
+    const [loadingItems, setLoadingItems] = useState(false);
 
     useEffect(() => {
         if (profile) {
@@ -22,9 +25,9 @@ export function Profile() {
         try {
             // Fetch Orders
             const { data: ordersData } = await supabase
-                .from('pedidos')
+                .from('pedidos_cliente')
                 .select('*')
-                .eq('usuario_id', profile!.id)
+                .eq('cliente_id', profile!.id)
                 .order('created_at', { ascending: false });
 
             setOrders(ordersData || []);
@@ -33,7 +36,7 @@ export function Profile() {
             const { data: issuesData } = await supabase
                 .from('incidencias')
                 .select('*')
-                .eq('usuario_id', profile!.id)
+                .eq('cliente_id', profile!.id)
                 .order('created_at', { ascending: false });
 
             setIssues(issuesData || []);
@@ -42,7 +45,7 @@ export function Profile() {
             const { data: reservationsData } = await supabase
                 .from('reservas')
                 .select('*, productos(*)')
-                .eq('usuario_id', profile!.id)
+                .eq('cliente_id', profile!.id)
                 .order('created_at', { ascending: false });
 
             setReservations(reservationsData || []);
@@ -53,13 +56,44 @@ export function Profile() {
         }
     };
 
+    const fetchOrderItems = async (orderId: string) => {
+        setLoadingItems(true);
+        const { data } = await supabase
+            .from('lineas_pedido')
+            .select('*, productos(nombre, imagen_producto)')
+            .eq('pedido_cliente_id', orderId);
+
+        setOrderItems(data || []);
+        setLoadingItems(false);
+    };
+
+    const handleViewDetails = (order: PedidoCliente) => {
+        setSelectedOrder(order);
+        fetchOrderItems(order.id);
+    };
+
+    const closeDetails = () => {
+        setSelectedOrder(null);
+        setOrderItems([]);
+    };
+
     const getStatusColor = (status: string) => {
         switch (status) {
-            case 'ENTREGADO': return 'text-green-600 bg-green-50';
-            case 'CANCELADO': return 'text-red-600 bg-red-50';
-            case 'PAGADO': return 'text-blue-600 bg-blue-50';
-            case 'RECOGIDA': return 'text-purple-600 bg-purple-50';
-            default: return 'text-yellow-600 bg-yellow-50';
+            case 'ENTREGADO':
+            case 'ACEPTADA':
+            case 'PAGADA':
+            case 'RECOGIDA':
+                return 'text-green-600 bg-green-50';
+            case 'CANCELADO':
+            case 'RECHAZADA':
+                return 'text-red-600 bg-red-50';
+            case 'ENVIADO':
+            case 'EN_REPARTO':
+                return 'text-blue-600 bg-blue-50';
+            case 'EN_PREPARACION':
+            case 'PENDIENTE':
+                return 'text-yellow-600 bg-yellow-50';
+            default: return 'text-gray-600 bg-gray-50';
         }
     };
 
@@ -108,12 +142,12 @@ export function Profile() {
                                         </span>
                                     </div>
                                     <p className="text-sm text-gray-600">
-                                        {new Date(order.fecha).toLocaleDateString()} - {order.tipo_entrega}
+                                        {new Date(order.fecha_hora_pedido).toLocaleDateString()} - {order.a_domicilio ? 'A Domicilio' : 'Recogida'}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <span className="font-bold text-lg">{order.total.toFixed(2)} €</span>
-                                    <Button variant="outline" size="sm">Ver Detalles</Button>
+                                    <Button variant="outline" size="sm" onClick={() => handleViewDetails(order)}>Ver Detalles</Button>
                                 </div>
                             </div>
                         ))}
@@ -142,7 +176,7 @@ export function Profile() {
                                     </div>
                                     <p className="font-medium">{res.productos?.nombre}</p>
                                     <p className="text-sm text-gray-600">
-                                        Fecha: {new Date(res.fecha_reserva).toLocaleDateString()}
+                                        Fecha: {new Date(res.fecha_hora_reserva).toLocaleDateString()}
                                     </p>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -167,8 +201,8 @@ export function Profile() {
                         {issues.map((issue) => (
                             <div key={issue.id} className="bg-white p-4 rounded-lg shadow-sm border">
                                 <div className="flex justify-between items-start mb-2">
-                                    <span className="font-medium">{issue.tipo}</span>
-                                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'RESUELTA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                    <span className="font-medium">{issue.tipo_incidencia}</span>
+                                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                         {issue.estado}
                                     </span>
                                 </div>
@@ -180,6 +214,85 @@ export function Profile() {
                     <p className="text-gray-500">No tienes incidencias reportadas.</p>
                 )}
             </div>
+            {/* Order Details Modal */}
+            {selectedOrder && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
+                            <h3 className="text-xl font-bold">Detalles del Pedido #{selectedOrder.id.slice(0, 8)}</h3>
+                            <button onClick={closeDetails} className="text-gray-500 hover:text-black">
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="grid grid-cols-2 gap-4 text-sm mb-6">
+                                <div>
+                                    <p className="text-gray-500">Fecha</p>
+                                    <p className="font-medium">{new Date(selectedOrder.fecha_hora_pedido).toLocaleString()}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-500">Estado</p>
+                                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(selectedOrder.estado)}`}>
+                                        {selectedOrder.estado}
+                                    </span>
+                                </div>
+                                <div>
+                                    <p className="text-gray-500">Método de Pago</p>
+                                    <p className="font-medium">{selectedOrder.metodo_pago}</p>
+                                </div>
+                                <div>
+                                    <p className="text-gray-500">Entrega</p>
+                                    <p className="font-medium">{selectedOrder.a_domicilio ? 'A Domicilio' : 'Recogida en Tienda'}</p>
+                                </div>
+                                {selectedOrder.direccion_envio && (
+                                    <div className="col-span-2">
+                                        <p className="text-gray-500">Dirección de Envío</p>
+                                        <p className="font-medium">{selectedOrder.direccion_envio}</p>
+                                    </div>
+                                )}
+                            </div>
+
+                            <h4 className="font-bold border-b pb-2">Productos</h4>
+                            {loadingItems ? (
+                                <p className="text-center py-4">Cargando productos...</p>
+                            ) : (
+                                <div className="space-y-3">
+                                    {orderItems.map((item) => (
+                                        <div key={item.id} className="flex items-center gap-4">
+                                            <div className="h-12 w-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                                                {/* @ts-ignore */}
+                                                {item.productos?.imagen_producto && (
+                                                    <img
+                                                        /* @ts-ignore */
+                                                        src={item.productos.imagen_producto}
+                                                        /* @ts-ignore */
+                                                        alt={item.productos.nombre}
+                                                        className="h-full w-full object-cover"
+                                                    />
+                                                )}
+                                            </div>
+                                            <div className="flex-1">
+                                                {/* @ts-ignore */}
+                                                <p className="font-medium">{item.productos?.nombre || 'Producto eliminado'}</p>
+                                                <p className="text-sm text-gray-500">{item.cantidad} x {item.precio_unitario.toFixed(2)} €</p>
+                                            </div>
+                                            <p className="font-medium">{(item.cantidad * item.precio_unitario).toFixed(2)} €</p>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="border-t pt-4 flex justify-between items-center text-lg font-bold">
+                                <span>Total Pagado</span>
+                                <span>{selectedOrder.total.toFixed(2)} €</span>
+                            </div>
+                        </div>
+                        <div className="p-6 border-t bg-gray-50 flex justify-end">
+                            <Button onClick={closeDetails}>Cerrar</Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

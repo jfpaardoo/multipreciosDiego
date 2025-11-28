@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Product } from '../../types';
+import { Product, Categoria } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/Input';
 import { Plus, Edit, Trash, X } from 'lucide-react';
 
 export function AdminProducts() {
     const [products, setProducts] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [categories, setCategories] = useState<Categoria[]>([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
 
@@ -16,13 +16,18 @@ export function AdminProducts() {
     }, []);
 
     const fetchProducts = async () => {
-        const { data, error } = await supabase
+        const { data: productsData, error: productsError } = await supabase
             .from('productos')
-            .select('*')
+            .select('*, categorias(nombre)')
             .order('created_at', { ascending: false });
 
-        if (!error) setProducts(data || []);
-        setLoading(false);
+        const { data: categoriesData } = await supabase
+            .from('categorias')
+            .select('*')
+            .order('nombre');
+
+        if (!productsError) setProducts(productsData || []);
+        if (categoriesData) setCategories(categoriesData);
     };
 
     const handleSave = async (e: React.FormEvent) => {
@@ -103,30 +108,47 @@ export function AdminProducts() {
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <Input
-                                    label="Precio"
+                                    label="Precio Venta"
                                     type="number"
                                     step="0.01"
-                                    value={currentProduct.precio || ''}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, precio: parseFloat(e.target.value) })}
+                                    value={currentProduct.precio_venta || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, precio_venta: parseFloat(e.target.value) })}
                                     required
                                 />
                                 <Input
-                                    label="Stock"
+                                    label="Precio Mayor"
                                     type="number"
-                                    value={currentProduct.stock || ''}
-                                    onChange={e => setCurrentProduct({ ...currentProduct, stock: parseInt(e.target.value) })}
+                                    step="0.01"
+                                    value={currentProduct.precio_por_mayor || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, precio_por_mayor: parseFloat(e.target.value) })}
                                     required
                                 />
                             </div>
                             <Input
-                                label="Categoría"
-                                value={currentProduct.categoria || ''}
-                                onChange={e => setCurrentProduct({ ...currentProduct, categoria: e.target.value })}
+                                label="Stock (Tienda)"
+                                type="number"
+                                value={currentProduct.cantidad_en_tienda || ''}
+                                onChange={e => setCurrentProduct({ ...currentProduct, cantidad_en_tienda: parseInt(e.target.value) })}
+                                required
                             />
+                            <div>
+                                <label className="block text-sm font-medium mb-1">Categoría</label>
+                                <select
+                                    className="w-full border rounded-md p-2 text-sm"
+                                    value={currentProduct.categoria_id || ''}
+                                    onChange={e => setCurrentProduct({ ...currentProduct, categoria_id: e.target.value })}
+                                    required
+                                >
+                                    <option value="">Seleccionar categoría</option>
+                                    {categories.map(cat => (
+                                        <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+                                    ))}
+                                </select>
+                            </div>
                             <Input
                                 label="URL Imagen"
-                                value={currentProduct.imagen_url || ''}
-                                onChange={e => setCurrentProduct({ ...currentProduct, imagen_url: e.target.value })}
+                                value={currentProduct.imagen_producto || ''}
+                                onChange={e => setCurrentProduct({ ...currentProduct, imagen_producto: e.target.value })}
                             />
                             <div className="flex items-center gap-2">
                                 <input
@@ -160,19 +182,19 @@ export function AdminProducts() {
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <div className="flex items-center">
                                         <div className="h-10 w-10 flex-shrink-0">
-                                            <img className="h-10 w-10 rounded-full object-cover" src={product.imagen_url || ''} alt="" />
+                                            <img className="h-10 w-10 rounded-full object-cover" src={product.imagen_producto || ''} alt="" />
                                         </div>
                                         <div className="ml-4">
                                             <div className="text-sm font-medium text-gray-900">{product.nombre}</div>
-                                            <div className="text-sm text-gray-500">{product.categoria}</div>
+                                            <div className="text-sm text-gray-500">{product.categorias?.nombre}</div>
                                         </div>
                                     </div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.referencia}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.precio} €</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.precio_venta} €</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
-                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.stock > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                        {product.stock}
+                                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.cantidad_en_tienda > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                                        {product.cantidad_en_tienda}
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

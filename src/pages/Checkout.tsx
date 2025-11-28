@@ -5,8 +5,10 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
-import { DeliveryType, PaymentMethod } from '../types';
 import { Trash2 } from 'lucide-react';
+
+type DeliveryType = 'DOMICILIO' | 'RECOGIDA';
+type PaymentMethod = 'TARJETA' | 'EFECTIVO' | 'BIZUM';
 
 export function Checkout() {
     const { items, total, removeItem, updateQuantity, clearCart } = useCart();
@@ -43,12 +45,13 @@ export function Checkout() {
         try {
             // 1. Create Order
             const { data: order, error: orderError } = await supabase
-                .from('pedidos')
+                .from('pedidos_cliente')
                 .insert({
-                    usuario_id: user.id,
+                    cliente_id: user.id,
                     total: total,
-                    estado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM' ? 'PAGADO' : 'PENDIENTE',
-                    tipo_entrega: deliveryType,
+                    estado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM' ? 'EN_PREPARACION' : 'EN_PREPARACION', // Default state
+                    pagado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM',
+                    a_domicilio: deliveryType === 'DOMICILIO',
                     metodo_pago: paymentMethod,
                     direccion_envio: deliveryType === 'DOMICILIO' ? address : null,
                 })
@@ -59,10 +62,10 @@ export function Checkout() {
 
             // 2. Create Order Items
             const orderItems = items.map((item) => ({
-                pedido_id: order.id,
+                pedido_cliente_id: order.id,
                 producto_id: item.id,
                 cantidad: item.quantity,
-                precio_unitario: item.precio,
+                precio_unitario: item.precio_venta,
             }));
 
             const { error: itemsError } = await supabase
@@ -74,7 +77,7 @@ export function Checkout() {
             // 3. Update Stock (Critical)
             for (const item of items) {
                 const { error: stockError } = await supabase.rpc('decrement_stock', {
-                    row_id: item.id,
+                    product_id: item.id,
                     quantity: item.quantity
                 });
 
@@ -83,7 +86,7 @@ export function Checkout() {
                 if (stockError) {
                     const { error: updateError } = await supabase
                         .from('productos')
-                        .update({ stock: item.stock - item.quantity })
+                        .update({ cantidad_en_tienda: item.cantidad_en_tienda - item.quantity })
                         .eq('id', item.id);
 
                     if (updateError) console.error('Error updating stock for', item.nombre, updateError);
@@ -115,13 +118,13 @@ export function Checkout() {
                     {items.map((item) => (
                         <div key={item.id} className="flex items-center gap-4 border-b pb-4">
                             <img
-                                src={item.imagen_url || ''}
+                                src={item.imagen_producto || ''}
                                 alt={item.nombre}
                                 className="h-16 w-16 rounded object-cover bg-gray-100"
                             />
                             <div className="flex-1">
                                 <h3 className="font-medium">{item.nombre}</h3>
-                                <p className="text-sm text-gray-500">{item.precio.toFixed(2)} € / ud</p>
+                                <p className="text-sm text-gray-500">{item.precio_venta.toFixed(2)} € / ud</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Button
@@ -138,7 +141,7 @@ export function Checkout() {
                                     size="sm"
                                     className="h-8 w-8 p-0"
                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                    disabled={item.quantity >= item.stock}
+                                    disabled={item.quantity >= item.cantidad_en_tienda}
                                 >
                                     +
                                 </Button>

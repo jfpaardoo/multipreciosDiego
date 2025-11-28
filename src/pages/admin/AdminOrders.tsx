@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Order, OrderStatus } from '../../types';
+import { PedidoCliente, EstadoPedidoCliente } from '../../types';
 
 
 export function AdminOrders() {
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [orders, setOrders] = useState<PedidoCliente[]>([]);
 
 
     useEffect(() => {
@@ -13,17 +13,17 @@ export function AdminOrders() {
 
     const fetchOrders = async () => {
         const { data, error } = await supabase
-            .from('pedidos')
-            .select('*, profiles(email, nombre)')
+            .from('pedidos_cliente')
+            .select('*, profiles(nombre, apellidos)')
             .order('created_at', { ascending: false });
 
         if (!error) setOrders(data || []);
 
     };
 
-    const updateStatus = async (orderId: string, newStatus: OrderStatus) => {
+    const updateStatus = async (orderId: string, newStatus: EstadoPedidoCliente) => {
         const { error } = await supabase
-            .from('pedidos')
+            .from('pedidos_cliente')
             .update({ estado: newStatus })
             .eq('id', orderId);
 
@@ -50,11 +50,11 @@ export function AdminOrders() {
                             <tr key={order.id}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <div>#{order.id.slice(0, 8)}</div>
-                                    <div className="text-xs">{new Date(order.fecha).toLocaleDateString()}</div>
+                                    <div className="text-xs">{new Date(order.fecha_hora_pedido).toLocaleDateString()}</div>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {/* @ts-ignore joined data */}
-                                    {order.profiles?.nombre || order.profiles?.email || 'Anónimo'}
+                                    {order.profiles?.nombre} {order.profiles?.apellidos || ''}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     {order.total.toFixed(2)} €
@@ -67,13 +67,12 @@ export function AdminOrders() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                     <select
                                         value={order.estado}
-                                        onChange={(e) => updateStatus(order.id, e.target.value as OrderStatus)}
+                                        onChange={(e) => updateStatus(order.id, e.target.value as EstadoPedidoCliente)}
                                         className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                                     >
-                                        <option value="PENDIENTE">PENDIENTE</option>
-                                        <option value="PAGADO">PAGADO</option>
                                         <option value="EN_PREPARACION">EN PREPARACIÓN</option>
                                         <option value="ENVIADO">ENVIADO</option>
+                                        <option value="EN_REPARTO">EN REPARTO</option>
                                         <option value="ENTREGADO">ENTREGADO</option>
                                         <option value="CANCELADO">CANCELADO</option>
                                     </select>
