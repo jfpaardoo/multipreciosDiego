@@ -10,15 +10,15 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
     const { addItem } = useCart();
-    const isOutOfStock = product.stock <= 0;
+    const isOutOfStock = product.cantidad_en_tienda <= 0;
 
     return (
         <div className="group relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-md">
             <Link to={`/product/${product.id}`} className="block">
                 <div className="aspect-square overflow-hidden bg-gray-100">
-                    {product.imagen_url ? (
+                    {product.imagen_producto ? (
                         <img
-                            src={product.imagen_url}
+                            src={product.imagen_producto}
                             alt={product.nombre}
                             className="h-full w-full object-cover object-center transition-transform group-hover:scale-105"
                         />
@@ -42,7 +42,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </Link>
             <div className="px-4 pb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <p className="text-lg font-bold text-gray-900">{product.precio.toFixed(2)} €</p>
+                    <p className="text-lg font-bold text-gray-900">{product.precio_venta.toFixed(2)} €</p>
                     <Button
                         size="sm"
                         disabled={isOutOfStock}

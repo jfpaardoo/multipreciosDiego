@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Product, Review } from '../types';
+import { Product, Valoracion } from '../types';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
 import { Star, Minus, Plus, ArrowLeft } from 'lucide-react';
@@ -14,7 +14,7 @@ export function ProductDetails() {
 
     const [product, setProduct] = useState<Product | null>(null);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
-    const [reviews, setReviews] = useState<Review[]>([]);
+    const [reviews, setReviews] = useState<Valoracion[]>([]);
     const [loading, setLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
 
@@ -38,7 +38,7 @@ export function ProductDetails() {
 
             setProduct(data);
             if (data) {
-                fetchRelatedProducts(data.categoria, data.id);
+                fetchRelatedProducts(data.categoria_id, data.id);
                 fetchReviews(data.id);
             }
         } catch (error) {
@@ -55,7 +55,7 @@ export function ProductDetails() {
         const { data } = await supabase
             .from('productos')
             .select('*')
-            .eq('categoria', category)
+            .eq('categoria_id', category)
             .neq('id', currentId)
             .limit(3);
 
@@ -82,7 +82,7 @@ export function ProductDetails() {
     if (loading) return <div className="flex justify-center py-20">Cargando...</div>;
     if (!product) return <div className="text-center py-20">Producto no encontrado</div>;
 
-    const isOutOfStock = product.stock <= 0;
+    const isOutOfStock = product.cantidad_en_tienda <= 0;
 
     return (
         <div className="space-y-12">
@@ -97,9 +97,9 @@ export function ProductDetails() {
             <div className="grid md:grid-cols-2 gap-12">
                 {/* Image */}
                 <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                    {product.imagen_url ? (
+                    {product.imagen_producto ? (
                         <img
-                            src={product.imagen_url}
+                            src={product.imagen_producto}
                             alt={product.nombre}
                             className="w-full h-full object-cover"
                         />
@@ -119,7 +119,7 @@ export function ProductDetails() {
                     </div>
 
                     <div className="text-3xl font-bold text-gray-900">
-                        {product.precio.toFixed(2)} €
+                        {product.precio_venta.toFixed(2)} €
                     </div>
 
                     <div className="text-sm text-gray-500">
@@ -140,14 +140,14 @@ export function ProductDetails() {
                                 <span className="w-12 text-center font-medium">{quantity}</span>
                                 <button
                                     className="p-2 hover:bg-gray-100"
-                                    onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                                    disabled={quantity >= product.stock}
+                                    onClick={() => setQuantity(Math.min(product.cantidad_en_tienda, quantity + 1))}
+                                    disabled={quantity >= product.cantidad_en_tienda}
                                 >
                                     <Plus className="h-4 w-4" />
                                 </button>
                             </div>
                             <span className="text-sm text-gray-500">
-                                {product.stock} disponibles
+                                {product.cantidad_en_tienda} disponibles
                             </span>
                         </div>
 

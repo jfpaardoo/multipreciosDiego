@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
@@ -20,7 +20,7 @@ export function Home() {
         try {
             const { data, error } = await supabase
                 .from('productos')
-                .select('*')
+                .select('*, categorias(nombre)')
                 .eq('activo', true)
                 .order('created_at', { ascending: false });
 
@@ -29,7 +29,7 @@ export function Home() {
             setProducts(data || []);
 
             // Extract unique categories
-            const uniqueCategories = Array.from(new Set(data?.map(p => p.categoria).filter(Boolean) as string[]));
+            const uniqueCategories = Array.from(new Set(data?.map(p => p.categorias?.nombre).filter(Boolean) as string[]));
             setCategories(['Todos', ...uniqueCategories]);
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -41,7 +41,7 @@ export function Home() {
     const filteredProducts = products.filter(product => {
         const matchesSearch = product.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
             product.descripcion?.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = categoryFilter === 'Todos' || product.categoria === categoryFilter;
+        const matchesCategory = categoryFilter === 'Todos' || product.categorias?.nombre === categoryFilter;
         return matchesSearch && matchesCategory;
     });
 

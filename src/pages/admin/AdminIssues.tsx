@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Issue } from '../../types';
+import { Incidencia } from '../../types';
 import { Button } from '../../components/ui/button';
 
 export function AdminIssues() {
-    const [issues, setIssues] = useState<Issue[]>([]);
+    const [issues, setIssues] = useState<Incidencia[]>([]);
 
     useEffect(() => {
         fetchIssues();
@@ -13,7 +13,7 @@ export function AdminIssues() {
     const fetchIssues = async () => {
         const { data, error } = await supabase
             .from('incidencias')
-            .select('*, profiles(email)')
+            .select('*, profiles(nombre, apellidos)')
             .order('created_at', { ascending: false });
 
         if (!error) setIssues(data || []);
@@ -22,7 +22,7 @@ export function AdminIssues() {
     const resolveIssue = async (id: string) => {
         const { error } = await supabase
             .from('incidencias')
-            .update({ estado: 'RESUELTA' })
+            .update({ estado: 'ACEPTADA' })
             .eq('id', id);
 
         if (!error) fetchIssues();
@@ -37,12 +37,12 @@ export function AdminIssues() {
                     <div key={issue.id} className="bg-white p-4 rounded-lg shadow border flex justify-between items-center">
                         <div>
                             <div className="flex items-center gap-2 mb-1">
-                                <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.tipo === 'DAÑADO' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                    {issue.tipo}
+                                <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.tipo_incidencia === 'DAÑADO' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                    {issue.tipo_incidencia}
                                 </span>
                                 <span className="text-sm text-gray-500">
                                     {/* @ts-ignore */}
-                                    Reportado por: {issue.profiles?.email}
+                                    Reportado por: {issue.profiles?.nombre} {issue.profiles?.apellidos}
                                 </span>
                             </div>
                             <p className="text-gray-900">{issue.descripcion}</p>
@@ -53,7 +53,7 @@ export function AdminIssues() {
                                     Marcar Resuelta
                                 </Button>
                             ) : (
-                                <span className="text-green-600 font-medium text-sm">Resuelta</span>
+                                <span className="text-green-600 font-medium text-sm">{issue.estado}</span>
                             )}
                         </div>
                     </div>

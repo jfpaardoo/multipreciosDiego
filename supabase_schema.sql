@@ -1,3 +1,25 @@
+-- RESET SCHEMA (WARNING: This deletes all data to ensure a clean setup)
+drop table if exists public.promociones cascade;
+drop table if exists public.valoraciones cascade;
+drop table if exists public.reservas cascade;
+drop table if exists public.incidencias cascade;
+drop table if exists public.lineas_pedido cascade;
+drop table if exists public.pedidos_proveedor cascade;
+drop table if exists public.pedidos_cliente cascade;
+drop table if exists public.productos cascade;
+drop table if exists public.servicios_reparto cascade;
+drop table if exists public.proveedores cascade;
+drop table if exists public.categorias cascade;
+drop table if exists public.profiles cascade;
+
+drop type if exists public.estado_reserva cascade;
+drop type if exists public.estado_incidencia cascade;
+drop type if exists public.tipo_incidencia cascade;
+drop type if exists public.metodo_pago_cliente cascade;
+drop type if exists public.estado_pedido_proveedor cascade;
+drop type if exists public.estado_pedido_cliente cascade;
+drop type if exists public.user_role cascade;
+
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
 
@@ -193,7 +215,7 @@ create policy "Only admins/encargados can manage servicios reparto" on public.se
 
 -- Products policies
 create policy "Products are viewable by everyone" on public.productos for select using (true);
-create policy "Only admins/encargados can insert products" on public.productos for insert using (
+create policy "Only admins/encargados can insert products" on public.productos for insert with check (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
 create policy "Only admins/encargados can update products" on public.productos for update using (
@@ -351,3 +373,13 @@ $$ language plpgsql security definer;
 create or replace trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- FUNCTIONS
+create or replace function decrement_stock(product_id uuid, quantity int)
+returns void as $$
+begin
+  update public.productos
+  set cantidad_en_tienda = cantidad_en_tienda - quantity
+  where id = product_id;
+end;
+$$ language plpgsql security definer;
