@@ -1,3 +1,21 @@
+-- RESET SCHEMA (WARNING: This deletes all data to ensure a clean setup)
+drop table if exists public.promociones cascade;
+drop table if exists public.valoraciones cascade;
+drop table if exists public.reservas cascade;
+drop table if exists public.incidencias cascade;
+drop table if exists public.lineas_pedido cascade;
+drop table if exists public.pedidos cascade;
+drop table if exists public.productos cascade;
+drop table if exists public.profiles cascade;
+
+drop type if exists public.reservation_status cascade;
+drop type if exists public.issue_status cascade;
+drop type if exists public.issue_type cascade;
+drop type if exists public.payment_method cascade;
+drop type if exists public.delivery_type cascade;
+drop type if exists public.order_status cascade;
+drop type if exists public.user_role cascade;
+
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
 
@@ -121,7 +139,7 @@ create policy "Users can update own profile" on public.profiles for update using
 
 -- Products policies
 create policy "Products are viewable by everyone" on public.productos for select using (true);
-create policy "Only admins/encargados can insert products" on public.productos for insert using (
+create policy "Only admins/encargados can insert products" on public.productos for insert with check (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
 create policy "Only admins/encargados can update products" on public.productos for update using (
@@ -184,3 +202,25 @@ insert into public.productos (referencia, nombre, descripcion, precio, stock, ca
 ('REF003', 'Juego de Sartenes', 'Set de 3 sartenes antiadherentes.', 35.00, 30, 'Cocina', 'https://images.unsplash.com/photo-1584992236310-6eddd724a4c7?w=500&q=80'),
 ('REF004', 'Lámpara LED Escritorio', 'Lámpara flexible con 3 modos de luz.', 15.99, 100, 'Iluminación', 'https://images.unsplash.com/photo-1534073828943-f801091a7d58?w=500&q=80'),
 ('REF005', 'Mochila Escolar', 'Mochila resistente con compartimento para portátil.', 22.50, 40, 'Papelería', 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80');
+
+-- TRIGGERS
+-- Function to handle new user creation
+create or replace function public.handle_new_user()
+returns trigger as $$
+begin
+  insert into public.profiles (id, email, nombre, apellidos, rol)
+  values (
+    new.id,
+    new.email,
+    new.raw_user_meta_data->>'nombre',
+    new.raw_user_meta_data->>'apellidos',
+    'CLIENTE'
+  );
+  return new;
+end;
+$$ language plpgsql security definer;
+
+-- Trigger to call the function on new user creation
+create or replace trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute procedure public.handle_new_user();

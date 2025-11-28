@@ -31,31 +31,20 @@ export function Register() {
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
-            });
-
-            if (authError) throw authError;
-
-            if (authData.user) {
-                // 2. Create Profile
-                const { error: profileError } = await supabase
-                    .from('profiles')
-                    .insert({
-                        id: authData.user.id,
-                        email: formData.email,
+                options: {
+                    data: {
                         nombre: formData.nombre,
                         apellidos: formData.apellidos,
                         telefono: formData.telefono,
                         dni: formData.dni,
                         rol: 'CLIENTE',
-                    });
+                    },
+                },
+            });
 
-                if (profileError) {
-                    // If profile creation fails, we might want to cleanup the auth user, 
-                    // but for simplicity we'll just show error.
-                    console.error('Error creating profile:', profileError);
-                    throw new Error('Error al crear el perfil de usuario.');
-                }
+            if (authError) throw authError;
 
+            if (authData.user) {
                 alert('Registro exitoso. Por favor inicia sesión.');
                 navigate('/login');
             }
