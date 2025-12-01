@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Incidencia, PedidoCliente, TipoIncidencia } from '../types';
 import { Button } from '../components/ui/button';
-import { AlertCircle, Plus, X } from 'lucide-react';
+import { AlertCircle, Plus, X, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export function Issues() {
@@ -18,6 +18,7 @@ export function Issues() {
     const [loadingOrders, setLoadingOrders] = useState(false);
 
     // Form State
+    const [editingIssueId, setEditingIssueId] = useState<string | null>(null);
     const [selectedOrderId, setSelectedOrderId] = useState('');
     const [issueType, setIssueType] = useState<TipoIncidencia>('CON_RETRASO');
     const [description, setDescription] = useState('');
@@ -45,8 +46,7 @@ export function Issues() {
         }
     };
 
-    const openModal = async () => {
-        setIsModalOpen(true);
+    const fetchOrders = async () => {
         setLoadingOrders(true);
         try {
             const { data } = await supabase
@@ -62,11 +62,44 @@ export function Issues() {
         }
     };
 
+    const openModal = () => {
+        setIsModalOpen(true);
+        if (orders.length === 0) {
+            fetchOrders();
+        }
+    };
+
     const closeModal = () => {
         setIsModalOpen(false);
+        setEditingIssueId(null);
         setSelectedOrderId('');
         setIssueType('CON_RETRASO');
         setDescription('');
+    };
+
+    const handleEdit = (issue: Incidencia) => {
+        setEditingIssueId(issue.id);
+        setSelectedOrderId(issue.pedido_cliente_id || '');
+        setIssueType(issue.tipo_incidencia);
+        setDescription(issue.descripcion);
+        openModal();
+    };
+
+    const handleDelete = async (id: string) => {
+        if (!window.confirm('¿Estás seguro de que quieres eliminar esta incidencia?')) return;
+
+        try {
+            const { error } = await supabase
+                .from('incidencias')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            await fetchIssues();
+        } catch (error) {
+            console.error('Error deleting issue:', error);
+            alert('Error al eliminar la incidencia.');
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -75,24 +108,39 @@ export function Issues() {
 
         setSubmitting(true);
         try {
-            const { error } = await supabase
-                .from('incidencias')
-                .insert({
-                    cliente_id: profile!.id,
-                    pedido_cliente_id: selectedOrderId,
-                    tipo_incidencia: issueType,
-                    descripcion: description,
-                    estado: 'PENDIENTE',
-                    resuelta: false
-                });
+            if (editingIssueId) {
+                // Update existing issue
+                const { error } = await supabase
+                    .from('incidencias')
+                    .update({
+                        pedido_cliente_id: selectedOrderId,
+                        tipo_incidencia: issueType,
+                        descripcion: description
+                    })
+                    .eq('id', editingIssueId);
 
-            if (error) throw error;
+                if (error) throw error;
+            } else {
+                // Create new issue
+                const { error } = await supabase
+                    .from('incidencias')
+                    .insert({
+                        cliente_id: profile!.id,
+                        pedido_cliente_id: selectedOrderId,
+                        tipo_incidencia: issueType,
+                        descripcion: description,
+                        estado: 'PENDIENTE',
+                        resuelta: false
+                    });
+
+                if (error) throw error;
+            }
 
             await fetchIssues();
             closeModal();
         } catch (error) {
-            console.error('Error creating issue:', error);
-            alert('Error al crear la incidencia. Por favor, inténtalo de nuevo.');
+            console.error('Error saving issue:', error);
+            alert('Error al guardar la incidencia. Por favor, inténtalo de nuevo.');
         } finally {
             setSubmitting(false);
         }
@@ -128,9 +176,21 @@ export function Issues() {
                                         </span>
                                     )}
                                 </div>
-                                <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                    {issue.estado}
-                                </span>
+                                <div className="flex items-center gap-2">
+                                    <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                        {issue.estado}
+                                    </span>
+                                    {issue.estado === 'PENDIENTE' && (
+                                        <div className="flex gap-1">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleEdit(issue)}>
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(issue.id)}>
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <p className="text-sm text-gray-600 mt-2">{issue.descripcion}</p>
                             <p className="text-xs text-gray-400 mt-2">
@@ -149,12 +209,12 @@ export function Issues() {
                 </div>
             )}
 
-            {/* Create Issue Modal */}
+            {/* Create/Edit Issue Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6 border-b flex justify-between items-center">
-                            <h3 className="text-xl font-bold">Nueva Incidencia</h3>
+                            <h3 className="text-xl font-bold">{editingIssueId ? 'Editar Incidencia' : 'Nueva Incidencia'}</h3>
                             <button onClick={closeModal} className="text-gray-500 hover:text-black">
                                 <X className="h-6 w-6" />
                             </button>
@@ -219,7 +279,7 @@ export function Issues() {
                                     Cancelar
                                 </Button>
                                 <Button type="submit" disabled={submitting || !selectedOrderId}>
-                                    {submitting ? 'Enviando...' : 'Crear Incidencia'}
+                                    {submitting ? 'Guardando...' : (editingIssueId ? 'Actualizar' : 'Crear Incidencia')}
                                 </Button>
                             </div>
                         </form>
