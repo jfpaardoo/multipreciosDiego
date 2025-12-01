@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Package, AlertCircle, Calendar, X, User, Pencil } from 'lucide-react';
 
 export function Profile() {
-    const { profile, isAdmin } = useAuth();
+    const { profile, isAdmin, signOut } = useAuth();
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
     const [issues, setIssues] = useState<Incidencia[]>([]);
     const [reservations, setReservations] = useState<Reserva[]>([]);
@@ -33,6 +33,13 @@ export function Profile() {
         metodo_pago: '',
         a_domicilio: false,
         direccion_envio: ''
+    });
+
+    // Edit Issue State
+    const [selectedIssue, setSelectedIssue] = useState<Incidencia | null>(null);
+    const [issueFormData, setIssueFormData] = useState({
+        descripcion: '',
+        tipo_incidencia: ''
     });
 
     useEffect(() => {
@@ -184,6 +191,57 @@ export function Profile() {
         }
     };
 
+    const handleDeleteOrder = async () => {
+        if (!selectedOrder) return;
+        if (!confirm('¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.')) return;
+
+        try {
+            const { error } = await supabase
+                .from('pedidos_cliente')
+                .delete()
+                .eq('id', selectedOrder.id);
+
+            if (error) throw error;
+
+            alert('Pedido eliminado correctamente');
+            window.location.reload();
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            alert('Error al eliminar el pedido');
+        }
+    };
+
+    const handleEditIssue = (issue: Incidencia) => {
+        setSelectedIssue(issue);
+        setIssueFormData({
+            descripcion: issue.descripcion,
+            tipo_incidencia: issue.tipo_incidencia
+        });
+    };
+
+    const handleUpdateIssue = async () => {
+        if (!selectedIssue) return;
+
+        try {
+            const { error } = await supabase
+                .from('incidencias')
+                .update({
+                    descripcion: issueFormData.descripcion,
+                    tipo_incidencia: issueFormData.tipo_incidencia
+                })
+                .eq('id', selectedIssue.id);
+
+            if (error) throw error;
+
+            alert('Incidencia actualizada correctamente');
+            setSelectedIssue(null);
+            fetchUserData();
+        } catch (error) {
+            console.error('Error updating issue:', error);
+            alert('Error al actualizar la incidencia');
+        }
+    };
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'ENTREGADO':
@@ -201,6 +259,25 @@ export function Profile() {
             case 'PENDIENTE':
                 return 'text-yellow-600 bg-yellow-50';
             default: return 'text-gray-600 bg-gray-50';
+        }
+    };
+
+    const handleDeleteProfile = async () => {
+        if (!profile) return;
+
+        try {
+            const { error } = await supabase.rpc('delete_own_user');
+
+            if (error) {
+                console.error('Error deleting user:', error);
+                alert('Error al eliminar la cuenta: ' + error.message);
+                return;
+            }
+
+            await signOut();
+        } catch (error: any) {
+            console.error('Error deleting profile:', error);
+            alert('Error al eliminar la cuenta: ' + error.message);
         }
     };
 
@@ -318,7 +395,6 @@ export function Profile() {
                 </div>
             )}
 
-            {/* Issues - Hidden for Admin */}
             {!isAdmin && (
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold flex items-center gap-2">
@@ -331,9 +407,15 @@ export function Profile() {
                                 <div key={issue.id} className="bg-white p-4 rounded-lg shadow-sm border">
                                     <div className="flex justify-between items-start mb-2">
                                         <span className="font-medium">{issue.tipo_incidencia}</span>
-                                        <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
-                                            {issue.estado}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                                                {issue.estado}
+                                            </span>
+                                            <Button variant="outline" size="sm" onClick={() => handleEditIssue(issue)}>
+                                                <Pencil className="h-3 w-3 mr-1" />
+                                                Editar
+                                            </Button>
+                                        </div>
                                     </div>
                                     <p className="text-sm text-gray-600">{issue.descripcion}</p>
                                 </div>
@@ -466,6 +548,7 @@ export function Profile() {
                                         ) : (
                                             <>
                                                 <Button variant="danger" onClick={handleCancelOrder}>Cancelar Pedido</Button>
+                                                <Button variant="danger" onClick={handleDeleteOrder}>Eliminar Pedido</Button>
                                                 <Button variant="outline" onClick={() => setIsEditingOrder(true)}>Editar Pedido</Button>
                                             </>
                                         )}
@@ -477,6 +560,28 @@ export function Profile() {
                     </div>
                 </div>
             )}
+            {/* Danger Zone */}
+            <div className="border-t pt-8 mt-8">
+                <h2 className="text-xl font-bold text-red-600 mb-4">Zona de Peligro</h2>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 className="font-medium text-red-900">Eliminar Cuenta</h3>
+                        <p className="text-sm text-red-700 mt-1">
+                            Esta acción es irreversible. Se eliminarán tus datos de perfil y no podrás acceder a tu historial.
+                        </p>
+                    </div>
+                    <Button
+                        variant="danger"
+                        onClick={() => {
+                            if (window.confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+                                handleDeleteProfile();
+                            }
+                        }}
+                    >
+                        Eliminar mi cuenta
+                    </Button>
+                </div>
+            </div>
 
             {/* Edit Profile Modal */}
             {isEditing && (
@@ -555,6 +660,54 @@ export function Profile() {
                                 </Button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Issue Modal */}
+            {selectedIssue && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+                        <div className="p-6 border-b flex justify-between items-center">
+                            <h3 className="text-xl font-bold">Editar Incidencia</h3>
+                            <button onClick={() => setSelectedIssue(null)} className="text-gray-500 hover:text-black">
+                                <X className="h-6 w-6" />
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Tipo de Incidencia</label>
+                                <select
+                                    value={issueFormData.tipo_incidencia}
+                                    onChange={(e) => setIssueFormData({ ...issueFormData, tipo_incidencia: e.target.value })}
+                                    className="w-full p-2 border rounded-md"
+                                >
+                                    <option value="PRODUCTO_DEFECTUOSO">Producto Defectuoso</option>
+                                    <option value="ENVIO_INCORRECTO">Envío Incorrecto</option>
+                                    <option value="PRODUCTO_NO_RECIBIDO">Producto No Recibido</option>
+                                    <option value="RETRASO_ENVIO">Retraso en Envío</option>
+                                    <option value="OTRO">Otro</option>
+                                </select>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium">Descripción</label>
+                                <textarea
+                                    value={issueFormData.descripcion}
+                                    onChange={(e) => setIssueFormData({ ...issueFormData, descripcion: e.target.value })}
+                                    className="w-full p-2 border rounded-md"
+                                    rows={4}
+                                    required
+                                />
+                            </div>
+                            <div className="flex justify-end gap-2 pt-4">
+                                <Button type="button" variant="outline" onClick={() => setSelectedIssue(null)}>
+                                    Cancelar
+                                </Button>
+                                <Button onClick={handleUpdateIssue}>
+                                    Guardar Cambios
+                                </Button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}

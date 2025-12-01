@@ -192,6 +192,7 @@ alter table public.promociones enable row level security;
 create policy "Public profiles are viewable by everyone" on public.profiles for select using (true);
 create policy "Users can insert their own profile" on public.profiles for insert with check (auth.uid() = id);
 create policy "Users can update own profile" on public.profiles for update using (auth.uid() = id);
+create policy "Users can delete own profile" on public.profiles for delete using (auth.uid() = id);
 
 -- Categorias policies
 create policy "Categorias are viewable by everyone" on public.categorias for select using (true);
@@ -235,6 +236,8 @@ create policy "Admins/Encargados can update orders" on public.pedidos_cliente fo
 );
 create policy "Users can update their own orders" on public.pedidos_cliente for update using (
   auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+) with check (
+  auth.uid() = cliente_id and estado in ('EN_PREPARACION'::estado_pedido_cliente, 'CANCELADO'::estado_pedido_cliente)
 );
 create policy "Users can delete their own orders" on public.pedidos_cliente for delete using (
   auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
@@ -267,6 +270,9 @@ create policy "Users can view their own issues" on public.incidencias for select
 create policy "Users can insert their own issues" on public.incidencias for insert with check (auth.uid() = cliente_id);
 create policy "Admins/Encargados can update issues" on public.incidencias for update using (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
+);
+create policy "Users can update their own issues" on public.incidencias for update using (
+  auth.uid() = cliente_id
 );
 
 -- Reservations policies
@@ -372,5 +378,12 @@ begin
   update public.productos
   set cantidad_en_tienda = cantidad_en_tienda - quantity
   where id = product_id;
+end;
+$$ language plpgsql security definer;
+
+create or replace function delete_own_user()
+returns void as $$
+begin
+  delete from auth.users where id = auth.uid();
 end;
 $$ language plpgsql security definer;
