@@ -17,6 +17,13 @@ export function Layout() {
         navigate('/login');
     };
 
+    // Redirect admin users to dashboard on initial load
+    React.useEffect(() => {
+        if (profile?.rol === 'ADMIN' && window.location.pathname === '/') {
+            navigate('/admin/dashboard');
+        }
+    }, [profile, navigate]);
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Header */}
@@ -38,6 +45,11 @@ export function Layout() {
                         {/* Admin/Encargado Links */}
                         {(isAdmin || isEncargado) && (
                             <div className="hidden md:flex gap-2 mr-2">
+                                {isAdmin && (
+                                    <Link to="/admin/dashboard">
+                                        <Button variant="ghost" size="sm">Dashboard</Button>
+                                    </Link>
+                                )}
                                 <Link to="/admin/products">
                                     <Button variant="ghost" size="sm">Productos</Button>
                                 </Link>
@@ -117,6 +129,11 @@ export function Layout() {
                             </Link>
                             {(isAdmin || isEncargado) && (
                                 <>
+                                    {isAdmin && (
+                                        <Link to="/admin/dashboard" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                            Dashboard
+                                        </Link>
+                                    )}
                                     <Link to="/admin/products" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                         Gestión Productos
                                     </Link>

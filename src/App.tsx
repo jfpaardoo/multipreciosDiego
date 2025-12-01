@@ -19,6 +19,7 @@ import { Issues } from './pages/Issues';
 import { AdminProducts } from './pages/admin/AdminProducts';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminIssues } from './pages/admin/AdminIssues';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
 
 function App() {
     return (
@@ -44,6 +45,7 @@ function App() {
 
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
+                                <Route path="admin/dashboard" element={<AdminDashboard />} />
                                 <Route path="admin/products" element={<AdminProducts />} />
                                 <Route path="admin/orders" element={<AdminOrders />} />
                                 <Route path="admin/issues" element={<AdminIssues />} />
