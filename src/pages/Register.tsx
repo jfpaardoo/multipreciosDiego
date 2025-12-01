@@ -31,20 +31,26 @@ export function Register() {
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
-                options: {
-                    data: {
-                        nombre: formData.nombre,
-                        apellidos: formData.apellidos,
-                        telefono: formData.telefono,
-                        dni: formData.dni,
-                        rol: 'CLIENTE',
-                    },
-                },
             });
 
             if (authError) throw authError;
 
             if (authData.user) {
+                // 2. Create/Update profile with user data
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .upsert({
+                        id: authData.user.id,
+                        email: formData.email,
+                        nombre: formData.nombre,
+                        apellidos: formData.apellidos,
+                        telefono: formData.telefono,
+                        dni: formData.dni,
+                        rol: 'CLIENTE',
+                    });
+
+                if (profileError) throw profileError;
+
                 alert('Registro exitoso. Por favor inicia sesión.');
                 navigate('/login');
             }
