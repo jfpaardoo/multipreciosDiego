@@ -13,8 +13,8 @@ export function ProductCard({ product }: ProductCardProps) {
     const isOutOfStock = product.cantidad_en_tienda <= 0;
 
     return (
-        <div className="group relative flex flex-col overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-md">
-            <Link to={`/product/${product.id}`} className="block">
+        <div className="group relative flex flex-col h-full overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-md">
+            <Link to={`/product/${product.id}`} className="flex flex-col flex-1">
                 <div className="aspect-square overflow-hidden bg-gray-100">
                     {product.imagen_producto ? (
                         <img
