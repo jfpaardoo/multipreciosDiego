@@ -43,21 +43,7 @@ export function Layout() {
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                         {/* Admin/Encargado Links */}
-                        {(isAdmin || isEncargado) && (
-                            <div className="hidden md:flex gap-2 mr-2">
-                                {isAdmin && (
-                                    <Link to="/admin/dashboard">
-                                        <Button variant="ghost" size="sm">Dashboard</Button>
-                                    </Link>
-                                )}
-                                <Link to="/admin/products">
-                                    <Button variant="ghost" size="sm">Productos</Button>
-                                </Link>
-                                <Link to="/admin/orders">
-                                    <Button variant="ghost" size="sm">Pedidos</Button>
-                                </Link>
-                            </div>
-                        )}
+
 
                         {/* Cart */}
                         <Link to="/cart">
@@ -164,8 +150,26 @@ export function Layout() {
                     <div className="text-center space-y-4">
                         <h3 className="font-bold text-gray-900">Datos de contacto</h3>
                         <div className="text-sm text-gray-600 space-y-2">
-                            <p><span className="font-medium">Dirección:</span> Calle Ronda 67, Puerto Serrano (Cádiz)</p>
-                            <p><span className="font-medium">Correo:</span> multipreciosdiego@gmail.com</p>
+                            <p>
+                                <span className="font-medium">Dirección:</span>{' '}
+                                <a
+                                    href="https://www.google.com/maps/search/?api=1&query=Calle+Ronda+67,+Puerto+Serrano+(Cádiz)"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:underline hover:text-blue-600"
+                                >
+                                    Calle Ronda 67, Puerto Serrano (Cádiz)
+                                </a>
+                            </p>
+                            <p>
+                                <span className="font-medium">Correo:</span>{' '}
+                                <a
+                                    href="mailto:multipreciosdiego@gmail.com"
+                                    className="hover:underline hover:text-blue-600"
+                                >
+                                    multipreciosdiego@gmail.com
+                                </a>
+                            </p>
                             <p><span className="font-medium">Teléfono:</span> 635 48 59 43</p>
                         </div>
                     </div>
