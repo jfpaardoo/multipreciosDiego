@@ -17,11 +17,9 @@ import { Issues } from './pages/Issues';
 import { AdminSetup } from './pages/AdminSetup';
 
 // Admin Pages
-import { AdminProducts } from './pages/admin/AdminProducts';
-import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminIssues } from './pages/admin/AdminIssues';
-import { AdminDashboard } from './pages/admin/AdminDashboard';
-import { ProductEdit } from './pages/admin/ProductEdit';
+import { AdminUsers } from './pages/admin/AdminUsers';
+import { AdminPanel } from './pages/admin/AdminPanel';
 
 function App() {
     return (
@@ -48,11 +46,8 @@ function App() {
 
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
-                                <Route path="admin/dashboard" element={<AdminDashboard />} />
-                                <Route path="admin/products" element={<AdminProducts />} />
-                                <Route path="admin/products/new" element={<ProductEdit />} />
-                                <Route path="admin/products/:id" element={<ProductEdit />} />
-                                <Route path="admin/orders" element={<AdminOrders />} />
+                                <Route path="admin" element={<AdminPanel />} />
+                                <Route path="admin/users" element={<AdminUsers />} />
                                 <Route path="admin/issues" element={<AdminIssues />} />
                             </Route>
                         </Route>

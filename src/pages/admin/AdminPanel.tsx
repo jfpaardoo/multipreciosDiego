@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import { PedidoCliente, EstadoPedidoCliente, Product, Categoria, Incidencia } from '../../types';
+import { PedidoCliente, EstadoPedidoCliente, Product, Categoria, Incidencia, Reserva, EstadoReserva } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/Input';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Search } from 'lucide-react';
 
-export function AdminDashboard() {
+export function AdminPanel() {
+    const navigate = useNavigate();
+    
     // Orders state
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
     const [searchOrder, setSearchOrder] = useState('');
+
+    // Reservations state
+    const [reservations, setReservations] = useState<Reserva[]>([]);
+    const [searchReservation, setSearchReservation] = useState('');
 
     // Products state
     const [products, setProducts] = useState<Product[]>([]);
@@ -22,6 +29,7 @@ export function AdminDashboard() {
 
     useEffect(() => {
         fetchOrders();
+        fetchReservations();
         fetchProducts();
         fetchIssues();
     }, []);
@@ -52,6 +60,36 @@ export function AdminDashboard() {
             order.id.toLowerCase().includes(searchLower) ||
             clientName.includes(searchLower) ||
             order.estado.toLowerCase().includes(searchLower)
+        );
+    });
+
+    // ===== RESERVATIONS SECTION =====
+    const fetchReservations = async () => {
+        const { data, error } = await supabase
+            .from('reservas')
+            .select('*, profiles(nombre, apellidos), productos(nombre)')
+            .order('created_at', { ascending: false });
+
+        if (!error) setReservations(data || []);
+    };
+
+    const updateReservationStatus = async (reservaId: string, newStatus: EstadoReserva) => {
+        const { error } = await supabase
+            .from('reservas')
+            .update({ estado: newStatus })
+            .eq('id', reservaId);
+
+        if (!error) fetchReservations();
+    };
+
+    const filteredReservations = reservations.filter(reservation => {
+        const searchLower = searchReservation.toLowerCase();
+        const clientName = `${(reservation as any).profiles?.nombre || ''} ${(reservation as any).profiles?.apellidos || ''}`.toLowerCase();
+        const productName = ((reservation as any).productos?.nombre || '').toLowerCase();
+        return (
+            reservation.codigo.toLowerCase().includes(searchLower) ||
+            clientName.includes(searchLower) ||
+            productName.includes(searchLower)
         );
     });
 
@@ -121,6 +159,11 @@ export function AdminDashboard() {
         return aDomicilio ? 'A domicilio' : 'Recogida';
     };
 
+    const navigateToUser = (nombre: string, apellidos: string) => {
+        const fullName = `${nombre} ${apellidos || ''}`.trim();
+        navigate(`/admin/users?search=${encodeURIComponent(fullName)}`);
+    };
+
     // ===== ISSUES SECTION =====
     const fetchIssues = async () => {
         const { data, error } = await supabase
@@ -163,13 +206,16 @@ export function AdminDashboard() {
                 </div>
                 <div className="p-6">
                     <div className="mb-4">
-                        <Input
-                            type="text"
-                            placeholder="Buscar por pedido, cliente..."
-                            value={searchOrder}
-                            onChange={(e) => setSearchOrder(e.target.value)}
-                            className="max-w-md"
-                        />
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Input
+                                type="text"
+                                placeholder="Buscar por pedido, cliente..."
+                                value={searchOrder}
+                                onChange={(e) => setSearchOrder(e.target.value)}
+                                className="pl-10 w-80"
+                            />
+                        </div>
                     </div>
 
                     <div className="overflow-x-auto">
@@ -206,7 +252,12 @@ export function AdminDashboard() {
                                             {order.id.slice(0, 8).toUpperCase()}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                                            {(order as any).profiles?.nombre} {(order as any).profiles?.apellidos || ''}
+                                            <button
+                                                onClick={() => navigateToUser((order as any).profiles?.nombre, (order as any).profiles?.apellidos)}
+                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                            >
+                                                {(order as any).profiles?.nombre} {(order as any).profiles?.apellidos || ''}
+                                            </button>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
                                             <select
@@ -251,20 +302,121 @@ export function AdminDashboard() {
                 </div>
             </div>
 
+            {/* ===== RESERVATIONS SECTION ===== */}
+            <div className="bg-white rounded-lg shadow">
+                <div className="px-6 py-4 border-b">
+                    <h2 className="text-xl font-bold text-gray-900">Gestión de reservas</h2>
+                </div>
+                <div className="p-6">
+                    <div className="mb-4">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Input
+                                type="text"
+                                placeholder="Buscar por código, cliente, producto..."
+                                value={searchReservation}
+                                onChange={(e) => setSearchReservation(e.target.value)}
+                                className="pl-10 w-80"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Código
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Cliente
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Producto
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Cantidad
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Estado
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {filteredReservations.map((reservation) => (
+                                    <tr key={reservation.id} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                            {reservation.codigo}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                            <button
+                                                onClick={() => navigateToUser((reservation as any).profiles?.nombre, (reservation as any).profiles?.apellidos)}
+                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                            >
+                                                {(reservation as any).profiles?.nombre} {(reservation as any).profiles?.apellidos || ''}
+                                            </button>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                            {(reservation as any).productos?.nombre || '-'}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                            {reservation.cantidad}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            {new Date(reservation.fecha_hora_reserva).toLocaleDateString('es-ES', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                                            <select
+                                                value={reservation.estado}
+                                                onChange={(e) => updateReservationStatus(reservation.id, e.target.value as EstadoReserva)}
+                                                className="text-xs px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-indigo-500"
+                                            >
+                                                <option value="PENDIENTE">Pendiente</option>
+                                                <option value="PAGADA">Pagada</option>
+                                                <option value="RECOGIDA">Recogida</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                ))}
+                                {filteredReservations.length === 0 && (
+                                    <tr>
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                                            No hay reservas.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             {/* ===== PRODUCTS SECTION ===== */}
             <div className="bg-white rounded-lg shadow">
                 <div className="px-6 py-4 border-b">
                     <h2 className="text-xl font-bold text-gray-900">Gestión de productos</h2>
                 </div>
                 <div className="p-6">
-                    <div className="mb-4 flex gap-4 items-center">
-                        <Input
-                            type="text"
-                            placeholder="Buscar por artículo, categoría..."
-                            value={searchProduct}
-                            onChange={(e) => setSearchProduct(e.target.value)}
-                            className="max-w-md flex-1"
-                        />
+                    <div className="mb-4 flex gap-4 items-center justify-between">
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                            <Input
+                                type="text"
+                                placeholder="Buscar por producto, categoría..."
+                                value={searchProduct}
+                                onChange={(e) => setSearchProduct(e.target.value)}
+                                className="pl-10 w-80"
+                            />
+                        </div>
                         <Button
                             onClick={() => {
                                 setCurrentProduct({});
@@ -498,7 +650,12 @@ export function AdminDashboard() {
                                 {issues.map((issue) => (
                                     <tr key={issue.id} className="hover:bg-gray-50">
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                                            {(issue as any).profiles?.nombre} {(issue as any).profiles?.apellidos || 'Cliente'}
+                                            <button
+                                                onClick={() => navigateToUser((issue as any).profiles?.nombre, (issue as any).profiles?.apellidos)}
+                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                            >
+                                                {(issue as any).profiles?.nombre} {(issue as any).profiles?.apellidos || 'Cliente'}
+                                            </button>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
                                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
@@ -525,16 +682,22 @@ export function AdminDashboard() {
                                             })}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
-                                            {issue.estado === 'PENDIENTE' ? (
-                                                <button
-                                                    onClick={() => resolveIssue(issue.id)}
-                                                    className="text-green-600 hover:text-green-900"
-                                                >
-                                                    Resolver
-                                                </button>
-                                            ) : (
-                                                <span className="text-gray-400">-</span>
-                                            )}
+                                            <select
+                                                value={issue.estado}
+                                                onChange={(e) => {
+                                                    const newStatus = e.target.value as 'PENDIENTE' | 'ACEPTADA' | 'RECHAZADA';
+                                                    supabase
+                                                        .from('incidencias')
+                                                        .update({ estado: newStatus })
+                                                        .eq('id', issue.id)
+                                                        .then(() => fetchIssues());
+                                                }}
+                                                className="text-xs px-2 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                            >
+                                                <option value="PENDIENTE">Pendiente</option>
+                                                <option value="ACEPTADA">Aceptada</option>
+                                                <option value="RECHAZADA">Rechazada</option>
+                                            </select>
                                         </td>
                                     </tr>
                                 ))}
