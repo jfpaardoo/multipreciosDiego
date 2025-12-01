@@ -67,11 +67,51 @@ export function Home() {
     return (
         <div className="space-y-8">
             {/* Hero Section */}
-            <div className="bg-black text-white rounded-2xl p-8 md:p-12 text-center space-y-4">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Bienvenido a Multiprecios Diego</h1>
-                <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                    Encuentra todo lo que necesitas al mejor precio. Desde electrónica hasta artículos para el hogar.
-                </p>
+            <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 rounded-3xl p-1">
+                <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-3xl p-8 md:p-16">
+                    {/* Decorative elements */}
+                    <div className="absolute top-0 left-0 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+                    <div className="absolute top-0 right-0 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+                    <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+
+                    {/* Content */}
+                    <div className="relative z-10 text-center space-y-6">
+                        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full text-white/90 text-sm font-medium border border-white/20">
+                            <span className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            Nuevos productos cada semana
+                        </div>
+
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-200 to-blue-200">
+                                Multiprecios Diego
+                            </span>
+                        </h1>
+
+                        <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
+                            Encuentra todo lo que necesitas al <span className="text-cyan-300 font-semibold">mejor precio</span>.
+                            Desde electrónica hasta artículos para el hogar, con la mejor calidad y servicio.
+                        </p>
+
+                        {/* Quick Stats */}
+                        <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto pt-8">
+                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                                <div className="text-3xl md:text-4xl font-bold text-white">{products.length}+</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">Productos</div>
+                            </div>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                                <div className="text-3xl md:text-4xl font-bold text-white">{categories.length - 1}</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">Categorías</div>
+                            </div>
+                            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
+                                <div className="text-3xl md:text-4xl font-bold text-white">24/7</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">Atención</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Filters */}
