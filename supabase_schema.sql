@@ -1,4 +1,21 @@
 -- RESET SCHEMA (WARNING: This deletes all data to ensure a clean setup)
+-- IMPORTANT: This will attempt to delete ALL authentication users
+-- If you get permission errors, you'll need to delete users manually from:
+-- Supabase Dashboard > Authentication > Users
+
+-- Attempt to delete all auth users (may require SUPERUSER privileges)
+DO $$ 
+BEGIN
+  -- Delete all users from auth.users
+  DELETE FROM auth.users;
+  RAISE NOTICE 'All authentication users deleted successfully';
+EXCEPTION
+  WHEN insufficient_privilege THEN
+    RAISE WARNING 'Cannot delete auth.users automatically. Please delete users manually from Dashboard > Authentication > Users';
+  WHEN OTHERS THEN
+    RAISE WARNING 'Error deleting auth users: %. Please delete manually from Dashboard.', SQLERRM;
+END $$;
+
 drop table if exists public.promociones cascade;
 drop table if exists public.valoraciones cascade;
 drop table if exists public.reservas cascade;
@@ -570,5 +587,34 @@ create or replace function delete_own_user()
 returns void as $$
 begin
   delete from auth.users where id = auth.uid();
+end;
+$$ language plpgsql security definer;
+
+-- ADMIN FUNCTIONS (Use with caution!)
+-- Function to delete all non-admin authentication users
+create or replace function public.reset_all_auth_users()
+returns void as $$
+begin
+  -- Delete all users from auth.users except admins
+  delete from auth.users 
+  where id not in (
+    select id from public.profiles where rol = 'ADMIN'
+  );
+end;
+$$ language plpgsql security definer;
+
+-- Function to delete a specific user by email (for cleanup)
+create or replace function public.delete_user_by_email(user_email text)
+returns void as $$
+declare
+  user_id uuid;
+begin
+  -- Find user id by email
+  select id into user_id from auth.users where email = user_email;
+  
+  if user_id is not null then
+    -- Delete from auth.users (cascade will handle profiles)
+    delete from auth.users where id = user_id;
+  end if;
 end;
 $$ language plpgsql security definer;
