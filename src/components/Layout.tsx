@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu } from 'lucide-react';
+import { ShoppingCart, User, Menu, Instagram, Facebook } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -34,6 +34,15 @@ export function Layout() {
                         Multiprecios Diego
                     </Link>
 
+                    <div className="hidden md:flex items-center gap-6 ml-6">
+                        <a href="https://www.instagram.com/multipreciosdiego/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-pink-600">
+                            <Instagram className="h-5 w-5" />
+                        </a>
+                        <a href="https://www.facebook.com/people/Multiprecios-Diego/100063796103056/" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-blue-600">
+                            <Facebook className="h-5 w-5" />
+                        </a>
+                    </div>
+
                     <div className="flex-1" />
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
@@ -42,23 +51,6 @@ export function Layout() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Admin/Encargado Links */}
-                        {(isAdmin || isEncargado) && (
-                            <div className="hidden md:flex gap-2 mr-2">
-                                {isAdmin && (
-                                    <Link to="/admin/dashboard">
-                                        <Button variant="ghost" size="sm">Dashboard</Button>
-                                    </Link>
-                                )}
-                                <Link to="/admin/products">
-                                    <Button variant="ghost" size="sm">Productos</Button>
-                                </Link>
-                                <Link to="/admin/orders">
-                                    <Button variant="ghost" size="sm">Pedidos</Button>
-                                </Link>
-                            </div>
-                        )}
-
                         {/* Cart */}
                         <Link to="/cart">
                             <Button variant="ghost" size="icon" className="relative">
