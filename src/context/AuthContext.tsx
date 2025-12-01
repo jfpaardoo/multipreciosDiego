@@ -11,6 +11,7 @@ interface AuthContextType {
     isAdmin: boolean;
     isEncargado: boolean;
     signOut: () => Promise<void>;
+    fetchProfile: (userId: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -105,6 +106,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isAdmin: profile?.rol === 'ADMIN',
         isEncargado: profile?.rol === 'ENCARGADO',
         signOut,
+        fetchProfile,
     };
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
