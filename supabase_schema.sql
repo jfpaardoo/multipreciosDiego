@@ -312,7 +312,7 @@ select
   30.00, 
   45.50, 
   20, 
-  'https://images.unsplash.com/photo-1544084944-152696a63f72?w=500&q=80',
+  'https://www.laescueladedecoracion.es/wp-content/uploads/arbol-blanco-lunas-y-estrellas.jpg',
   id 
 from public.categorias where nombre = 'Hogar';
 
@@ -324,7 +324,7 @@ select
   22.00, 
   35.00, 
   30, 
-  'https://images.unsplash.com/photo-1584992236310-6eddd724a4c7?w=500&q=80',
+  'https://tse4.mm.bing.net/th/id/OIP.zxGjc4EVTirHDqRRHWQR_QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3',
   id 
 from public.categorias where nombre = 'Cocina';
 
@@ -336,7 +336,7 @@ select
   10.00, 
   15.99, 
   100, 
-  'https://images.unsplash.com/photo-1534073828943-f801091a7d58?w=500&q=80',
+  'https://m.media-amazon.com/images/I/61INQs015wL._AC_.jpg',
   id 
 from public.categorias where nombre = 'Iluminación';
 
