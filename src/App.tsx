@@ -12,11 +12,13 @@ import { Register } from './pages/Register';
 import { Checkout } from './pages/Checkout';
 import { Profile } from './pages/Profile';
 import { ProductDetails } from './pages/ProductDetails';
+import { AdminSetup } from './pages/AdminSetup';
 
 // Admin Pages
 import { AdminProducts } from './pages/admin/AdminProducts';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminIssues } from './pages/admin/AdminIssues';
+import { ProductEdit } from './pages/admin/ProductEdit';
 
 function App() {
     return (
@@ -30,6 +32,7 @@ function App() {
                             <Route path="product/:id" element={<ProductDetails />} />
                             <Route path="login" element={<Login />} />
                             <Route path="register" element={<Register />} />
+                            <Route path="admin-setup" element={<AdminSetup />} />
 
                             {/* Customer Routes */}
                             <Route element={<ProtectedRoute />}>
@@ -41,6 +44,8 @@ function App() {
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
                                 <Route path="admin/products" element={<AdminProducts />} />
+                                <Route path="admin/products/new" element={<ProductEdit />} />
+                                <Route path="admin/products/:id" element={<ProductEdit />} />
                                 <Route path="admin/orders" element={<AdminOrders />} />
                                 <Route path="admin/issues" element={<AdminIssues />} />
                             </Route>

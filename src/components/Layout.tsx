@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, LogOut, Package, AlertCircle } from 'lucide-react';
+import { ShoppingCart, User, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -142,8 +142,26 @@ export function Layout() {
                     <div className="text-center space-y-4">
                         <h3 className="font-bold text-gray-900">Datos de contacto</h3>
                         <div className="text-sm text-gray-600 space-y-2">
-                            <p><span className="font-medium">Dirección:</span> Calle Ronda 67, Puerto Serrano (Cádiz)</p>
-                            <p><span className="font-medium">Correo:</span> multipreciosdiego@gmail.com</p>
+                            <p>
+                                <span className="font-medium">Dirección:</span>{' '}
+                                <a
+                                    href="https://www.google.com/maps/search/?api=1&query=Calle+Ronda+67,+Puerto+Serrano+(Cádiz)"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:underline hover:text-blue-600"
+                                >
+                                    Calle Ronda 67, Puerto Serrano (Cádiz)
+                                </a>
+                            </p>
+                            <p>
+                                <span className="font-medium">Correo:</span>{' '}
+                                <a
+                                    href="mailto:multipreciosdiego@gmail.com"
+                                    className="hover:underline hover:text-blue-600"
+                                >
+                                    multipreciosdiego@gmail.com
+                                </a>
+                            </p>
                             <p><span className="font-medium">Teléfono:</span> 635 48 59 43</p>
                         </div>
                     </div>
