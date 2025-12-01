@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Package, AlertCircle, Calendar, X, User, Pencil } from 'lucide-react';
 
 export function Profile() {
-    const { profile } = useAuth();
+    const { profile, signOut } = useAuth();
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
     const [issues, setIssues] = useState<Incidencia[]>([]);
     const [reservations, setReservations] = useState<Reserva[]>([]);
@@ -259,6 +259,25 @@ export function Profile() {
             case 'PENDIENTE':
                 return 'text-yellow-600 bg-yellow-50';
             default: return 'text-gray-600 bg-gray-50';
+        }
+    };
+
+    const handleDeleteProfile = async () => {
+        if (!profile) return;
+
+        try {
+            const { error } = await supabase.rpc('delete_own_user');
+
+            if (error) {
+                console.error('Error deleting user:', error);
+                alert('Error al eliminar la cuenta: ' + error.message);
+                return;
+            }
+
+            await signOut();
+        } catch (error: any) {
+            console.error('Error deleting profile:', error);
+            alert('Error al eliminar la cuenta: ' + error.message);
         }
     };
 
@@ -536,6 +555,28 @@ export function Profile() {
                     </div>
                 </div>
             )}
+            {/* Danger Zone */}
+            <div className="border-t pt-8 mt-8">
+                <h2 className="text-xl font-bold text-red-600 mb-4">Zona de Peligro</h2>
+                <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div>
+                        <h3 className="font-medium text-red-900">Eliminar Cuenta</h3>
+                        <p className="text-sm text-red-700 mt-1">
+                            Esta acción es irreversible. Se eliminarán tus datos de perfil y no podrás acceder a tu historial.
+                        </p>
+                    </div>
+                    <Button
+                        variant="danger"
+                        onClick={() => {
+                            if (window.confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+                                handleDeleteProfile();
+                            }
+                        }}
+                    >
+                        Eliminar mi cuenta
+                    </Button>
+                </div>
+            </div>
 
             {/* Edit Profile Modal */}
             {isEditing && (

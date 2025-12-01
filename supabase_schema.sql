@@ -192,6 +192,7 @@ alter table public.promociones enable row level security;
 create policy "Public profiles are viewable by everyone" on public.profiles for select using (true);
 create policy "Users can insert their own profile" on public.profiles for insert with check (auth.uid() = id);
 create policy "Users can update own profile" on public.profiles for update using (auth.uid() = id);
+create policy "Users can delete own profile" on public.profiles for delete using (auth.uid() = id);
 
 -- Categorias policies
 create policy "Categorias are viewable by everyone" on public.categorias for select using (true);
@@ -377,5 +378,12 @@ begin
   update public.productos
   set cantidad_en_tienda = cantidad_en_tienda - quantity
   where id = product_id;
+end;
+$$ language plpgsql security definer;
+
+create or replace function delete_own_user()
+returns void as $$
+begin
+  delete from auth.users where id = auth.uid();
 end;
 $$ language plpgsql security definer;
