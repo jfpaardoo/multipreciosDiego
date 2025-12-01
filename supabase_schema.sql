@@ -235,6 +235,8 @@ create policy "Admins/Encargados can update orders" on public.pedidos_cliente fo
 );
 create policy "Users can update their own orders" on public.pedidos_cliente for update using (
   auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+) with check (
+  auth.uid() = cliente_id and estado in ('EN_PREPARACION'::estado_pedido_cliente, 'CANCELADO'::estado_pedido_cliente)
 );
 create policy "Users can delete their own orders" on public.pedidos_cliente for delete using (
   auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
@@ -267,6 +269,9 @@ create policy "Users can view their own issues" on public.incidencias for select
 create policy "Users can insert their own issues" on public.incidencias for insert with check (auth.uid() = cliente_id);
 create policy "Admins/Encargados can update issues" on public.incidencias for update using (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
+);
+create policy "Users can update their own issues" on public.incidencias for update using (
+  auth.uid() = cliente_id
 );
 
 -- Reservations policies
