@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
-import { ShoppingCart, User, Menu, LogOut, Package, AlertCircle } from 'lucide-react';
+import { ShoppingCart, User, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -65,19 +65,24 @@ export function Layout() {
                                 <Button variant="ghost" size="icon">
                                     <User className="h-5 w-5" />
                                 </Button>
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block border">
-                                    <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                                        {profile?.nombre || user.email}
+                                <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
+                                    <div className="bg-white rounded-md shadow-lg py-1 border">
+                                        <div className="px-4 py-2 text-sm text-gray-500 border-b">
+                                            {profile?.nombre || user.email}
+                                        </div>
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mi Perfil
+                                        </Link>
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mis Pedidos
+                                        </Link>
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                        >
+                                            Cerrar Sesión
+                                        </button>
                                     </div>
-                                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Mi Perfil
-                                    </Link>
-                                    <button
-                                        onClick={handleSignOut}
-                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                                    >
-                                        Cerrar Sesión
-                                    </button>
                                 </div>
                             </div>
                         ) : (
