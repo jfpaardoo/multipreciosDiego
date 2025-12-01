@@ -43,21 +43,7 @@ export function Layout() {
                     {/* Actions */}
                     <div className="flex items-center gap-2">
                         {/* Admin/Encargado Links */}
-                        {(isAdmin || isEncargado) && (
-                            <div className="hidden md:flex gap-2 mr-2">
-                                {isAdmin && (
-                                    <Link to="/admin/dashboard">
-                                        <Button variant="ghost" size="sm">Dashboard</Button>
-                                    </Link>
-                                )}
-                                <Link to="/admin/products">
-                                    <Button variant="ghost" size="sm">Productos</Button>
-                                </Link>
-                                <Link to="/admin/orders">
-                                    <Button variant="ghost" size="sm">Pedidos</Button>
-                                </Link>
-                            </div>
-                        )}
+
 
                         {/* Cart */}
                         <Link to="/cart">
