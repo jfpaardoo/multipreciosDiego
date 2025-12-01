@@ -1,6 +1,7 @@
 import React from 'react';
-import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, Instagram, Facebook } from 'lucide-react';
+
+import { Link, Outlet, useNavigate, useLocation  } from 'react-router-dom';
+import { ShoppingCart, User, Menu, Instagram, Facebook, Store } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { Button } from './ui/button';
@@ -31,7 +32,9 @@ export function Layout() {
             <header className="sticky top-0 z-50 w-full border-b bg-white">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
                     {/* Logo */}
-                    <Link to="/" className="text-xl font-bold tracking-tight relative z-10">
+                    {/* Logo */}
+                    <Link to="/" className="text-xl font-bold tracking-tight relative z-10 flex items-center gap-2">
+                        <Store className="h-6 w-6" />
                         Multiprecios Diego
                     </Link>
 

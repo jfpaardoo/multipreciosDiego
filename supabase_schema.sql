@@ -233,6 +233,12 @@ create policy "Users can insert their own orders" on public.pedidos_cliente for 
 create policy "Admins/Encargados can update orders" on public.pedidos_cliente for update using (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
+create policy "Users can update their own orders" on public.pedidos_cliente for update using (
+  auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+);
+create policy "Users can delete their own orders" on public.pedidos_cliente for delete using (
+  auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+);
 
 -- Pedidos Proveedor policies
 create policy "Only admins/encargados can manage pedidos proveedor" on public.pedidos_proveedor for all using (
@@ -268,21 +274,6 @@ create policy "Users can view their own reservations" on public.reservas for sel
   auth.uid() = cliente_id or exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
 create policy "Users can insert their own reservations" on public.reservas for insert with check (auth.uid() = cliente_id);
-create policy "Admins/Encargados can update reservations" on public.reservas for update using (
-  exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
-);
-
--- Reviews policies
-create policy "Reviews are viewable by everyone" on public.valoraciones for select using (true);
-create policy "Users can insert their own reviews" on public.valoraciones for insert with check (auth.uid() = cliente_id);
-
--- Promotions policies
-create policy "Promotions are viewable by everyone" on public.promociones for select using (true);
-create policy "Only admins/encargados can manage promotions" on public.promociones for all using (
-  exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
-);
-
--- SEED DATA
 -- Insert categorias
 insert into public.categorias (nombre, descripcion) values
 ('Electrónica', 'Dispositivos y accesorios electrónicos'),
@@ -312,7 +303,7 @@ select
   30.00, 
   45.50, 
   20, 
-  'https://images.unsplash.com/photo-1544084944-152696a63f72?w=500&q=80',
+  'https://www.laescueladedecoracion.es/wp-content/uploads/arbol-blanco-lunas-y-estrellas.jpg',
   id 
 from public.categorias where nombre = 'Hogar';
 
@@ -324,7 +315,7 @@ select
   22.00, 
   35.00, 
   30, 
-  'https://images.unsplash.com/photo-1584992236310-6eddd724a4c7?w=500&q=80',
+  'https://tse4.mm.bing.net/th/id/OIP.zxGjc4EVTirHDqRRHWQR_QHaHa?rs=1&pid=ImgDetMain&o=7&rm=3',
   id 
 from public.categorias where nombre = 'Cocina';
 
@@ -336,7 +327,7 @@ select
   10.00, 
   15.99, 
   100, 
-  'https://images.unsplash.com/photo-1534073828943-f801091a7d58?w=500&q=80',
+  'https://m.media-amazon.com/images/I/61INQs015wL._AC_.jpg',
   id 
 from public.categorias where nombre = 'Iluminación';
 
