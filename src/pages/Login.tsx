@@ -34,7 +34,7 @@ export function Login() {
 
                 // Redirect admin users to dashboard
                 if (profile?.rol === 'ADMIN') {
-                    navigate('/admin/dashboard');
+                    navigate('/admin');
                 } else {
                     navigate('/');
                 }

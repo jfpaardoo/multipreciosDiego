@@ -1,5 +1,6 @@
 import React from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+
+import { Link, Outlet, useNavigate, useLocation  } from 'react-router-dom';
 import { ShoppingCart, User, Menu, Instagram, Facebook, Store } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
@@ -10,6 +11,7 @@ export function Layout() {
     const { user, profile, signOut, isAdmin, isEncargado } = useAuth();
     const { itemCount } = useCart();
     const navigate = useNavigate();
+    const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     const handleSignOut = async () => {
@@ -20,7 +22,7 @@ export function Layout() {
     // Redirect admin users to dashboard on initial load
     React.useEffect(() => {
         if (profile?.rol === 'ADMIN' && window.location.pathname === '/') {
-            navigate('/admin/dashboard');
+            navigate('/admin');
         }
     }, [profile, navigate]);
 
@@ -49,27 +51,41 @@ export function Layout() {
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
                         <Link to="/faq" className="text-sm font-medium hover:underline">FAQ</Link>
+                        {isAdmin && (
+                            <>
+                                {location.pathname === '/admin/users' ? (
+                                    <Link to="/admin" className="text-sm font-medium hover:underline">Panel Admin</Link>
+                                ) : (
+                                    <Link to="/admin/users" className="text-sm font-medium hover:underline">Usuarios</Link>
+                                )}
+                            </>
+                        )}
                     </div>
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Cart */}
-                        <Link to="/cart">
-                            <Button variant="ghost" size="icon" className="relative">
-                                <ShoppingCart className="h-5 w-5" />
-                                {itemCount > 0 && (
-                                    <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-green-600 text-xs text-white flex items-center justify-center">
-                                        {itemCount}
-                                    </span>
-                                )}
-                            </Button>
-                        </Link>
+                        {/* Cart - Hidden for admin users */}
+                        {!isAdmin && (
+                            <Link to="/cart">
+                                <Button variant="ghost" size="icon" className="relative">
+                                    <ShoppingCart className="h-5 w-5" />
+                                    {itemCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-green-600 text-xs text-white flex items-center justify-center">
+                                            {itemCount}
+                                        </span>
+                                    )}
+                                </Button>
+                            </Link>
+                        )}
 
                         {/* User Menu */}
                         {user ? (
                             <div className="relative group">
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" className="gap-2 h-auto py-2 px-3">
                                     <User className="h-5 w-5" />
+                                    <span className="hidden md:inline text-sm font-medium">
+                                        {profile?.nombre || user.email?.split('@')[0]}
+                                    </span>
                                 </Button>
                                 <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
                                     <div className="bg-white rounded-md shadow-lg py-1 border">
@@ -124,16 +140,18 @@ export function Layout() {
                             {(isAdmin || isEncargado) && (
                                 <>
                                     {isAdmin && (
-                                        <Link to="/admin/dashboard" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                            Dashboard
-                                        </Link>
+                                        <>
+                                            {location.pathname === '/admin/users' ? (
+                                                <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                                    Panel Admin
+                                                </Link>
+                                            ) : (
+                                                <Link to="/admin/users" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                                    Usuarios
+                                                </Link>
+                                            )}
+                                        </>
                                     )}
-                                    <Link to="/admin/products" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                        Gestión Productos
-                                    </Link>
-                                    <Link to="/admin/orders" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                        Gestión Pedidos
-                                    </Link>
                                     <Link to="/admin/issues" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                         Gestión Incidencias
                                     </Link>

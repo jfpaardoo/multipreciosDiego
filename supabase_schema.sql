@@ -234,6 +234,14 @@ create policy "Users can insert their own orders" on public.pedidos_cliente for 
 create policy "Admins/Encargados can update orders" on public.pedidos_cliente for update using (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
+create policy "Users can update their own orders" on public.pedidos_cliente for update using (
+  auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+) with check (
+  auth.uid() = cliente_id and estado in ('EN_PREPARACION'::estado_pedido_cliente, 'CANCELADO'::estado_pedido_cliente)
+);
+create policy "Users can delete their own orders" on public.pedidos_cliente for delete using (
+  auth.uid() = cliente_id and estado = 'EN_PREPARACION'::estado_pedido_cliente
+);
 
 -- Pedidos Proveedor policies
 create policy "Only admins/encargados can manage pedidos proveedor" on public.pedidos_proveedor for all using (
@@ -263,27 +271,15 @@ create policy "Users can insert their own issues" on public.incidencias for inse
 create policy "Admins/Encargados can update issues" on public.incidencias for update using (
   exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
+create policy "Users can update their own issues" on public.incidencias for update using (
+  auth.uid() = cliente_id
+);
 
 -- Reservations policies
 create policy "Users can view their own reservations" on public.reservas for select using (
   auth.uid() = cliente_id or exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
 create policy "Users can insert their own reservations" on public.reservas for insert with check (auth.uid() = cliente_id);
-create policy "Admins/Encargados can update reservations" on public.reservas for update using (
-  exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
-);
-
--- Reviews policies
-create policy "Reviews are viewable by everyone" on public.valoraciones for select using (true);
-create policy "Users can insert their own reviews" on public.valoraciones for insert with check (auth.uid() = cliente_id);
-
--- Promotions policies
-create policy "Promotions are viewable by everyone" on public.promociones for select using (true);
-create policy "Only admins/encargados can manage promotions" on public.promociones for all using (
-  exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
-);
-
--- SEED DATA
 -- Insert categorias
 insert into public.categorias (nombre, descripcion) values
 ('Electrónica', 'Dispositivos y accesorios electrónicos'),
