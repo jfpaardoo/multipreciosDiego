@@ -50,12 +50,15 @@ export function Layout() {
                     <div className="flex-1" />
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
-                        <Link to="/faq" className="text-sm font-medium hover:underline">FAQ</Link>
+                        {!isAdmin && (
+                            <Link to="/faq" className="text-sm font-medium hover:underline">FAQ</Link>
+                        )}
                         {isAdmin && (
                             <>
-                                {location.pathname === '/admin/users' ? (
+                                {location.pathname !== '/admin' && (
                                     <Link to="/admin" className="text-sm font-medium hover:underline">Panel Admin</Link>
-                                ) : (
+                                )}
+                                {location.pathname !== '/admin/users' && (
                                     <Link to="/admin/users" className="text-sm font-medium hover:underline">Usuarios</Link>
                                 )}
                             </>
@@ -92,12 +95,21 @@ export function Layout() {
                                         <div className="px-4 py-2 text-sm text-gray-500 border-b">
                                             {profile?.nombre || user.email}
                                         </div>
-                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Mi Perfil
-                                        </Link>
-                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Mis Pedidos
-                                        </Link>
+                                        {!isAdmin && (
+                                            <>
+                                                <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    Mi Perfil
+                                                </Link>
+                                                <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                    Mis Pedidos
+                                                </Link>
+                                            </>
+                                        )}
+                                        {isAdmin && (
+                                            <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                                Mi Perfil
+                                            </Link>
+                                        )}
                                         <button
                                             onClick={handleSignOut}
                                             className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
@@ -141,11 +153,12 @@ export function Layout() {
                                 <>
                                     {isAdmin && (
                                         <>
-                                            {location.pathname === '/admin/users' ? (
+                                            {location.pathname !== '/admin' && (
                                                 <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                                     Panel Admin
                                                 </Link>
-                                            ) : (
+                                            )}
+                                            {location.pathname !== '/admin/users' && (
                                                 <Link to="/admin/users" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                                     Usuarios
                                                 </Link>
@@ -157,9 +170,11 @@ export function Layout() {
                                     </Link>
                                 </>
                             )}
-                            <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                FAQ
-                            </Link>
+                            {!isAdmin && (
+                                <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                    FAQ
+                                </Link>
+                            )}
                         </nav>
                     </div>
                 )}
