@@ -349,6 +349,191 @@ select
   id 
 from public.categorias where nombre = 'Papelería';
 
+-- More Electrónica products
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF006', 
+  'Ratón Inalámbrico', 
+  'Ratón ergonómico con 6 botones programables y batería recargable.', 
+  8.00, 
+  14.99, 
+  75, 
+  'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Electrónica';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF007', 
+  'Teclado Mecánico RGB', 
+  'Teclado gaming con iluminación RGB y switches mecánicos.', 
+  35.00, 
+  59.99, 
+  30, 
+  'https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Electrónica';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF008', 
+  'Webcam HD 1080p', 
+  'Cámara web Full HD con micrófono integrado para videollamadas.', 
+  25.00, 
+  39.99, 
+  45, 
+  'https://images.unsplash.com/photo-1614624532983-4ce03382d63d?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Electrónica';
+
+-- More Hogar products
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF009', 
+  'Cojines Decorativos', 
+  'Set de 4 cojines decorativos con fundas lavables.', 
+  12.00, 
+  19.99, 
+  60, 
+  'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Hogar';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF010', 
+  'Alfombra Moderna', 
+  'Alfombra suave de 160x230cm, perfecta para salón.', 
+  40.00, 
+  69.99, 
+  15, 
+  'https://images.unsplash.com/photo-1600166898405-da9535204843?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Hogar';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF011', 
+  'Espejo de Pared', 
+  'Espejo decorativo redondo de 80cm con marco dorado.', 
+  28.00, 
+  45.00, 
+  25, 
+  'https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Hogar';
+
+-- More Cocina products
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF012', 
+  'Batidora de Mano', 
+  'Batidora potente con 5 velocidades y accesorios.', 
+  18.00, 
+  29.99, 
+  35, 
+  'https://images.unsplash.com/photo-1578843624802-3d949e64e9e5?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Cocina';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF013', 
+  'Juego de Cuchillos', 
+  'Set profesional de 8 cuchillos de acero inoxidable con soporte.', 
+  25.00, 
+  42.00, 
+  20, 
+  'https://images.unsplash.com/photo-1593618998160-e34014e67546?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Cocina';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF014', 
+  'Cafetera Express', 
+  'Cafetera de cápsulas con sistema de presión de 19 bares.', 
+  45.00, 
+  79.99, 
+  18, 
+  'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Cocina';
+
+-- More Iluminación products
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF015', 
+  'Tira LED RGB 5m', 
+  'Tira LED inteligente con control remoto y app móvil.', 
+  12.00, 
+  24.99, 
+  80, 
+  'https://images.unsplash.com/photo-1621843128824-e93168e9b0a1?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Iluminación';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF016', 
+  'Lámpara de Pie', 
+  'Lámpara moderna ajustable con pantalla de tela.', 
+  32.00, 
+  54.99, 
+  22, 
+  'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Iluminación';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF017', 
+  'Bombillas LED Pack 6', 
+  'Pack de 6 bombillas LED E27 de bajo consumo.', 
+  8.00, 
+  16.99, 
+  120, 
+  'https://images.unsplash.com/photo-1550985616-10810253b84d?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Iluminación';
+
+-- More Papelería products
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF018', 
+  'Organizador de Escritorio', 
+  'Organizador multifuncional con compartimentos para material de oficina.', 
+  9.00, 
+  16.50, 
+  55, 
+  'https://images.unsplash.com/photo-1603484477859-abe6a73f9366?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Papelería';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF019', 
+  'Cuadernos A4 Pack 5', 
+  'Pack de 5 cuadernos A4 de 100 hojas con espiral.', 
+  6.00, 
+  12.99, 
+  90, 
+  'https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Papelería';
+
+insert into public.productos (referencia, nombre, descripcion, precio_por_mayor, precio_venta, cantidad_en_tienda, imagen_producto, categoria_id) 
+select 
+  'REF020', 
+  'Set de Bolígrafos Premium', 
+  'Estuche de 12 bolígrafos de gel de colores variados.', 
+  7.00, 
+  13.99, 
+  70, 
+  'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&q=80',
+  id 
+from public.categorias where nombre = 'Papelería';
+
 -- TRIGGERS
 -- Function to handle new user creation
 create or replace function public.handle_new_user()
