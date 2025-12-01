@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { PedidoCliente, EstadoPedidoCliente, Product, Categoria } from '../../types';
+import { PedidoCliente, EstadoPedidoCliente, Product, Categoria, Incidencia } from '../../types';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/Input';
 import { Plus, X } from 'lucide-react';
@@ -17,9 +17,13 @@ export function AdminDashboard() {
     const [isEditing, setIsEditing] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
 
+    // Issues state
+    const [issues, setIssues] = useState<Incidencia[]>([]);
+
     useEffect(() => {
         fetchOrders();
         fetchProducts();
+        fetchIssues();
     }, []);
 
     // ===== ORDERS SECTION =====
@@ -117,6 +121,34 @@ export function AdminDashboard() {
         return aDomicilio ? 'A domicilio' : 'Recogida';
     };
 
+    // ===== ISSUES SECTION =====
+    const fetchIssues = async () => {
+        const { data, error } = await supabase
+            .from('incidencias')
+            .select('*, profiles(nombre, apellidos)')
+            .order('created_at', { ascending: false });
+
+        if (!error) setIssues(data || []);
+    };
+
+    const resolveIssue = async (id: string) => {
+        const { error } = await supabase
+            .from('incidencias')
+            .update({ estado: 'ACEPTADA' })
+            .eq('id', id);
+
+        if (!error) fetchIssues();
+    };
+
+    const getTipoIncidenciaLabel = (tipo: string) => {
+        switch (tipo) {
+            case 'DAÑADO': return 'Dañado';
+            case 'EQUIVOCADO': return 'Equivocado';
+            case 'FALTANTE': return 'Faltante';
+            default: return tipo;
+        }
+    };
+
     return (
         <div className="space-y-8">
             {/* Header */}
@@ -144,25 +176,25 @@ export function AdminDashboard() {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Nº pedido
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Cliente
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Estado
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Pago
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Método de pago
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Fecha
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Tipo
                                     </th>
                                 </tr>
@@ -170,13 +202,13 @@ export function AdminDashboard() {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {filteredOrders.map((order) => (
                                     <tr key={order.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
                                             {order.id.slice(0, 8).toUpperCase()}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
                                             {(order as any).profiles?.nombre} {(order as any).profiles?.apellidos || ''}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-6 py-4 whitespace-nowrap text-center">
                                             <select
                                                 value={order.estado}
                                                 onChange={(e) => updateStatus(order.id, e.target.value as EstadoPedidoCliente)}
@@ -189,17 +221,17 @@ export function AdminDashboard() {
                                                 <option value="CANCELADO">Cancelado</option>
                                             </select>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                                 order.pagado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                             }`}>
                                                 {order.pagado ? 'Pagado' : 'Pendiente'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {order.metodo_pago}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {new Date(order.fecha_hora_pedido).toLocaleDateString('es-ES', {
                                                 day: '2-digit',
                                                 month: '2-digit',
@@ -208,7 +240,7 @@ export function AdminDashboard() {
                                                 minute: '2-digit'
                                             })}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {getTipoLabel(order.a_domicilio)}
                                         </td>
                                     </tr>
@@ -238,7 +270,7 @@ export function AdminDashboard() {
                                 setCurrentProduct({});
                                 setIsEditing(true);
                             }}
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-green-600 hover:bg-green-700 whitespace-nowrap px-6"
                         >
                             <Plus className="mr-2 h-4 w-4" />
                             Añadir producto
@@ -249,22 +281,22 @@ export function AdminDashboard() {
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Producto
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Categoría
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Referencia
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Precio
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Stock
                                     </th>
-                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Acciones
                                     </th>
                                 </tr>
@@ -292,16 +324,16 @@ export function AdminDashboard() {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {product.categorias?.nombre || '-'}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                             {product.referencia}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
                                             {product.precio_venta.toFixed(2)} €
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-6 py-4 whitespace-nowrap text-center">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                                                 product.cantidad_en_tienda > 0 
                                                     ? 'bg-green-100 text-green-800' 
@@ -310,7 +342,7 @@ export function AdminDashboard() {
                                                 {product.cantidad_en_tienda}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                             <button
                                                 onClick={() => {
                                                     setCurrentProduct(product);
@@ -431,6 +463,93 @@ export function AdminDashboard() {
                     </div>
                 </div>
             )}
+
+            {/* ===== ISSUES SECTION ===== */}
+            <div className="bg-white rounded-lg shadow">
+                <div className="px-6 py-4 border-b">
+                    <h2 className="text-xl font-bold text-gray-900">Gestión de incidencias</h2>
+                </div>
+                <div className="p-6">
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Cliente
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Tipo
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Descripción
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Estado
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Fecha
+                                    </th>
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Acciones
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {issues.map((issue) => (
+                                    <tr key={issue.id} className="hover:bg-gray-50">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                            {(issue as any).profiles?.nombre} {(issue as any).profiles?.apellidos || 'Cliente'}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                {getTipoIncidenciaLabel(issue.tipo_incidencia)}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-sm text-gray-900 text-center">
+                                            {issue.descripcion}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-center">
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                                issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' :
+                                                issue.estado === 'RECHAZADA' ? 'bg-red-100 text-red-800' :
+                                                'bg-gray-100 text-gray-800'
+                                            }`}>
+                                                {issue.estado === 'ACEPTADA' ? 'Aceptada' : issue.estado === 'RECHAZADA' ? 'Rechazada' : 'Pendiente'}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                            {new Date(issue.created_at).toLocaleDateString('es-ES', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: 'numeric'
+                                            })}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                            {issue.estado === 'PENDIENTE' ? (
+                                                <button
+                                                    onClick={() => resolveIssue(issue.id)}
+                                                    className="text-green-600 hover:text-green-900"
+                                                >
+                                                    Resolver
+                                                </button>
+                                            ) : (
+                                                <span className="text-gray-400">-</span>
+                                            )}
+                                        </td>
+                                    </tr>
+                                ))}
+                                {issues.length === 0 && (
+                                    <tr>
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                                            No hay incidencias.
+                                        </td>
+                                    </tr>
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
