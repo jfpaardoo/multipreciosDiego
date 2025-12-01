@@ -17,6 +17,13 @@ export function Layout() {
         navigate('/login');
     };
 
+    // Redirect admin users to dashboard on initial load
+    React.useEffect(() => {
+        if (profile?.rol === 'ADMIN' && window.location.pathname === '/') {
+            navigate('/admin/dashboard');
+        }
+    }, [profile, navigate]);
+
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             {/* Header */}
@@ -38,6 +45,11 @@ export function Layout() {
                         {/* Admin/Encargado Links */}
                         {(isAdmin || isEncargado) && (
                             <div className="hidden md:flex gap-2 mr-2">
+                                {isAdmin && (
+                                    <Link to="/admin/dashboard">
+                                        <Button variant="ghost" size="sm">Dashboard</Button>
+                                    </Link>
+                                )}
                                 <Link to="/admin/products">
                                     <Button variant="ghost" size="sm">Productos</Button>
                                 </Link>
@@ -65,19 +77,24 @@ export function Layout() {
                                 <Button variant="ghost" size="icon">
                                     <User className="h-5 w-5" />
                                 </Button>
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block border">
-                                    <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                                        {profile?.nombre || user.email}
+                                <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
+                                    <div className="bg-white rounded-md shadow-lg py-1 border">
+                                        <div className="px-4 py-2 text-sm text-gray-500 border-b">
+                                            {profile?.nombre || user.email}
+                                        </div>
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mi Perfil
+                                        </Link>
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            Mis Pedidos
+                                        </Link>
+                                        <button
+                                            onClick={handleSignOut}
+                                            className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                                        >
+                                            Cerrar Sesión
+                                        </button>
                                     </div>
-                                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        Mi Perfil
-                                    </Link>
-                                    <button
-                                        onClick={handleSignOut}
-                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                                    >
-                                        Cerrar Sesión
-                                    </button>
                                 </div>
                             </div>
                         ) : (
@@ -112,6 +129,11 @@ export function Layout() {
                             </Link>
                             {(isAdmin || isEncargado) && (
                                 <>
+                                    {isAdmin && (
+                                        <Link to="/admin/dashboard" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                            Dashboard
+                                        </Link>
+                                    )}
                                     <Link to="/admin/products" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                         Gestión Productos
                                     </Link>

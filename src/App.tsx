@@ -12,12 +12,15 @@ import { Register } from './pages/Register';
 import { Checkout } from './pages/Checkout';
 import { Profile } from './pages/Profile';
 import { ProductDetails } from './pages/ProductDetails';
+import { FAQ } from './pages/FAQ';
+import { Issues } from './pages/Issues';
 import { AdminSetup } from './pages/AdminSetup';
 
 // Admin Pages
 import { AdminProducts } from './pages/admin/AdminProducts';
 import { AdminOrders } from './pages/admin/AdminOrders';
 import { AdminIssues } from './pages/admin/AdminIssues';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
 import { ProductEdit } from './pages/admin/ProductEdit';
 
 function App() {
@@ -32,6 +35,7 @@ function App() {
                             <Route path="product/:id" element={<ProductDetails />} />
                             <Route path="login" element={<Login />} />
                             <Route path="register" element={<Register />} />
+                            <Route path="faq" element={<FAQ />} />
                             <Route path="admin-setup" element={<AdminSetup />} />
 
                             {/* Customer Routes */}
@@ -39,10 +43,12 @@ function App() {
                                 <Route path="checkout" element={<Checkout />} />
                                 <Route path="profile" element={<Profile />} />
                                 <Route path="cart" element={<Checkout />} /> {/* Cart is handled in Checkout page for simplicity */}
+                                <Route path="issues" element={<Issues />} />
                             </Route>
 
                             {/* Admin Routes */}
                             <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
+                                <Route path="admin/dashboard" element={<AdminDashboard />} />
                                 <Route path="admin/products" element={<AdminProducts />} />
                                 <Route path="admin/products/new" element={<ProductEdit />} />
                                 <Route path="admin/products/:id" element={<ProductEdit />} />

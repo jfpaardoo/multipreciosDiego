@@ -17,13 +17,28 @@ export function Login() {
         setError(null);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
             if (error) throw error;
-            navigate('/');
+
+            // Check user profile to determine redirect
+            if (data.user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('rol')
+                    .eq('id', data.user.id)
+                    .single();
+
+                // Redirect admin users to dashboard
+                if (profile?.rol === 'ADMIN') {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/');
+                }
+            }
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');
         } finally {
