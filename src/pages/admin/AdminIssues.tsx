@@ -13,7 +13,7 @@ export function AdminIssues() {
     const fetchIssues = async () => {
         const { data, error } = await supabase
             .from('incidencias')
-            .select('*, profiles(nombre, apellidos)')
+            .select('*, profiles(nombre, apellidos, avatar_url)')
             .order('created_at', { ascending: false });
 
         if (!error) setIssues(data || []);
@@ -35,19 +35,38 @@ export function AdminIssues() {
             <div className="grid gap-4">
                 {issues.map((issue) => (
                     <div key={issue.id} className="bg-white p-4 rounded-lg shadow border flex justify-between items-center">
-                        <div>
-                            <div className="flex items-center gap-2 mb-1">
+                        <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
                                 <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.tipo_incidencia === 'DAÑADO' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                     {issue.tipo_incidencia}
                                 </span>
-                                <span className="text-sm text-gray-500">
+                                <div className="flex items-center gap-2 text-sm text-gray-500">
+                                    <span>Reportado por:</span>
+                                    {(() => {
+                                        // @ts-ignore
+                                        const userProfile = issue.profiles;
+                                        const avatarUrl = userProfile?.avatar_url;
+                                        const userName = userProfile?.nombre;
+                                        
+                                        return avatarUrl ? (
+                                            <img
+                                                src={avatarUrl}
+                                                alt={userName || 'Usuario'}
+                                                className="h-6 w-6 rounded-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="h-6 w-6 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-semibold">
+                                                {userName ? userName.charAt(0).toUpperCase() : 'U'}
+                                            </div>
+                                        );
+                                    })()}
                                     {/* @ts-ignore */}
-                                    Reportado por: {issue.profiles?.nombre} {issue.profiles?.apellidos}
-                                </span>
+                                    <span className="font-medium">{issue.profiles?.nombre || 'Usuario'} {issue.profiles?.apellidos || ''}</span>
+                                </div>
                             </div>
                             <p className="text-gray-900">{issue.descripcion}</p>
                         </div>
-                        <div>
+                        <div className="flex-shrink-0">
                             {issue.estado === 'PENDIENTE' ? (
                                 <Button size="sm" onClick={() => resolveIssue(issue.id)}>
                                     Marcar Resuelta
