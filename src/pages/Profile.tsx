@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { PedidoCliente, Incidencia, Reserva, LineaPedido } from '../types';
 import { Button } from '../components/ui/button';
+import { ChangePasswordForm } from '../components/ChangePasswordForm';
 import { Package, AlertCircle, Calendar, X, User, Pencil, Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -550,6 +551,11 @@ export function Profile() {
                         <p className="text-gray-500 dark:text-gray-400">{t('profile.issues.empty')}</p>
                     )}
                 </div>
+            )}
+
+            {/* Change Password Section */}
+            {!isAdmin && (
+                <ChangePasswordForm />
             )}
 
             {/* Order Details Modal */}

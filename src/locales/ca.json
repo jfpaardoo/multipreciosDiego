@@ -139,6 +139,18 @@
             "contact": "Contactar"
         }
     },
+    "changePassword": {
+        "title": "Canviar Contrasenya",
+        "currentPassword": "Contrasenya Actual",
+        "newPassword": "Nova Contrasenya",
+        "confirmPassword": "Confirmar Nova Contrasenya",
+        "button": "Canviar Contrasenya",
+        "updating": "Actualitzant...",
+        "success": "Contrasenya actualitzada correctament",
+        "errorMismatch": "Les contrasenyes no coincideixen",
+        "errorLength": "La contrasenya ha de tenir almenys 6 caràcters",
+        "errorGeneric": "Error en canviar la contrasenya"
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacitat",
@@ -245,7 +257,15 @@
             }
         },
         "filters": {
-            "all": "Tots"
+            "all": "Tots",
+            "inStock": "Només en estoc",
+            "priceRange": "Rang de preu"
+        },
+        "sort": {
+            "newest": "Més recents",
+            "name": "Nom A-Z",
+            "priceAsc": "Preu: Menor a Major",
+            "priceDesc": "Preu: Major a Menor"
         },
         "empty": {
             "title": "No s'han trobat productes.",
