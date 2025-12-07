@@ -715,32 +715,32 @@ export function Profile() {
                                     <AlertCircle className="h-6 w-6 text-red-600" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-bold text-gray-900">Eliminar Cuenta</h3>
-                                    <p className="text-sm text-gray-500">Esta acción es irreversible</p>
+                                    <h3 className="text-xl font-bold text-gray-900">{t('profile.dangerZone.modal.title')}</h3>
+                                    <p className="text-sm text-gray-500">{t('profile.dangerZone.modal.subtitle')}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                                 <p className="text-sm text-red-800">
-                                    <strong>Advertencia:</strong> Al eliminar tu cuenta se perderán permanentemente:
+                                    <strong>{t('profile.dangerZone.modal.warningTitle')}</strong> {t('profile.dangerZone.modal.warningText')}
                                 </p>
                                 <ul className="mt-2 ml-4 text-sm text-red-700 list-disc space-y-1">
-                                    <li>Tu información personal y datos de perfil</li>
-                                    <li>Historial de pedidos y reservas</li>
-                                    <li>Incidencias reportadas</li>
-                                    <li>Acceso a tu cuenta de usuario</li>
+                                    <li>{t('profile.dangerZone.modal.item1')}</li>
+                                    <li>{t('profile.dangerZone.modal.item2')}</li>
+                                    <li>{t('profile.dangerZone.modal.item3')}</li>
+                                    <li>{t('profile.dangerZone.modal.item4')}</li>
                                 </ul>
                             </div>
                             <div className="space-y-2">
                                 <label className="text-sm font-medium text-gray-700">
-                                    Para confirmar, escribe <span className="font-bold text-red-600">ELIMINAR</span> en el campo:
+                                    {t('profile.dangerZone.modal.confirmLabel')} <span className="font-bold text-red-600">{t('profile.dangerZone.modal.confirmWord')}</span> en el campo:
                                 </label>
                                 <input
                                     type="text"
                                     value={deleteConfirmText}
                                     onChange={(e) => setDeleteConfirmText(e.target.value)}
-                                    placeholder="Escribe ELIMINAR"
+                                    placeholder={t('profile.dangerZone.modal.confirmPlaceholder')}
                                     className="w-full p-3 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500"
                                     disabled={isDeleting}
                                 />
@@ -756,19 +756,19 @@ export function Profile() {
                                 className="flex-1"
                                 disabled={isDeleting}
                             >
-                                Cancelar
+                                {t('profile.dangerZone.modal.cancel')}
                             </Button>
                             <Button
                                 variant="danger"
                                 onClick={() => {
-                                    if (deleteConfirmText === 'ELIMINAR') {
+                                    if (deleteConfirmText === t('profile.dangerZone.modal.confirmWord')) {
                                         handleDeleteProfile();
                                     }
                                 }}
                                 className="flex-1"
-                                disabled={deleteConfirmText !== 'ELIMINAR' || isDeleting}
+                                disabled={deleteConfirmText !== t('profile.dangerZone.modal.confirmWord') || isDeleting}
                             >
-                                {isDeleting ? 'Eliminando...' : 'Eliminar Cuenta'}
+                                {isDeleting ? t('profile.dangerZone.modal.deleting') : t('profile.dangerZone.modal.deleteButton')}
                             </Button>
                         </div>
                     </div>
