@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '../types';
@@ -15,6 +15,7 @@ export function ProductCard({ product }: ProductCardProps) {
     const { addItem } = useCart();
     const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
     const { user } = useAuth();
+    const navigate = useNavigate();
     const { t } = useTranslation();
 
     const isOutOfStock = product.cantidad_en_tienda <= 0;
@@ -66,7 +67,13 @@ export function ProductCard({ product }: ProductCardProps) {
                     <Button
                         size="sm"
                         disabled={isOutOfStock}
-                        onClick={() => addItem(product)}
+                        onClick={() => {
+                            if (!user) {
+                                navigate('/login');
+                            } else {
+                                navigate(`/product/${product.id}`);
+                            }
+                        }}
                         className={isOutOfStock ? 'opacity-50' : ''}
                     >
                         <ShoppingCart className="mr-2 h-4 w-4" />

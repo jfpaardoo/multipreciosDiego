@@ -45,6 +45,11 @@ export function Profile() {
         tipo_incidencia: ''
     });
 
+    // Delete Account State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [deleteConfirmText, setDeleteConfirmText] = useState('');
+
     useEffect(() => {
         if (profile) {
             fetchUserData();
@@ -343,12 +348,14 @@ export function Profile() {
     const handleDeleteProfile = async () => {
         if (!profile) return;
 
+        setIsDeleting(true);
         try {
             const { error } = await supabase.rpc('delete_own_user');
 
             if (error) {
                 console.error('Error deleting user:', error);
                 alert('Error al eliminar la cuenta: ' + error.message);
+                setIsDeleting(false);
                 return;
             }
 
@@ -356,6 +363,7 @@ export function Profile() {
         } catch (error: any) {
             console.error('Error deleting profile:', error);
             alert('Error al eliminar la cuenta: ' + error.message);
+            setIsDeleting(false);
         }
     };
 
@@ -690,16 +698,82 @@ export function Profile() {
                     </div>
                     <Button
                         variant="danger"
-                        onClick={() => {
-                            if (window.confirm(t('profile.dangerZone.confirm'))) {
-                                handleDeleteProfile();
-                            }
-                        }}
+                        onClick={() => setShowDeleteModal(true)}
                     >
                         {t('profile.dangerZone.button')}
                     </Button>
                 </div>
             </div>
+
+            {/* Delete Account Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+                        <div className="p-6 border-b">
+                            <div className="flex items-center gap-3">
+                                <div className="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
+                                    <AlertCircle className="h-6 w-6 text-red-600" />
+                                </div>
+                                <div>
+                                    <h3 className="text-xl font-bold text-gray-900">{t('profile.dangerZone.modal.title')}</h3>
+                                    <p className="text-sm text-gray-500">{t('profile.dangerZone.modal.subtitle')}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="p-6 space-y-4">
+                            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                                <p className="text-sm text-red-800">
+                                    <strong>{t('profile.dangerZone.modal.warningTitle')}</strong> {t('profile.dangerZone.modal.warningText')}
+                                </p>
+                                <ul className="mt-2 ml-4 text-sm text-red-700 list-disc space-y-1">
+                                    <li>{t('profile.dangerZone.modal.item1')}</li>
+                                    <li>{t('profile.dangerZone.modal.item2')}</li>
+                                    <li>{t('profile.dangerZone.modal.item3')}</li>
+                                    <li>{t('profile.dangerZone.modal.item4')}</li>
+                                </ul>
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-sm font-medium text-gray-700">
+                                    {t('profile.dangerZone.modal.confirmLabel')} <span className="font-bold text-red-600">{t('profile.dangerZone.modal.confirmWord')}</span> en el campo:
+                                </label>
+                                <input
+                                    type="text"
+                                    value={deleteConfirmText}
+                                    onChange={(e) => setDeleteConfirmText(e.target.value)}
+                                    placeholder={t('profile.dangerZone.modal.confirmPlaceholder')}
+                                    className="w-full p-3 border rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                                    disabled={isDeleting}
+                                />
+                            </div>
+                        </div>
+                        <div className="p-6 bg-gray-50 rounded-b-lg flex gap-3">
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setDeleteConfirmText('');
+                                }}
+                                className="flex-1"
+                                disabled={isDeleting}
+                            >
+                                {t('profile.dangerZone.modal.cancel')}
+                            </Button>
+                            <Button
+                                variant="danger"
+                                onClick={() => {
+                                    if (deleteConfirmText === t('profile.dangerZone.modal.confirmWord')) {
+                                        handleDeleteProfile();
+                                    }
+                                }}
+                                className="flex-1"
+                                disabled={deleteConfirmText !== t('profile.dangerZone.modal.confirmWord') || isDeleting}
+                            >
+                                {isDeleting ? t('profile.dangerZone.modal.deleting') : t('profile.dangerZone.modal.deleteButton')}
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* Edit Profile Modal */}
             {isEditing && (

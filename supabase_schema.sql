@@ -61,7 +61,8 @@ create table public.profiles (
   dni text,
   avatar_url text,
   rol user_role default 'CLIENTE'::user_role,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now())
 );
 
 -- CATEGORIAS
@@ -616,22 +617,46 @@ from public.productos where referencia = 'REF005';
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
-  insert into public.profiles (id, email, nombre, apellidos, rol)
+  insert into public.profiles (id, email, nombre, apellidos, telefono, dni, rol)
   values (
     new.id,
     new.email,
     new.raw_user_meta_data->>'nombre',
     new.raw_user_meta_data->>'apellidos',
+    new.raw_user_meta_data->>'telefono',
+    new.raw_user_meta_data->>'dni',
     'CLIENTE'
-  );
+  )
+  on conflict (id) do update
+  set 
+    email = excluded.email,
+    nombre = COALESCE(excluded.nombre, profiles.nombre),
+    apellidos = COALESCE(excluded.apellidos, profiles.apellidos),
+    telefono = COALESCE(excluded.telefono, profiles.telefono),
+    dni = COALESCE(excluded.dni, profiles.dni),
+    rol = 'CLIENTE',
+    updated_at = now();
   return new;
 end;
 $$ language plpgsql security definer;
 
 -- Trigger to call the function on new user creation
-create or replace trigger on_auth_user_created
+drop trigger if exists on_auth_user_created on auth.users;
+create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
+
+-- Function to auto-confirm user email
+create or replace function public.auto_confirm_user(user_id uuid)
+returns void as $$
+begin
+  update auth.users 
+  set email_confirmed_at = now(),
+      confirmation_token = ''
+  where id = user_id
+    and email_confirmed_at is null;
+end;
+$$ language plpgsql security definer;
 
 -- FUNCTIONS
 create or replace function decrement_stock(product_id uuid, quantity int)
@@ -645,8 +670,21 @@ $$ language plpgsql security definer;
 
 create or replace function delete_own_user()
 returns void as $$
+declare
+  user_id uuid;
 begin
-  delete from auth.users where id = auth.uid();
+  user_id := auth.uid();
+  
+  -- Delete avatar from storage if exists
+  delete from storage.objects 
+  where bucket_id = 'avatars' 
+  and name like user_id::text || '/%';
+  
+  -- Delete profile explicitly (before auth.users due to foreign key)
+  delete from public.profiles where id = user_id;
+  
+  -- Then delete from auth.users (this completely removes the user)
+  delete from auth.users where id = user_id;
 end;
 $$ language plpgsql security definer;
 

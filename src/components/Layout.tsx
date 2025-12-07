@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, Instagram, Facebook, Store, Heart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +10,6 @@ import { LanguageSelector } from './LanguageSelector';
 import { AccessibilityMenu } from './AccessibilityMenu';
 import { Chatbot } from './Chatbot';
 
-
 export function Layout() {
     const { t } = useTranslation();
     const { user, profile, signOut, isAdmin, isEncargado } = useAuth();
@@ -20,10 +18,12 @@ export function Layout() {
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [showLogoutModal, setShowLogoutModal] = React.useState(false);
 
     const handleSignOut = async () => {
         await signOut();
         navigate('/login');
+        setShowLogoutModal(false);
     };
 
     // Redirect admin users to dashboard on initial load
@@ -38,7 +38,6 @@ export function Layout() {
             {/* Header */}
             <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-800 dark:border-gray-700">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                    {/* Logo */}
                     {/* Logo */}
                     <Link to="/" className="text-xl font-bold tracking-tight relative z-10 flex items-center gap-2 text-gray-900 dark:text-white">
                         <img src="/logo.png" alt="MD Logo" className="h-14 w-auto object-contain" />
@@ -57,9 +56,13 @@ export function Layout() {
                     <div className="flex-1" />
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
+                        {/* FAQ Link: Visible para todos excepto admins (Juan's Logic para acceso público) */}
                         {!isAdmin && (
-                            <Link to="/faq" className="text-sm font-medium hover:underline text-gray-700 dark:text-gray-200">{t('layout.nav.faq')}</Link>
+                            <Link to="/faq" className="text-sm font-medium hover:underline text-gray-700 dark:text-gray-200">
+                                {t('layout.nav.faq')}
+                            </Link>
                         )}
+                        
                         {isAdmin && (
                             <>
                                 {location.pathname !== '/admin' && (
@@ -75,8 +78,8 @@ export function Layout() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Cart - Hidden for admin users */}
-                        {!isAdmin && (
+                        {/* Cart - Hidden for admin users and logged out users */}
+                        {user && !isAdmin && (
                             <Link to="/cart">
                                 <Button variant="ghost" size="icon" className="relative">
                                     <ShoppingCart className="h-5 w-5" />
@@ -140,7 +143,7 @@ export function Layout() {
                                             </Link>
                                         )}
                                         <button
-                                            onClick={handleSignOut}
+                                            onClick={() => setShowLogoutModal(true)}
                                             className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                                         >
                                             {t('layout.userMenu.logout')}
@@ -256,11 +259,36 @@ export function Layout() {
                 </div>
             </footer>
 
-            {/* Accessibility Menu */}
+            {/* Accessibility & Chatbot Tools (from Juan) */}
             <AccessibilityMenu />
-
-            {/* Chatbot */}
             <Chatbot />
+
+            {/* Logout Confirmation Modal (from Main) */}
+            {showLogoutModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl border dark:border-gray-700">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">{t('layout.logoutModal.title')}</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
+                            {t('layout.logoutModal.message')}
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => setShowLogoutModal(false)}
+                                className="dark:text-gray-300 dark:hover:text-white"
+                            >
+                                {t('layout.logoutModal.cancel')}
+                            </Button>
+                            <Button
+                                onClick={handleSignOut}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                {t('layout.logoutModal.confirm')}
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

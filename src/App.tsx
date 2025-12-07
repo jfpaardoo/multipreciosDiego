@@ -36,6 +36,7 @@ function App() {
                                 <Routes>
                                     <Route path="/" element={<Layout />}>
                                         {/* Public Routes */}
+                                        {/* Se permite ver productos y FAQ sin estar logueado (Mejor práctica E-commerce) */}
                                         <Route index element={<Home />} />
                                         <Route path="product/:id" element={<ProductDetails />} />
                                         <Route path="login" element={<Login />} />
@@ -46,7 +47,7 @@ function App() {
                                         <Route path="aviso-legal" element={<LegalNotice />} />
                                         <Route path="terminos" element={<Terms />} />
 
-                                        {/* Customer Routes */}
+                                        {/* Customer Routes (Requieren Login) */}
                                         <Route element={<ProtectedRoute />}>
                                             <Route path="checkout" element={<Checkout />} />
                                             <Route path="profile" element={<Profile />} />
@@ -55,13 +56,15 @@ function App() {
                                             <Route path="wishlist" element={<Wishlist />} />
                                         </Route>
 
-                                        {/* Admin Routes */}
+                                        {/* Admin Routes (Requieren Rol ADMIN o ENCARGADO) */}
                                         <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
                                             <Route path="admin" element={<AdminPanel />} />
                                             <Route path="admin/users" element={<AdminUsers />} />
                                             <Route path="admin/issues" element={<AdminIssues />} />
                                         </Route>
                                     </Route>
+                                    
+                                    {/* Catch all - Redirect to Home */}
                                     <Route path="*" element={<Navigate to="/" replace />} />
                                 </Routes>
                             </WishlistProvider>

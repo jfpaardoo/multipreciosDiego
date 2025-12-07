@@ -20,6 +20,12 @@
             "orders": "Mis Pedidos",
             "logout": "Cerrar Sesión"
         },
+        "logoutModal": {
+            "title": "Confirmación",
+            "message": "¿Estás seguro de que quieres cerrar sesión?",
+            "cancel": "Cancelar",
+            "confirm": "Sí, cerrar"
+        },
         "auth": {
             "register": "Registrarse",
             "login": "Iniciar Sesión"
@@ -317,7 +323,8 @@
             "hasAccount": "¿Ya tienes cuenta?",
             "loginLink": "Inicia sesión",
             "success": "¡Registro completado! Por favor inicia sesión.",
-            "error": "Error al registrar usuario."
+            "error": "Error al registrar usuario.",
+            "accountCreated": "¡Cuenta creada!"
         }
     },
     "profile": {
@@ -366,7 +373,23 @@
             "deleteAccount": "Eliminar Cuenta",
             "warning": "Una vez elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate.",
             "button": "Eliminar Mi Cuenta",
-            "confirm": "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+            "confirm": "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.",
+            "modal": {
+                "title": "Eliminar Cuenta",
+                "subtitle": "Esta acción es irreversible",
+                "warningTitle": "Advertencia:",
+                "warningText": "Al eliminar tu cuenta se perderán permanentemente:",
+                "item1": "Tu información personal y datos de perfil",
+                "item2": "Historial de pedidos y reservas",
+                "item3": "Incidencias reportadas",
+                "item4": "Acceso a tu cuenta de usuario",
+                "confirmLabel": "Para confirmar, escribe",
+                "confirmWord": "ELIMINAR",
+                "confirmPlaceholder": "Escribe ELIMINAR",
+                "cancel": "Cancelar",
+                "deleteButton": "Eliminar Cuenta",
+                "deleting": "Eliminando..."
+            }
         }
     },
     "issues": {
