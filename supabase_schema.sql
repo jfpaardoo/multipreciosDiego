@@ -171,6 +171,15 @@ create table public.reservas (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
+-- WISHLIST (Lista de Deseos)
+create table public.wishlist (
+  id uuid default uuid_generate_v4() primary key,
+  cliente_id uuid references public.profiles(id) on delete cascade not null,
+  producto_id uuid references public.productos(id) on delete cascade not null,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  unique(cliente_id, producto_id)
+);
+
 -- REVIEWS (Valoracion)
 create table public.valoraciones (
   id uuid default uuid_generate_v4() primary key,
@@ -297,6 +306,17 @@ create policy "Users can update their own issues" on public.incidencias for upda
 create policy "Users can view their own reservations" on public.reservas for select using (
   auth.uid() = cliente_id or exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
+
+-- Wishlist policies
+create policy "Users can view their own wishlist" on public.wishlist 
+  for select using (auth.uid() = cliente_id);
+
+create policy "Users can insert into their own wishlist" on public.wishlist 
+  for insert with check (auth.uid() = cliente_id);
+
+create policy "Users can delete from their own wishlist" on public.wishlist 
+  for delete using (auth.uid() = cliente_id);
+
 create policy "Users can insert their own reservations" on public.reservas for insert with check (auth.uid() = cliente_id);
 -- Insert categorias
 insert into public.categorias (nombre, descripcion) values
@@ -450,7 +470,7 @@ select
   18.00, 
   29.99, 
   35, 
-  'https://images.unsplash.com/photo-1578843624802-3d949e64e9e5?w=500&q=80',
+  'https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&q=80',
   id 
 from public.categorias where nombre = 'Cocina';
 
@@ -474,7 +494,7 @@ select
   45.00, 
   79.99, 
   18, 
-  'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=500&q=80',
+  '/products/cafetera.png',
   id 
 from public.categorias where nombre = 'Cocina';
 
@@ -487,7 +507,7 @@ select
   12.00, 
   24.99, 
   80, 
-  'https://images.unsplash.com/photo-1621843128824-e93168e9b0a1?w=500&q=80',
+  '/products/tira_led.png',
   id 
 from public.categorias where nombre = 'Iluminación';
 
@@ -511,7 +531,7 @@ select
   8.00, 
   16.99, 
   120, 
-  'https://images.unsplash.com/photo-1550985616-10810253b84d?w=500&q=80',
+  '/products/bombillas.png',
   id 
 from public.categorias where nombre = 'Iluminación';
 
@@ -524,7 +544,7 @@ select
   9.00, 
   16.50, 
   55, 
-  'https://images.unsplash.com/photo-1603484477859-abe6a73f9366?w=500&q=80',
+  'https://images.unsplash.com/photo-1611269154421-4e27233ac5c7?w=500&q=80',
   id 
 from public.categorias where nombre = 'Papelería';
 
@@ -548,7 +568,7 @@ select
   7.00, 
   13.99, 
   70, 
-  'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&q=80',
+  '/products/boligrafos.png',
   id 
 from public.categorias where nombre = 'Papelería';
 
