@@ -65,9 +65,9 @@ export function Register() {
 
     return (
         <div className="flex min-h-[80vh] items-center justify-center py-12">
-            <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg">
+            <div className="w-full max-w-md space-y-8 rounded-lg bg-white dark:bg-gray-800 p-8 shadow-lg border dark:border-gray-700">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">{t('auth.register.title')}</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{t('auth.register.title')}</h2>
                     <p className="mt-2 text-sm text-gray-600">
                         {t('auth.register.subtitle')}
                     </p>

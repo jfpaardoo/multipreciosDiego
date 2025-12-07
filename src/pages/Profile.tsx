@@ -326,17 +326,17 @@ export function Profile() {
             case 'ACEPTADA':
             case 'PAGADA':
             case 'RECOGIDA':
-                return 'text-green-600 bg-green-50';
+                return 'text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/20';
             case 'CANCELADO':
             case 'RECHAZADA':
-                return 'text-red-600 bg-red-50';
+                return 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20';
             case 'ENVIADO':
             case 'EN_REPARTO':
-                return 'text-blue-600 bg-blue-50';
+                return 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20';
             case 'EN_PREPARACION':
             case 'PENDIENTE':
-                return 'text-yellow-600 bg-yellow-50';
-            default: return 'text-gray-600 bg-gray-50';
+                return 'text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/20';
+            default: return 'text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-800';
         }
     };
 
@@ -364,9 +364,9 @@ export function Profile() {
     return (
         <div className="space-y-8">
             {/* Profile Header */}
-            <div className="bg-white p-6 rounded-lg shadow-sm">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border dark:border-gray-700">
                 <div className="flex justify-between items-start mb-6">
-                    <h1 className="text-2xl font-bold flex items-center gap-2">
+                    <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
                         <User className="h-6 w-6" />
                         {t('profile.title')}
                     </h1>
@@ -377,16 +377,16 @@ export function Profile() {
                 </div>
 
                 {/* Profile Photo Section */}
-                <div className="flex items-center gap-6 mb-6 pb-6 border-b">
+                <div className="flex items-center gap-6 mb-6 pb-6 border-b dark:border-gray-700">
                     <div className="relative">
                         {profile.avatar_url ? (
                             <img
                                 src={profile.avatar_url}
                                 alt={profile.nombre || 'Usuario'}
-                                className="h-24 w-24 rounded-full object-cover border-2 border-gray-200"
+                                className="h-24 w-24 rounded-full object-cover border-2 border-gray-200 dark:border-gray-600"
                             />
                         ) : (
-                            <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-3xl font-semibold border-2 border-gray-300">
+                            <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-300 text-3xl font-semibold border-2 border-gray-300 dark:border-gray-600">
                                 {profile.nombre ? profile.nombre.charAt(0).toUpperCase() : 'U'}
                             </div>
                         )}
@@ -452,20 +452,20 @@ export function Profile() {
                     {orders.length > 0 ? (
                         <div className="grid gap-4">
                             {orders.map((order) => (
-                                <div key={order.id} className="bg-white p-4 rounded-lg shadow-sm border flex flex-col md:flex-row justify-between gap-4">
+                                <div key={order.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700 flex flex-col md:flex-row justify-between gap-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-mono text-sm text-gray-500">#{order.id.slice(0, 8)}</span>
+                                            <span className="font-mono text-sm text-gray-500 dark:text-gray-400">#{order.id.slice(0, 8)}</span>
                                             <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(order.estado)}`}>
                                                 {order.estado}
                                             </span>
                                         </div>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {new Date(order.fecha_hora_pedido).toLocaleDateString()} - {order.a_domicilio ? t('checkout.homeDelivery') : t('checkout.storePickup')}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className="font-bold text-lg">{order.total.toFixed(2)} €</span>
+                                        <span className="font-bold text-lg text-gray-900 dark:text-white">{order.total.toFixed(2)} €</span>
                                         <Button variant="outline" size="sm" onClick={() => handleViewDetails(order)}>{t('profile.orders.viewDetails')}</Button>
                                     </div>
                                 </div>
@@ -480,50 +480,50 @@ export function Profile() {
             {/* Reservations - Hidden for Admin */}
             {!isAdmin && (
                 <div className="space-y-4">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
+                    <h2 className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
                         <Calendar className="h-5 w-5" />
                         {t('profile.reservations.title')}
                     </h2>
                     {reservations.length > 0 ? (
                         <div className="grid gap-4">
                             {reservations.map((res) => (
-                                <div key={res.id} className="bg-white p-4 rounded-lg shadow-sm border flex flex-col md:flex-row justify-between gap-4">
+                                <div key={res.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700 flex flex-col md:flex-row justify-between gap-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-mono text-sm text-gray-500">{t('profile.reservations.code')}: {res.codigo}</span>
+                                            <span className="font-mono text-sm text-gray-500 dark:text-gray-400">{t('profile.reservations.code')}: {res.codigo}</span>
                                             <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(res.estado)}`}>
                                                 {res.estado}
                                             </span>
                                         </div>
-                                        <p className="font-medium">{res.productos?.nombre}</p>
-                                        <p className="text-sm text-gray-600">
+                                        <p className="font-medium text-gray-900 dark:text-white">{res.productos?.nombre}</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-400">
                                             {t('profile.orders.date')}: {new Date(res.fecha_hora_reserva).toLocaleDateString()}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className="text-sm text-gray-500">{t('profile.reservations.qty')}: {res.cantidad}</span>
+                                        <span className="text-sm text-gray-500 dark:text-gray-400">{t('profile.reservations.qty')}: {res.cantidad}</span>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">{t('profile.reservations.empty')}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{t('profile.reservations.empty')}</p>
                     )}
                 </div>
             )}
 
             {!isAdmin && (
                 <div className="space-y-4">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
+                    <h2 className="text-xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
                         <AlertCircle className="h-5 w-5" />
                         {t('profile.issues.title')}
                     </h2>
                     {issues.length > 0 ? (
                         <div className="grid gap-4">
                             {issues.map((issue) => (
-                                <div key={issue.id} className="bg-white p-4 rounded-lg shadow-sm border">
+                                <div key={issue.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700">
                                     <div className="flex justify-between items-start mb-2">
-                                        <span className="font-medium">{issue.tipo_incidencia}</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">{issue.tipo_incidencia}</span>
                                         <div className="flex items-center gap-2">
                                             <span className={`px-2 py-0.5 rounded text-xs font-medium ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
                                                 {issue.estado}
@@ -534,12 +534,12 @@ export function Profile() {
                                             </Button>
                                         </div>
                                     </div>
-                                    <p className="text-sm text-gray-600">{issue.descripcion}</p>
+                                    <p className="text-sm text-gray-600 dark:text-gray-400">{issue.descripcion}</p>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">{t('profile.issues.empty')}</p>
+                        <p className="text-gray-500 dark:text-gray-400">{t('profile.issues.empty')}</p>
                     )}
                 </div>
             )}
@@ -547,32 +547,32 @@ export function Profile() {
             {/* Order Details Modal */}
             {selectedOrder && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
-                            <h3 className="text-xl font-bold">Detalles del Pedido #{selectedOrder.id.slice(0, 8)}</h3>
-                            <button onClick={closeDetails} className="text-gray-500 hover:text-black">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-gray-700">
+                        <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Detalles del Pedido #{selectedOrder.id.slice(0, 8)}</h3>
+                            <button onClick={closeDetails} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4 text-sm mb-6">
                                 <div>
-                                    <p className="text-gray-500">{t('profile.orders.date')}</p>
-                                    <p className="font-medium">{new Date(selectedOrder.fecha_hora_pedido).toLocaleString()}</p>
+                                    <p className="text-gray-500 dark:text-gray-400">{t('profile.orders.date')}</p>
+                                    <p className="font-medium text-gray-900 dark:text-white">{new Date(selectedOrder.fecha_hora_pedido).toLocaleString()}</p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">{t('profile.orders.status')}</p>
+                                    <p className="text-gray-500 dark:text-gray-400">{t('profile.orders.status')}</p>
                                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(selectedOrder.estado)}`}>
                                         {selectedOrder.estado}
                                     </span>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">{t('profile.orders.payment')}</p>
+                                    <p className="text-gray-500 dark:text-gray-400">{t('profile.orders.payment')}</p>
                                     {isEditingOrder ? (
                                         <select
                                             value={orderFormData.metodo_pago}
                                             onChange={(e) => setOrderFormData({ ...orderFormData, metodo_pago: e.target.value })}
-                                            className="w-full p-1 border rounded"
+                                            className="w-full p-1 border dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         >
                                             <option value="EFECTIVO">Efectivo</option>
                                             <option value="TARJETA">Tarjeta</option>
@@ -582,11 +582,11 @@ export function Profile() {
                                             <option value="BIZUM">Bizum</option>
                                         </select>
                                     ) : (
-                                        <p className="font-medium">{selectedOrder.metodo_pago}</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">{selectedOrder.metodo_pago}</p>
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">{t('profile.orders.delivery')}</p>
+                                    <p className="text-gray-500 dark:text-gray-400">{t('profile.orders.delivery')}</p>
                                     {isEditingOrder ? (
                                         <div className="flex items-center gap-2">
                                             <input
@@ -598,34 +598,34 @@ export function Profile() {
                                             <label htmlFor="a_domicilio">{t('checkout.homeDelivery')}</label>
                                         </div>
                                     ) : (
-                                        <p className="font-medium">{selectedOrder.a_domicilio ? t('checkout.homeDelivery') : t('checkout.storePickup')}</p>
+                                        <p className="font-medium text-gray-900 dark:text-white">{selectedOrder.a_domicilio ? t('checkout.homeDelivery') : t('checkout.storePickup')}</p>
                                     )}
                                 </div>
                                 {(selectedOrder.direccion_envio || isEditingOrder) && (
                                     <div className="col-span-2">
-                                        <p className="text-gray-500">{t('checkout.addressLabel')}</p>
+                                        <p className="text-gray-500 dark:text-gray-400">{t('checkout.addressLabel')}</p>
                                         {isEditingOrder && orderFormData.a_domicilio ? (
                                             <input
                                                 type="text"
                                                 value={orderFormData.direccion_envio}
                                                 onChange={(e) => setOrderFormData({ ...orderFormData, direccion_envio: e.target.value })}
-                                                className="w-full p-1 border rounded"
+                                                className="w-full p-1 border dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                             />
                                         ) : (
-                                            <p className="font-medium">{selectedOrder.direccion_envio || '-'}</p>
+                                            <p className="font-medium text-gray-900 dark:text-white">{selectedOrder.direccion_envio || '-'}</p>
                                         )}
                                     </div>
                                 )}
                             </div>
 
-                            <h4 className="font-bold border-b pb-2">{t('profile.orders.products')}</h4>
+                            <h4 className="font-bold border-b dark:border-gray-700 pb-2 text-gray-900 dark:text-white">{t('profile.orders.products')}</h4>
                             {loadingItems ? (
                                 <p className="text-center py-4">Cargando productos...</p>
                             ) : (
                                 <div className="space-y-3">
                                     {orderItems.map((item) => (
                                         <div key={item.id} className="flex items-center gap-4">
-                                            <div className="h-12 w-12 bg-gray-100 rounded overflow-hidden flex-shrink-0">
+                                            <div className="h-12 w-12 bg-gray-100 dark:bg-gray-700 rounded overflow-hidden flex-shrink-0">
                                                 {/* @ts-ignore */}
                                                 {item.productos?.imagen_producto && (
                                                     <img
@@ -639,10 +639,10 @@ export function Profile() {
                                             </div>
                                             <div className="flex-1">
                                                 {/* @ts-ignore */}
-                                                <p className="font-medium">{item.productos?.nombre || 'Producto eliminado'}</p>
-                                                <p className="text-sm text-gray-500">{item.cantidad} x {item.precio_unitario.toFixed(2)} €</p>
+                                                <p className="font-medium text-gray-900 dark:text-white">{item.productos?.nombre || 'Producto eliminado'}</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">{item.cantidad} x {item.precio_unitario.toFixed(2)} €</p>
                                             </div>
-                                            <p className="font-medium">{(item.cantidad * item.precio_unitario).toFixed(2)} €</p>
+                                            <p className="font-medium text-gray-900 dark:text-white">{(item.cantidad * item.precio_unitario).toFixed(2)} €</p>
                                         </div>
                                     ))}
                                 </div>
@@ -653,7 +653,7 @@ export function Profile() {
                                 <span>{selectedOrder.total.toFixed(2)} €</span>
                             </div>
                         </div>
-                        <div className="p-6 border-t bg-gray-50 flex justify-between items-center">
+                        <div className="p-6 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900 flex justify-between items-center">
                             <div>
                                 {selectedOrder.estado === 'EN_PREPARACION' && (
                                     <div className="flex gap-2">
@@ -704,10 +704,10 @@ export function Profile() {
             {/* Edit Profile Modal */}
             {isEditing && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                        <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
-                            <h3 className="text-xl font-bold">{t('profile.edit')}</h3>
-                            <button onClick={() => setIsEditing(false)} className="text-gray-500 hover:text-black">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-gray-700">
+                        <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('profile.edit')}</h3>
+                            <button onClick={() => setIsEditing(false)} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
@@ -785,20 +785,20 @@ export function Profile() {
             {/* Edit Issue Modal */}
             {selectedIssue && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-                        <div className="p-6 border-b flex justify-between items-center">
-                            <h3 className="text-xl font-bold">{t('issues.edit')}</h3>
-                            <button onClick={() => setSelectedIssue(null)} className="text-gray-500 hover:text-black">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full border dark:border-gray-700">
+                        <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('issues.edit')}</h3>
+                            <button onClick={() => setSelectedIssue(null)} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">{t('issues.typeLabel')}</label>
+                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{t('issues.typeLabel')}</label>
                                 <select
                                     value={issueFormData.tipo_incidencia}
                                     onChange={(e) => setIssueFormData({ ...issueFormData, tipo_incidencia: e.target.value })}
-                                    className="w-full p-2 border rounded-md"
+                                    className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                 >
                                     <option value="PRODUCTO_DEFECTUOSO">Producto Defectuoso</option>
                                     <option value="ENVIO_INCORRECTO">Envío Incorrecto</option>
@@ -808,11 +808,11 @@ export function Profile() {
                                 </select>
                             </div>
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Descripción</label>
+                                <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
                                 <textarea
                                     value={issueFormData.descripcion}
                                     onChange={(e) => setIssueFormData({ ...issueFormData, descripcion: e.target.value })}
-                                    className="w-full p-2 border rounded-md"
+                                    className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     rows={4}
                                     required
                                 />

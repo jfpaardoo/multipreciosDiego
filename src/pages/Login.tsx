@@ -50,10 +50,10 @@ export function Login() {
 
     return (
         <div className="flex min-h-[80vh] items-center justify-center">
-            <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg">
+            <div className="w-full max-w-md space-y-8 rounded-lg bg-white dark:bg-gray-800 p-8 shadow-lg border dark:border-gray-700">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">{t('auth.login.title')}</h2>
-                    <p className="mt-2 text-sm text-gray-600">
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{t('auth.login.title')}</h2>
+                    <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                         {t('auth.login.subtitle')}
                     </p>
                 </div>
@@ -79,7 +79,7 @@ export function Login() {
                     </div>
 
                     {error && (
-                        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
+                        <div className="rounded-md bg-red-50 dark:bg-red-900/20 p-4 text-sm text-red-700 dark:text-red-400 border dark:border-red-800">
                             {error}
                         </div>
                     )}
@@ -93,8 +93,8 @@ export function Login() {
                     </Button>
 
                     <div className="text-center text-sm">
-                        <span className="text-gray-500">{t('auth.login.noAccount')} </span>
-                        <Link to="/register" className="font-medium text-black hover:underline">
+                        <span className="text-gray-500 dark:text-gray-400">{t('auth.login.noAccount')} </span>
+                        <Link to="/register" className="font-medium text-black dark:text-white hover:underline">
                             {t('auth.login.registerLink')}
                         </Link>
                     </div>

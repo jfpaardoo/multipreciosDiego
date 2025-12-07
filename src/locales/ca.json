@@ -86,6 +86,53 @@
         "submitting": "Enviant...",
         "submit": "Publicar valoració"
     },
+    "accessibility": {
+        "title": "Accessibilitat",
+        "openMenu": "Obrir menú d'accessibilitat",
+        "close": "Tancar",
+        "theme": "Tema",
+        "toggleTheme": "Canviar tema",
+        "lightMode": "Mode Clar",
+        "darkMode": "Mode Fosc",
+        "fontSize": "Mida de Lletra",
+        "small": "Petit",
+        "medium": "Mitjà",
+        "large": "Gran"
+    },
+    "chatbot": {
+        "title": "Atenció al Client",
+        "subtitle": "Som aquí per ajudar-te",
+        "needHelp": "Necessites ajuda?",
+        "openChat": "Obrir xat",
+        "close": "Tancar xat",
+        "placeholder": "Escriu el teu missatge...",
+        "send": "Enviar missatge",
+        "welcome": "Hola! 👋 Com et puc ajudar avui?",
+        "greeting": "Hola! Sóc el teu assistent virtual. Puc ajudar-te amb comandes, enviaments, devolucions i més. Què t'agradaria saber?",
+        "response": {
+            "shipping": "Els enviaments solen trigar 24-72 hores per a la península. Les despeses d'enviament es calculen automàticament al finalitzar la compra segons la teva ubicació.",
+            "payment": "Acceptem targeta de crèdit/dèbit, Bizum i efectiu (només per a recollida a botiga). El pagament en efectiu no està disponible per a enviaments a domicili.",
+            "returns": "Disposes d'un termini de 14 dies naturals des de la recepció per realitzar devolucions sense justificació, sempre que el producte estigui en perfecte estat i en el seu embalatge original.",
+            "orderTracking": "Pots veure l'estat de les teves comandes a 'El meu Perfil' → 'Les meves Comandes'. Si necessites més ajuda, indica'ns el teu número de comanda.",
+            "stock": "La disponibilitat de productes s'actualitza en temps real. Si un producte està esgotat, pots fer una reserva i te'l guardarem quan arribi.",
+            "reservation": "Pots reservar productes directament des de la pàgina del producte. Mantindrem la reserva durant 7 dies. Només has de visitar la botiga amb el teu codi de reserva.",
+            "contact": "Pots contactar-nos a multipreciosdiego@gmail.com o trucar al 635 48 59 43. També som al Carrer Ronda 67, Puerto Serrano (Cadis).",
+            "default": "No estic segur d'haver entès. Podries reformular la teva pregunta? O pots visitar la nostra secció de FAQ per a més informació."
+        },
+        "suggestion": {
+            "orderStatus": "Consultar la meva comanda",
+            "shipping": "Informació d'enviament",
+            "returns": "Com tornar",
+            "shippingCost": "Costos d'enviament",
+            "howToReturn": "Procés de devolució",
+            "myOrders": "Les meves comandes",
+            "reservation": "Fer una reserva",
+            "myReservations": "Les meves reserves",
+            "faq": "Visitar FAQ",
+            "issues": "Reportar incidència",
+            "contact": "Contactar"
+        }
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacitat",

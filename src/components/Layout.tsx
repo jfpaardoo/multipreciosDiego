@@ -8,6 +8,8 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Button } from './ui/button';
 import { LanguageSelector } from './LanguageSelector';
+import { AccessibilityMenu } from './AccessibilityMenu';
+import { Chatbot } from './Chatbot';
 
 
 export function Layout() {
@@ -32,13 +34,13 @@ export function Layout() {
     }, [profile, navigate]);
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
             {/* Header */}
-            <header className="sticky top-0 z-50 w-full border-b bg-white">
+            <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-800 dark:border-gray-700">
                 <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
                     {/* Logo */}
                     {/* Logo */}
-                    <Link to="/" className="text-xl font-bold tracking-tight relative z-10 flex items-center gap-2">
+                    <Link to="/" className="text-xl font-bold tracking-tight relative z-10 flex items-center gap-2 text-gray-900 dark:text-white">
                         <img src="/logo.png" alt="MD Logo" className="h-14 w-auto object-contain" />
                         Multiprecios Diego
                     </Link>
@@ -56,15 +58,15 @@ export function Layout() {
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
                         {!isAdmin && (
-                            <Link to="/faq" className="text-sm font-medium hover:underline">{t('layout.nav.faq')}</Link>
+                            <Link to="/faq" className="text-sm font-medium hover:underline text-gray-700 dark:text-gray-200">{t('layout.nav.faq')}</Link>
                         )}
                         {isAdmin && (
                             <>
                                 {location.pathname !== '/admin' && (
-                                    <Link to="/admin" className="text-sm font-medium hover:underline">{t('layout.nav.adminPanel')}</Link>
+                                    <Link to="/admin" className="text-sm font-medium hover:underline text-gray-700 dark:text-gray-200">{t('layout.nav.adminPanel')}</Link>
                                 )}
                                 {location.pathname !== '/admin/users' && (
-                                    <Link to="/admin/users" className="text-sm font-medium hover:underline">{t('layout.nav.users')}</Link>
+                                    <Link to="/admin/users" className="text-sm font-medium hover:underline text-gray-700 dark:text-gray-200">{t('layout.nav.users')}</Link>
                                 )}
                             </>
                         )}
@@ -118,8 +120,8 @@ export function Layout() {
                                     </span>
                                 </Button>
                                 <div className="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50">
-                                    <div className="bg-white rounded-md shadow-lg py-1 border">
-                                        <div className="px-4 py-2 text-sm text-gray-500 border-b">
+                                    <div className="bg-white dark:bg-gray-800 rounded-md shadow-lg py-1 border dark:border-gray-700">
+                                        <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b dark:border-gray-700">
                                             {profile?.nombre || user.email}
                                         </div>
                                         {!isAdmin && location.pathname !== '/profile' && (
@@ -171,9 +173,9 @@ export function Layout() {
 
                 {/* Mobile Menu */}
                 {isMenuOpen && (
-                    <div className="md:hidden border-t p-4 space-y-4 bg-white">
+                    <div className="md:hidden border-t dark:border-gray-700 p-4 space-y-4 bg-white dark:bg-gray-800">
                         <nav className="flex flex-col gap-2">
-                            <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                            <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                                 {t('layout.nav.catalog')}
                             </Link>
                             {(isAdmin || isEncargado) && (
@@ -181,24 +183,24 @@ export function Layout() {
                                     {isAdmin && (
                                         <>
                                             {location.pathname !== '/admin' && (
-                                                <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                                <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                                                     {t('layout.nav.adminPanel')}
                                                 </Link>
                                             )}
                                             {location.pathname !== '/admin/users' && (
-                                                <Link to="/admin/users" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                                <Link to="/admin/users" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                                                     {t('layout.nav.users')}
                                                 </Link>
                                             )}
                                         </>
                                     )}
-                                    <Link to="/admin/issues" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                    <Link to="/admin/issues" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                                         {t('layout.nav.issues')}
                                     </Link>
                                 </>
                             )}
                             {!isAdmin && (
-                                <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
+                                <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                                     {t('layout.nav.faq')}
                                 </Link>
                             )}
@@ -213,7 +215,7 @@ export function Layout() {
             </main>
 
             {/* Footer */}
-            <footer className="border-t bg-gray-50 py-12">
+            <footer className="border-t bg-gray-50 dark:bg-gray-800 dark:border-gray-700 py-12">
                 <div className="container mx-auto px-4">
                     {!isAdmin && (
                         <div className="text-center space-y-4">
@@ -243,16 +245,22 @@ export function Layout() {
                             </div>
                         </div>
                     )}
-                    <div className={`${!isAdmin ? 'mt-8 pt-8 border-t border-gray-200' : ''} text-center text-sm text-gray-500`}>
+                    <div className={`${!isAdmin ? 'mt-8 pt-8 border-t border-gray-200 dark:border-gray-700' : ''} text-center text-sm text-gray-500 dark:text-gray-400`}>
                         <div className="flex justify-center gap-6 mb-4">
-                            <Link to="/privacidad" className="hover:underline">{t('layout.footer.privacy')}</Link>
-                            <Link to="/aviso-legal" className="hover:underline">{t('layout.footer.legal')}</Link>
-                            <Link to="/terminos" className="hover:underline">{t('layout.footer.terms')}</Link>
+                            <Link to="/privacidad" className="hover:underline hover:text-gray-700 dark:hover:text-gray-300">{t('layout.footer.privacy')}</Link>
+                            <Link to="/aviso-legal" className="hover:underline hover:text-gray-700 dark:hover:text-gray-300">{t('layout.footer.legal')}</Link>
+                            <Link to="/terminos" className="hover:underline hover:text-gray-700 dark:hover:text-gray-300">{t('layout.footer.terms')}</Link>
                         </div>
                         © {new Date().getFullYear()} Multiprecios Diego. {t('layout.footer.rights')}.
                     </div>
                 </div>
             </footer>
+
+            {/* Accessibility Menu */}
+            <AccessibilityMenu />
+
+            {/* Chatbot */}
+            <Chatbot />
         </div>
     );
 }

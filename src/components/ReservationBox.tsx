@@ -55,26 +55,26 @@ export function ReservationBox({ productId, maxQuantity, className = '' }: Reser
     };
 
     return (
-        <div className={`p-6 border rounded-lg bg-blue-50 border-blue-100 flex flex-col justify-center ${className}`}>
-            <div className="flex items-center gap-2 mb-3 text-blue-800">
+        <div className={`p-6 border rounded-lg bg-blue-50 dark:bg-blue-900/20 border-blue-100 dark:border-blue-800 flex flex-col justify-center ${className}`}>
+            <div className="flex items-center gap-2 mb-3 text-blue-800 dark:text-blue-300">
                 <CalendarClock className="h-5 w-5" />
                 <h3 className="font-semibold">{t('reservation.title')}</h3>
             </div>
 
-            <p className="text-sm text-blue-600 mb-4">
+            <p className="text-sm text-blue-600 dark:text-blue-400 mb-4">
                 {t('reservation.description')}
             </p>
 
             <div className="flex gap-4 items-end">
                 <div className="flex flex-col gap-3">
-                    <label className="text-xs font-medium text-blue-800">{t('reservation.quantity')}</label>
+                    <label className="text-xs font-medium text-blue-800 dark:text-blue-300">{t('reservation.quantity')}</label>
                     <input
                         type="number"
                         min="1"
                         max={maxQuantity}
                         value={quantity}
                         onChange={(e) => setQuantity(parseInt(e.target.value))}
-                        className="w-20 p-2 border rounded-md text-sm"
+                        className="w-20 p-2 border dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                     />
                 </div>
 
