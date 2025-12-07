@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Heart } from 'lucide-react';
 import { Product } from '../types';
 import { useCart } from '../context/CartContext';
@@ -14,6 +14,7 @@ export function ProductCard({ product }: ProductCardProps) {
     const { addItem } = useCart();
     const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     const isOutOfStock = product.cantidad_en_tienda <= 0;
     const inWishlist = isInWishlist(product.id);
@@ -63,7 +64,13 @@ export function ProductCard({ product }: ProductCardProps) {
                     <Button
                         size="sm"
                         disabled={isOutOfStock}
-                        onClick={() => addItem(product)}
+                        onClick={() => {
+                            if (!user) {
+                                navigate('/login');
+                            } else {
+                                navigate(`/product/${product.id}`);
+                            }
+                        }}
                         className={isOutOfStock ? 'opacity-50' : ''}
                     >
                         <ShoppingCart className="mr-2 h-4 w-4" />

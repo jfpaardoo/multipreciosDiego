@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
-import { Trash2 } from 'lucide-react';
+import { Alert } from '../components/ui/alert';
+import { Trash2, ShoppingBag } from 'lucide-react';
 
 type DeliveryType = 'DOMICILIO' | 'RECOGIDA';
 type PaymentMethod = 'TARJETA' | 'EFECTIVO' | 'BIZUM';
@@ -19,6 +20,8 @@ export function Checkout() {
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('TARJETA');
     const [address, setAddress] = useState(profile?.direccion || '');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     if (!items || items.length === 0) {
         return (
@@ -44,9 +47,11 @@ export function Checkout() {
         }
 
         if (deliveryType === 'DOMICILIO' && !address) {
-            alert('Por favor ingresa una dirección de envío.');
+            setError('Por favor ingresa una dirección de envío para continuar con el pedido.');
             return;
         }
+
+        setError(null);
 
         setLoading(true);
 
@@ -102,11 +107,15 @@ export function Checkout() {
             }
 
             clearCart();
-            alert('¡Pedido realizado con éxito!');
-            navigate('/profile');
-        } catch (error) {
+            setSuccess(true);
+            
+            // Redirigir después de mostrar el mensaje de éxito
+            setTimeout(() => {
+                navigate('/profile');
+            }, 2000);
+        } catch (error: any) {
             console.error('Error creating order:', error);
-            alert('Hubo un error al procesar tu pedido.');
+            setError('Hubo un error al procesar tu pedido. Por favor intenta nuevamente o contacta con soporte.');
         } finally {
             setLoading(false);
         }
@@ -228,13 +237,42 @@ export function Checkout() {
                         )}
                     </div>
 
+                    {error && (
+                        <Alert
+                            type="error"
+                            title="Error al procesar el pedido"
+                            message={error}
+                            onClose={() => setError(null)}
+                        />
+                    )}
+
+                    {success && (
+                        <Alert
+                            type="success"
+                            title="¡Pedido realizado con éxito!"
+                            message="Redirigiendo a tu perfil para ver el estado del pedido..."
+                        />
+                    )}
+
                     <Button
                         className="w-full mt-6"
                         size="lg"
                         onClick={handleCheckout}
-                        disabled={loading}
+                        disabled={loading || success}
                     >
-                        {loading ? 'Procesando...' : `Pagar ${(total || 0).toFixed(2)} €`}
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="animate-spin">⏳</span>
+                                Procesando pedido...
+                            </span>
+                        ) : success ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <ShoppingBag className="h-5 w-5" />
+                                ¡Pedido completado!
+                            </span>
+                        ) : (
+                            `Pagar ${(total || 0).toFixed(2)} €`
+                        )}
                     </Button>
                 </div>
             </div>

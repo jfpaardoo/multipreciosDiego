@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
+import { Alert } from '../components/ui/alert';
+import { LogIn } from 'lucide-react';
 
 export function Login() {
     const navigate = useNavigate();
@@ -22,7 +24,19 @@ export function Login() {
                 password,
             });
 
-            if (error) throw error;
+            if (error) {
+                // Mensajes de error más amigables
+                if (error.message.includes('Invalid login credentials')) {
+                    throw new Error('Correo o contraseña incorrectos. Por favor verifica tus datos.');
+                }
+                if (error.message.includes('Email not confirmed')) {
+                    throw new Error('Tu cuenta aún no ha sido confirmada. Revisa tu correo electrónico.');
+                }
+                if (error.message.includes('Email') || error.message.includes('email')) {
+                    throw new Error('Por favor ingresa un correo electrónico válido.');
+                }
+                throw new Error(error.message || 'Error al iniciar sesión. Intenta nuevamente.');
+            }
 
             // Check user profile to determine redirect
             if (data.user) {
@@ -40,7 +54,8 @@ export function Login() {
                 }
             }
         } catch (err: any) {
-            setError(err.message || 'Error al iniciar sesión');
+            console.error('Login error:', err);
+            setError(err.message || 'Error al iniciar sesión. Por favor intenta de nuevo.');
         } finally {
             setLoading(false);
         }
@@ -77,9 +92,12 @@ export function Login() {
                     </div>
 
                     {error && (
-                        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
-                            {error}
-                        </div>
+                        <Alert
+                            type="error"
+                            title="Error al iniciar sesión"
+                            message={error}
+                            onClose={() => setError(null)}
+                        />
                     )}
 
                     <Button
@@ -87,7 +105,17 @@ export function Login() {
                         className="w-full"
                         disabled={loading}
                     >
-                        {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="animate-spin">⏳</span>
+                                Iniciando sesión...
+                            </span>
+                        ) : (
+                            <span className="flex items-center justify-center gap-2">
+                                <LogIn className="h-4 w-4" />
+                                Iniciar Sesión
+                            </span>
+                        )}
                     </Button>
 
                     <div className="text-center text-sm">
