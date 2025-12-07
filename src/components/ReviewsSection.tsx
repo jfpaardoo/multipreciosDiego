@@ -1,4 +1,5 @@
 import { Star, MapPin, Quote } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const REVIEWS = [
     {
@@ -22,6 +23,8 @@ const REVIEWS = [
 ];
 
 export function ReviewsSection() {
+    const { t } = useTranslation();
+
     return (
         <section className="py-16 bg-white rounded-3xl my-12 relative overflow-hidden">
             {/* Background elements */}
@@ -31,7 +34,7 @@ export function ReviewsSection() {
             <div className="max-w-6xl mx-auto px-6 relative z-10">
                 <div className="text-center mb-12 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight">
-                        Lo que dicen nuestros clientes
+                        {t('reviews.title')}
                     </h2>
                     <div className="flex items-center justify-center gap-2 text-yellow-500">
                         <Star className="w-6 h-6 fill-current" />
@@ -39,7 +42,7 @@ export function ReviewsSection() {
                         <Star className="w-6 h-6 fill-current" />
                         <Star className="w-6 h-6 fill-current" />
                         <Star className="w-6 h-6 fill-current" />
-                        <span className="text-gray-600 text-lg font-medium ml-2 text-black">4.9/5 en Google</span>
+                        <span className="text-gray-600 text-lg font-medium ml-2 text-black">{t('reviews.google')}</span>
                     </div>
                 </div>
 
@@ -67,7 +70,7 @@ export function ReviewsSection() {
                                 </div>
                                 <div>
                                     <h4 className="font-bold text-gray-900">{review.author}</h4>
-                                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">Cliente Verificado</span>
+                                    <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">{t('reviews.verified')}</span>
                                 </div>
                             </div>
                         </div>
@@ -82,7 +85,7 @@ export function ReviewsSection() {
                         className="inline-flex items-center gap-2 bg-white border border-gray-200 hover:border-blue-300 hover:bg-blue-50 text-gray-700 px-6 py-3 rounded-full font-medium transition-all shadow-sm hover:shadow-md"
                     >
                         <MapPin className="w-5 h-5 text-red-500" />
-                        Ver todas las reseñas en Google Maps
+                        {t('reviews.viewAll')}
                     </a>
                 </div>
             </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '../components/SEO';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
@@ -11,6 +12,7 @@ import { Search } from 'lucide-react';
 const ITEMS_PER_PAGE = 12;
 
 export function Home() {
+    const { t } = useTranslation();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -63,14 +65,14 @@ export function Home() {
     );
 
     if (loading) {
-        return <div className="flex justify-center py-12">Cargando catálogo...</div>;
+        return <div className="flex justify-center py-12">{t('common.loading')}</div>;
     }
 
     return (
         <div className="space-y-8">
             <SEO
-                title="Inicio"
-                description="Bienvenido a Multiprecios Diego. Encuentra electrónica, hogar, papelería y más al mejor precio en Puerto Serrano."
+                title={t('home.title')}
+                description={t('home.hero.subtitle', { interpolation: { escapeValue: false } }).replace(/<[^>]*>/g, '')}
             />
             {/* Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 rounded-3xl p-1">
@@ -87,33 +89,32 @@ export function Home() {
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                             </span>
-                            Nuevos productos cada semana
+                            {t('home.hero.badge')}
                         </div>
 
                         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white via-cyan-200 to-blue-200">
-                                Multiprecios Diego
+                                {t('home.hero.title')}
                             </span>
                         </h1>
 
                         <p className="text-lg md:text-xl text-blue-100 max-w-3xl mx-auto leading-relaxed">
-                            Encuentra todo lo que necesitas al <span className="text-cyan-300 font-semibold">mejor precio</span>.
-                            Desde electrónica hasta artículos para el hogar, con la mejor calidad y servicio.
+                            <span dangerouslySetInnerHTML={{ __html: t('home.hero.subtitle', { interpolation: { escapeValue: false } }) }} />
                         </p>
 
                         {/* Quick Stats */}
                         <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-2xl mx-auto pt-8">
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-3xl md:text-4xl font-bold text-white">{products.length}+</div>
-                                <div className="text-cyan-200 text-sm md:text-base mt-1">Productos</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">{t('home.hero.stats.products')}</div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-3xl md:text-4xl font-bold text-white">{categories.length - 1}</div>
-                                <div className="text-cyan-200 text-sm md:text-base mt-1">Categorías</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">{t('home.hero.stats.categories')}</div>
                             </div>
                             <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-4 border border-white/20">
                                 <div className="text-3xl md:text-4xl font-bold text-white">24/7</div>
-                                <div className="text-cyan-200 text-sm md:text-base mt-1">Atención</div>
+                                <div className="text-cyan-200 text-sm md:text-base mt-1">{t('home.hero.stats.support')}</div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +126,7 @@ export function Home() {
                 <div className="relative w-full md:w-96">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
-                        placeholder="Buscar productos..."
+                        placeholder={t('common.search')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-9"
@@ -142,7 +143,7 @@ export function Home() {
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                 }`}
                         >
-                            {cat}
+                            {cat === 'Todos' ? t('home.filters.all') : cat}
                         </button>
                     ))}
                 </div>
@@ -164,8 +165,8 @@ export function Home() {
                 </>
             ) : (
                 <div className="text-center py-12 text-gray-500">
-                    <p className="text-xl">No se encontraron productos.</p>
-                    <p className="mt-2 text-sm">Prueba a ajustar los filtros o vuelve más tarde.</p>
+                    <p className="text-xl">{t('home.empty.title')}</p>
+                    <p className="mt-2 text-sm">{t('home.empty.subtitle')}</p>
                 </div>
             )}
 
