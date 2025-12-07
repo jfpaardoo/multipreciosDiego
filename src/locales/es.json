@@ -71,6 +71,27 @@
         },
         "title": "Mi Lista de Deseos"
     },
+    "reservation": {
+        "title": "Reservar en tienda",
+        "description": "Reserva este producto y recógelo en tienda. Te guardaremos el producto durante 7 días.",
+        "quantity": "Cantidad",
+        "reserveNow": "Reservar ahora",
+        "reserving": "Reservando...",
+        "loginRequired": "Debes iniciar sesión para reservar.",
+        "loginHint": "Inicia sesión para reservar",
+        "successMessage": "Reserva realizada con éxito. Tu código es: {{code}}",
+        "error": "Error al realizar la reserva."
+    },
+    "reviewForm": {
+        "rating": "Puntuación",
+        "commentOptional": "Comentario (opcional)",
+        "placeholder": "¿Qué te ha parecido el producto?",
+        "loginRequired": "Inicia sesión para dejar una valoración.",
+        "ratingRequired": "Por favor selecciona una puntuación",
+        "error": "Error al enviar la valoración. Inténtalo de nuevo.",
+        "submitting": "Enviando...",
+        "submit": "Publicar valoración"
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacidad",
