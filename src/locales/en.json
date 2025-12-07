@@ -65,6 +65,27 @@
         },
         "title": "My Wishlist"
     },
+    "reservation": {
+        "title": "Reserve in Store",
+        "description": "Reserve this product and pick it up in store. We will hold the product for you for 7 days.",
+        "quantity": "Quantity",
+        "reserveNow": "Reserve Now",
+        "reserving": "Reserving...",
+        "loginRequired": "You must log in to reserve.",
+        "loginHint": "Log in to reserve",
+        "successMessage": "Reservation successful. Your code is: {{code}}",
+        "error": "Error making reservation."
+    },
+    "reviewForm": {
+        "rating": "Rating",
+        "commentOptional": "Comment (optional)",
+        "placeholder": "What did you think of the product?",
+        "loginRequired": "Log in to leave a review.",
+        "ratingRequired": "Please select a rating",
+        "error": "Error submitting review. Please try again.",
+        "submitting": "Submitting...",
+        "submit": "Post Review"
+    },
     "legal": {
         "privacy": {
             "title": "Privacy Policy",

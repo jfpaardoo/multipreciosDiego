@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 import { Button } from './ui/button';
 import { Star } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 
 interface ReviewFormProps {
     productId: string;
@@ -10,6 +11,7 @@ interface ReviewFormProps {
 }
 
 export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
@@ -21,7 +23,7 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
         e.preventDefault();
         if (!user) return;
         if (rating === 0) {
-            setError('Por favor selecciona una puntuación');
+            setError(t('reviewForm.ratingRequired'));
             return;
         }
 
@@ -45,7 +47,7 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
             onReviewAdded();
         } catch (err: any) {
             console.error('Error submitting review:', err);
-            setError(err.message || 'Error al enviar la valoración. Inténtalo de nuevo.');
+            setError(err.message || t('reviewForm.error'));
         } finally {
             setSubmitting(false);
         }
@@ -54,16 +56,16 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
     if (!user) {
         return (
             <div className="bg-gray-50 p-6 rounded-lg text-center border">
-                <p className="text-gray-600 mb-4">Inicia sesión para dejar una valoración.</p>
+                <p className="text-gray-600 mb-4">{t('reviewForm.loginRequired')}</p>
             </div>
         );
     }
 
     return (
         <form onSubmit={handleSubmit} className="bg-white border p-4 rounded-lg space-y-4 shadow-sm">
-            
+
             <div className="flex flex-col gap-2">
-                <label className="text-sm font-medium text-gray-700">Puntuación</label>
+                <label className="text-sm font-medium text-gray-700">{t('reviewForm.rating')}</label>
                 <div className="flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                         <button
@@ -75,11 +77,10 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
                             onClick={() => setRating(star)}
                         >
                             <Star
-                                className={`h-6 w-6 ${
-                                    star <= (hoveredRating || rating)
+                                className={`h-6 w-6 ${star <= (hoveredRating || rating)
                                         ? 'fill-yellow-400 text-yellow-400'
                                         : 'text-gray-300'
-                                } transition-colors`}
+                                    } transition-colors`}
                             />
                         </button>
                     ))}
@@ -88,13 +89,13 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
 
             <div className="flex flex-col gap-2">
                 <label htmlFor="comment" className="text-sm font-medium text-gray-700">
-                    Comentario (opcional)
+                    {t('reviewForm.commentOptional')}
                 </label>
                 <textarea
                     id="comment"
                     rows={4}
                     className="w-full p-2 border rounded-md focus:ring-2 focus:ring-black focus:border-transparent outline-none resize-none"
-                    placeholder="¿Qué te ha parecido el producto?"
+                    placeholder={t('reviewForm.placeholder')}
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                 />
@@ -103,7 +104,7 @@ export function ReviewForm({ productId, onReviewAdded }: ReviewFormProps) {
             {error && <p className="text-red-500 text-sm">{error}</p>}
 
             <Button type="submit" disabled={submitting}>
-                {submitting ? 'Enviando...' : 'Publicar valoración'}
+                {submitting ? t('reviewForm.submitting') : t('reviewForm.submit')}
             </Button>
         </form>
     );

@@ -65,6 +65,27 @@
         },
         "title": "Nire Desioen Zerrenda"
     },
+    "reservation": {
+        "title": "Dendan erreserbatu",
+        "description": "Erreserbatu produktu hau eta jaso dendan. Produktua 7 egunez gordeko dizugu.",
+        "quantity": "Kopurua",
+        "reserveNow": "Erreserbatu orain",
+        "reserving": "Erreserba egiten...",
+        "loginRequired": "Saioa hasi behar duzu erreserbatzeko.",
+        "loginHint": "Hasi saioa erreserbatzeko",
+        "successMessage": "Erreserbatu da arrakastaz. Zure kodea: {{code}}",
+        "error": "Errorea erreserbatzean."
+    },
+    "reviewForm": {
+        "rating": "Balorazioa",
+        "commentOptional": "Iruzkina (aukerakoa)",
+        "placeholder": "Zer iruditu zaizu produktua?",
+        "loginRequired": "Hasi saioa balorazioa uzteko.",
+        "ratingRequired": "Mesedez aukeratu puntuazio bat",
+        "error": "Errorea balorazioa bidaltzean. Saiatu berriro.",
+        "submitting": "Bidaltzen...",
+        "submit": "Argitaratu balorazioa"
+    },
     "legal": {
         "privacy": {
             "title": "Pribatutasun Politika",

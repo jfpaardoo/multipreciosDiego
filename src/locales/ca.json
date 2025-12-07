@@ -65,6 +65,27 @@
         },
         "title": "La meva Llista de Desitjos"
     },
+    "reservation": {
+        "title": "Reservar a botiga",
+        "description": "Reserva aquest producte i recull-lo a la botiga. Guardarem el producte durant 7 dies.",
+        "quantity": "Quantitat",
+        "reserveNow": "Reservar ara",
+        "reserving": "Reservant...",
+        "loginRequired": "Has d'iniciar sessió per reservar.",
+        "loginHint": "Inicia sessió per reservar",
+        "successMessage": "Reserva realitzada amb èxit. El teu codi és: {{code}}",
+        "error": "Error al realitzar la reserva."
+    },
+    "reviewForm": {
+        "rating": "Puntuació",
+        "commentOptional": "Comentari (opcional)",
+        "placeholder": "Què t'ha semblat el producte?",
+        "loginRequired": "Inicia sessió per deixar una valoració.",
+        "ratingRequired": "Si us plau selecciona una puntuació",
+        "error": "Error al enviar la valoració. Torna-ho a provar.",
+        "submitting": "Enviant...",
+        "submit": "Publicar valoració"
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacitat",
