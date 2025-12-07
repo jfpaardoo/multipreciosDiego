@@ -7,11 +7,13 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
 import { Alert } from '../components/ui/alert';
 import { Trash2, ShoppingBag } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type DeliveryType = 'DOMICILIO' | 'RECOGIDA';
 type PaymentMethod = 'TARJETA' | 'EFECTIVO' | 'BIZUM';
 
 export function Checkout() {
+    const { t } = useTranslation();
     const { items, total, removeItem, updateQuantity, clearCart } = useCart();
     const { user, profile } = useAuth();
     const navigate = useNavigate();
@@ -47,7 +49,7 @@ export function Checkout() {
         }
 
         if (deliveryType === 'DOMICILIO' && !address) {
-            setError('Por favor ingresa una dirección de envío para continuar con el pedido.');
+            setError(t('checkout.addressRequired'));
             return;
         }
 
@@ -115,7 +117,7 @@ export function Checkout() {
             }, 2000);
         } catch (error: any) {
             console.error('Error creating order:', error);
-            setError('Hubo un error al procesar tu pedido. Por favor intenta nuevamente o contacta con soporte.');
+            setError(t('checkout.error'));
         } finally {
             setLoading(false);
         }
@@ -126,9 +128,9 @@ export function Checkout() {
             {/* Cart Items */}
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">Resumen del Pedido</h2>
+                    <h2 className="text-2xl font-bold">{t('checkout.summary')}</h2>
                     <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
-                        Seguir comprando
+                        {t('checkout.continueShopping')}
                     </Button>
                 </div>
                 <div className="space-y-4">
@@ -175,65 +177,72 @@ export function Checkout() {
                     ))}
                 </div>
                 <div className="flex justify-between text-xl font-bold border-t pt-4">
-                    <span>Total</span>
-                    <span>{(total || 0).toFixed(2)} €</span>
+                    <span>{t('checkout.total')}</span>
+                    <span>{total.toFixed(2)} €</span>
                 </div>
             </div>
 
             {/* Checkout Form */}
             <div className="space-y-6 bg-white p-6 rounded-lg shadow-sm h-fit">
-                <h2 className="text-2xl font-bold">Datos de Envío y Pago</h2>
+                <h2 className="text-2xl font-bold">{t('checkout.shippingData')}</h2>
 
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-2">Tipo de Entrega</label>
+                        <label className="block text-sm font-medium mb-2">{t('checkout.deliveryType')}</label>
                         <div className="flex gap-4">
                             <button
                                 className={`flex-1 py-2 px-4 rounded border ${deliveryType === 'DOMICILIO' ? 'bg-black text-white border-black' : 'bg-white text-gray-700'
                                     }`}
                                 onClick={() => setDeliveryType('DOMICILIO')}
                             >
-                                A Domicilio
+                                {t('checkout.homeDelivery')}
                             </button>
                             <button
                                 className={`flex-1 py-2 px-4 rounded border ${deliveryType === 'RECOGIDA' ? 'bg-black text-white border-black' : 'bg-white text-gray-700'
                                     }`}
                                 onClick={() => setDeliveryType('RECOGIDA')}
                             >
-                                Recogida en Tienda
+                                {t('checkout.storePickup')}
                             </button>
                         </div>
                     </div>
 
                     {deliveryType === 'DOMICILIO' && (
                         <Input
-                            label="Dirección de Envío"
+                            label={t('checkout.addressLabel')}
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Calle, Número, Piso..."
+                            placeholder={t('checkout.addressPlaceholder')}
                             required
                         />
                     )}
 
                     <div>
-                        <label className="block text-sm font-medium mb-2">Método de Pago</label>
+                        <label className="block text-sm font-medium mb-2">{t('checkout.paymentMethod')}</label>
                         <div className="grid grid-cols-3 gap-2">
-                            {(['TARJETA', 'BIZUM', 'EFECTIVO'] as PaymentMethod[]).map((method) => (
-                                <button
-                                    key={method}
-                                    disabled={method === 'EFECTIVO' && deliveryType === 'DOMICILIO'}
-                                    className={`py-2 px-2 text-sm rounded border ${paymentMethod === method
-                                        ? 'bg-black text-white border-black'
-                                        : 'bg-white text-gray-700'
-                                        } ${method === 'EFECTIVO' && deliveryType === 'DOMICILIO' ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    onClick={() => setPaymentMethod(method)}
-                                >
-                                    {method}
-                                </button>
-                            ))}
+                            {(['TARJETA', 'BIZUM', 'EFECTIVO'] as PaymentMethod[]).map((method) => {
+                                let label: string = method;
+                                if (method === 'TARJETA') label = t('checkout.types.card');
+                                if (method === 'BIZUM') label = t('checkout.types.bizum');
+                                if (method === 'EFECTIVO') label = t('checkout.types.cash');
+
+                                return (
+                                    <button
+                                        key={method}
+                                        disabled={method === 'EFECTIVO' && deliveryType === 'DOMICILIO'}
+                                        className={`py-2 px-2 text-sm rounded border ${paymentMethod === method
+                                            ? 'bg-black text-white border-black'
+                                            : 'bg-white text-gray-700'
+                                            } ${method === 'EFECTIVO' && deliveryType === 'DOMICILIO' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        onClick={() => setPaymentMethod(method)}
+                                    >
+                                        {label}
+                                    </button>
+                                )
+                            })}
                         </div>
                         {paymentMethod === 'EFECTIVO' && deliveryType === 'DOMICILIO' && (
-                            <p className="text-xs text-red-500 mt-1">Efectivo solo disponible para recogida.</p>
+                            <p className="text-xs text-red-500 mt-1">{t('checkout.cashWarning')}</p>
                         )}
                     </div>
 
@@ -263,7 +272,7 @@ export function Checkout() {
                         {loading ? (
                             <span className="flex items-center justify-center gap-2">
                                 <span className="animate-spin">⏳</span>
-                                Procesando pedido...
+                                {t('checkout.processing')}
                             </span>
                         ) : success ? (
                             <span className="flex items-center justify-center gap-2">
@@ -271,7 +280,7 @@ export function Checkout() {
                                 ¡Pedido completado!
                             </span>
                         ) : (
-                            `Pagar ${(total || 0).toFixed(2)} €`
+                            `${t('checkout.pay')} ${(total || 0).toFixed(2)} €`
                         )}
                     </Button>
                 </div>

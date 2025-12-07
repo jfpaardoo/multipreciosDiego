@@ -1,0 +1,337 @@
+{
+    "common": {
+        "loading": "Loading...",
+        "search": "Search products...",
+        "addToCart": "Add to Cart",
+        "outOfStock": "Out of Stock",
+        "price": "€ {{price}}",
+        "noImage": "No image"
+    },
+    "layout": {
+        "nav": {
+            "catalog": "Catalog",
+            "faq": "FAQ",
+            "adminPanel": "Admin Panel",
+            "users": "Users",
+            "issues": "Issue Management"
+        },
+        "userMenu": {
+            "profile": "My Profile",
+            "orders": "My Orders",
+            "logout": "Log Out"
+        },
+        "auth": {
+            "register": "Register",
+            "login": "Login"
+        },
+        "footer": {
+            "contact": "Contact Info",
+            "address": "Address",
+            "email": "Email",
+            "phone": "Phone",
+            "privacy": "Privacy Policy",
+            "legal": "Legal Notice",
+            "terms": "Terms & Conditions",
+            "rights": "All rights reserved"
+        }
+    },
+    "product": {
+        "back": "Back",
+        "reference": "Reference",
+        "available": "available",
+        "tempOutOfStock": "This product is temporarily out of stock.",
+        "reviews": {
+            "title": "Reviews",
+            "empty": "No reviews yet for this product.",
+            "writeReview": "Write a Review",
+            "shareExperience": "Share your experience with other customers",
+            "anonymousUser": "Amazon User",
+            "reviewedOn": "Reviewed in Spain on {{date}}",
+            "verified": "Verified Purchase",
+            "helpful": "Helpful"
+        },
+        "related": "Related Products",
+        "wishlist": {
+            "add": "Add to wishlist",
+            "remove": "Remove from wishlist"
+        }
+    },
+    "wishlist": {
+        "loading": "Loading your wishlist...",
+        "empty": {
+            "title": "Your wishlist is empty",
+            "subtitle": "Save items you love so you don't lose track of them.",
+            "explore": "Explore products"
+        },
+        "title": "My Wishlist"
+    },
+    "legal": {
+        "privacy": {
+            "title": "Privacy Policy",
+            "lastUpdated": "Last updated",
+            "sections": {
+                "responsible": {
+                    "title": "1. Data Controller",
+                    "text": "Multiprecios Diego is the data controller of your personal data. We are committed to protecting your privacy and ensuring your data is safe with us."
+                },
+                "purpose": {
+                    "title": "2. Purpose of Processing",
+                    "text": "We process your personal data for the following purposes:",
+                    "list": {
+                        "1": "Manage your orders, deliveries, and billing.",
+                        "2": "Handle your inquiries, doubts, or issues through our support.",
+                        "3": "Send you information about our products and offers if you have given us your express consent."
+                    }
+                },
+                "legitimation": {
+                    "title": "3. Legitimation",
+                    "text": "The legal basis for processing your data is the execution of the purchase contract (when you place an order) and your explicit consent (for sending commercial communications or using cookies)."
+                },
+                "recipients": {
+                    "title": "4. Recipients",
+                    "text": "We will not transfer your data to third parties unless legally obliged or to providers strictly necessary for the service provision, such as transport and logistics companies to deliver your orders."
+                },
+                "rights": {
+                    "title": "5. Your Rights",
+                    "text": "As a user, you have the right to:",
+                    "access": {
+                        "title": "Access and Rectification",
+                        "text": "Consult your data and correct it if accurate."
+                    },
+                    "deletion": {
+                        "title": "Deletion",
+                        "text": "Request the deletion of your data when it is no longer necessary."
+                    },
+                    "contact": "To exercise these rights, write to us at"
+                }
+            }
+        },
+        "notice": {
+            "title": "Legal Notice",
+            "sections": {
+                "id": {
+                    "title": "1. Identification Data",
+                    "text": "In compliance with the duty of information contained in current regulations, the following data is provided:",
+                    "holder": "Holder",
+                    "address": "Registered Office",
+                    "email": "Contact Email",
+                    "activity": "Activity"
+                },
+                "ip": {
+                    "title": "2. Intellectual Property",
+                    "text": "All contents of the website (including texts, photographs, graphics, images, icons, technology, software, as well as its graphic design and source codes) are the property of Multiprecios Diego or third parties who have authorized their inclusion on the website. Their reproduction, distribution, public communication, and transformation without express authorization is prohibited."
+                },
+                "liability": {
+                    "title": "3. Exclusion of Liability",
+                    "text": "Multiprecios Diego is not responsible, in any case, for damages of any nature that may cause, by way of example: errors or omissions in the contents, lack of availability of the portal or the transmission of viruses or malicious or harmful programs in the contents, despite having adopted all necessary technological measures to avoid it."
+                }
+            }
+        },
+        "terms": {
+            "title": "Terms & Conditions",
+            "sections": {
+                "object": {
+                    "title": "1. Object and Scope",
+                    "text": "These General Contracting Conditions regulate the commercial relationship between Multiprecios Diego and the user for the acquisition of products through this website. Acceptance of these conditions is an essential requirement to make any purchase."
+                },
+                "prices": {
+                    "title": "2. Prices and Payments",
+                    "text1": "The prices published on the web are in Euros (€) and include the Value Added Tax (VAT) applicable at all times.",
+                    "text2": "Multiprecios Diego reserves the right to modify prices, articles, offers, and other commercial conditions without prior notice."
+                },
+                "shipping": {
+                    "title": "3. Shipping and Deliveries",
+                    "list": {
+                        "1": "Shipments are made through urgent courier companies.",
+                        "2": "The usual delivery time is 24 to 72 working hours on the peninsula.",
+                        "3": "Shipping costs are automatically calculated before finalizing the order."
+                    }
+                },
+                "returns": {
+                    "title": "4. Returns and Warranty",
+                    "withdrawal": {
+                        "title": "Right of Withdrawal",
+                        "text": "You have a period of 14 calendar days from the receipt of the order to make returns without justification, provided the product is in perfect condition and in its original packaging."
+                    },
+                    "text": "All our products have the mandatory legal guarantee of conformity. If you receive a defective product, we will take care of the repair, replacement, or refund at no cost to you."
+                }
+            }
+        }
+    },
+    "home": {
+        "title": "Home",
+        "hero": {
+            "badge": "New products every week",
+            "title": "Diego Multi-Price",
+            "subtitle": "Find everything you need at the best price. From electronics to home goods, with the best quality and service.",
+            "stats": {
+                "products": "Products",
+                "categories": "Categories",
+                "support": "Support"
+            }
+        },
+        "filters": {
+            "all": "All"
+        },
+        "empty": {
+            "title": "No products found.",
+            "subtitle": "Try adjusting the filters or come back later."
+        },
+        "loadingCatalog": "Loading catalog..."
+    },
+    "checkout": {
+        "empty": "Your cart is empty",
+        "backToCatalog": "Back to catalog",
+        "addressRequired": "Delivery address is required for home delivery",
+        "success": "Order placed successfully!",
+        "error": "Error processing order. Please try again.",
+        "summary": "Order Summary",
+        "continueShopping": "Continue Shopping",
+        "total": "Total",
+        "shippingData": "Shipping Data",
+        "deliveryType": "Delivery Type",
+        "homeDelivery": "Home Delivery",
+        "storePickup": "Store Pickup",
+        "addressLabel": "Delivery Address",
+        "addressPlaceholder": "Enter your full address",
+        "paymentMethod": "Payment Method",
+        "types": {
+            "card": "Card",
+            "bizum": "Bizum",
+            "cash": "Cash"
+        },
+        "cashWarning": "Cash payment is not available for home delivery.",
+        "processing": "Processing...",
+        "pay": "Pay"
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Find answers to common questions about our services",
+        "questions": {
+            "q1": "How long does shipping take?",
+            "a1": "Shipping usually takes 24-48 hours for mainland Spain.",
+            "q2": "What payment methods do you accept?",
+            "a2": "We accept credit cards, Bizum, and cash on delivery (for store pickup).",
+            "q3": "Can I return a product?",
+            "a3": "Yes, you have 14 days to return any product in its original packaging.",
+            "q4": "Do you offer warranty?",
+            "a4": "Yes, all our products come with a 3-year store warranty."
+        },
+        "notFoundTitle": "Didn't find what you're looking for?",
+        "notFoundText": "If you can't find the answer to your question, you can open a support ticket.",
+        "openIssue": "Open Issue"
+    },
+    "auth": {
+        "login": {
+            "title": "Login",
+            "subtitle": "Enter your credentials to access your account",
+            "emailLabel": "Email",
+            "emailPlaceholder": "example@email.com",
+            "passwordLabel": "Password",
+            "passwordPlaceholder": "********",
+            "submitting": "Logging in...",
+            "submit": "Login",
+            "noAccount": "Don't have an account?",
+            "registerLink": "Register",
+            "error": "Error logging in. Please check your credentials."
+        },
+        "register": {
+            "title": "Register",
+            "subtitle": "Create an account to manage your orders",
+            "nameLabel": "Name",
+            "surnameLabel": "Surname",
+            "dniLabel": "DNI/NIF",
+            "phoneLabel": "Phone",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "submitting": "Registering...",
+            "submit": "Register",
+            "hasAccount": "Already have an account?",
+            "loginLink": "Login",
+            "success": "Registration successful! Please login.",
+            "error": "Error registering user."
+        }
+    },
+    "profile": {
+        "title": "My Profile",
+        "edit": "Edit Profile",
+        "save": "Save Changes",
+        "cancel": "Cancel",
+        "saving": "Saving...",
+        "uploadPhoto": "Change Photo",
+        "uploading": "Uploading...",
+        "fields": {
+            "name": "Name",
+            "email": "Email",
+            "phone": "Phone",
+            "dni": "DNI",
+            "address": "Address",
+            "postalCode": "Postal Code"
+        },
+        "orders": {
+            "title": "My Orders",
+            "empty": "You haven't placed any orders yet.",
+            "viewDetails": "View Details",
+            "status": "Status",
+            "date": "Date",
+            "total": "Total",
+            "payment": "Payment Method",
+            "delivery": "Delivery Method",
+            "products": "Products",
+            "totalPaid": "Total Paid",
+            "cancel": "Cancel Order",
+            "delete": "Delete Order"
+        },
+        "reservations": {
+            "title": "My Reservations",
+            "empty": "You have no active reservations.",
+            "code": "Code",
+            "qty": "Qty"
+        },
+        "issues": {
+            "title": "My Issues",
+            "empty": "You haven't reported any issues.",
+            "edit": "Edit Issue"
+        },
+        "dangerZone": {
+            "title": "Danger Zone",
+            "deleteAccount": "Delete Account",
+            "warning": "Once you delete your account, there is no going back. Please be certain.",
+            "button": "Delete My Account",
+            "confirm": "Are you sure you want to delete your account? This action cannot be undone."
+        }
+    },
+    "issues": {
+        "title": "Issue Management",
+        "new": "New Issue",
+        "edit": "Edit Issue",
+        "loading": "Loading issues...",
+        "empty": "No issues found.",
+        "faqLink": "Visit FAQ",
+        "deleteConfirm": "Are you sure you want to delete this issue?",
+        "deleteError": "Error deleting issue.",
+        "saveError": "Error saving issue.",
+        "submitting": "Saving...",
+        "update": "Update Issue",
+        "submit": "Submit Issue",
+        "selectOrder": "Select Order",
+        "loadingOrders": "Loading orders...",
+        "selectPlaceholder": "Select an order...",
+        "typeLabel": "Issue Type",
+        "descriptionLabel": "Description",
+        "descriptionPlaceholder": "Describe the problem in detail...",
+        "types": {
+            "delay": "Shipping Delay",
+            "damaged": "Damaged Product",
+            "returned": "Wrong Item",
+            "lost": "Lost Package",
+            "paymentError": "Payment Error"
+        }
+    },
+    "reviews": {
+        "title": "Customer Reviews",
+        "google": "Google Reviews",
+        "verified": "Verified Purchase",
+        "viewAll": "View All Reviews"
+    }
+}

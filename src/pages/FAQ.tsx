@@ -1,34 +1,36 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import { AlertCircle, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function FAQ() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const faqs = [
         {
-            question: "¿Cómo puedo realizar un pedido?",
-            answer: "Navega por nuestro catálogo, añade productos al carrito y procede al pago. Puedes elegir envío a domicilio o recogida en tienda."
+            question: t('faq.questions.q1'),
+            answer: t('faq.questions.a1')
         },
         {
-            question: "¿Cuáles son los métodos de pago aceptados?",
-            answer: "Aceptamos tarjeta de crédito/débito, Bizum y pago en efectivo (solo para recogida en tienda)."
+            question: t('faq.questions.q2'),
+            answer: t('faq.questions.a2')
         },
         {
-            question: "¿Cuánto tardan los envíos?",
-            answer: "Los envíos a domicilio suelen tardar entre 24 y 48 horas laborables."
+            question: t('faq.questions.q3'),
+            answer: t('faq.questions.a3')
         },
         {
-            question: "¿Puedo devolver un producto?",
-            answer: "Sí, tienes 14 días para devolver productos en su estado original. Contacta con nosotros para iniciar el proceso."
+            question: t('faq.questions.q4'),
+            answer: t('faq.questions.a4')
         }
     ];
 
     return (
         <div className="max-w-3xl mx-auto space-y-12">
             <div className="text-center space-y-4">
-                <h1 className="text-3xl font-bold">Preguntas Frecuentes</h1>
-                <p className="text-gray-500">Resolvemos tus dudas sobre Multiprecios Diego</p>
+                <h1 className="text-3xl font-bold">{t('faq.title')}</h1>
+                <p className="text-gray-500">{t('faq.subtitle')}</p>
             </div>
 
             <div className="space-y-6">
@@ -45,12 +47,12 @@ export function FAQ() {
 
             <div className="bg-blue-50 p-8 rounded-lg text-center space-y-4 border border-blue-100">
                 <AlertCircle className="h-12 w-12 mx-auto text-blue-500" />
-                <h2 className="text-xl font-bold">¿No encuentras lo que buscas?</h2>
+                <h2 className="text-xl font-bold">{t('faq.notFoundTitle')}</h2>
                 <p className="text-gray-600">
-                    Si tienes algún problema con un pedido o necesitas ayuda personalizada, puedes abrir una incidencia.
+                    {t('faq.notFoundText')}
                 </p>
                 <Button onClick={() => navigate('/issues')} size="lg">
-                    Abrir una Incidencia
+                    {t('faq.openIssue')}
                 </Button>
             </div>
         </div>

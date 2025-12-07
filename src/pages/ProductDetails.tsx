@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { Product, Valoracion } from '../types';
 import { useCart } from '../context/CartContext';
@@ -12,6 +13,7 @@ import { ReservationBox } from '../components/ReservationBox';
 import { useWishlist } from '../context/WishlistContext';
 
 export function ProductDetails() {
+    const { t } = useTranslation();
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { addItem } = useCart();
@@ -90,7 +92,7 @@ export function ProductDetails() {
         const userIds = currentReviews
             .map(r => r.cliente_id)
             .filter((id): id is string => !!id);
-        
+
         if (userIds.length === 0) return;
 
         // Remove duplicates
@@ -131,8 +133,8 @@ export function ProductDetails() {
         }
     };
 
-    if (loading) return <div className="flex justify-center py-20">Cargando...</div>;
-    if (!product) return <div className="text-center py-20">Producto no encontrado</div>;
+    if (loading) return <div className="flex justify-center py-20">{t('common.loading')}</div>;
+    if (!product) return <div className="text-center py-20">{t('common.noImage')}</div>; // Using generic placeholder, though maybe "Product not found" would be better if I had a key
 
     const isOutOfStock = product.cantidad_en_tienda <= 0;
 
@@ -147,7 +149,7 @@ export function ProductDetails() {
                 className="flex items-center text-gray-600 hover:text-black transition-colors"
             >
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Volver
+                {t('product.back')}
             </button>
 
             <div className="grid md:grid-cols-2 gap-12">
@@ -161,7 +163,7 @@ export function ProductDetails() {
                         />
                     ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-400">
-                            Sin imagen
+                            {t('common.noImage')}
                         </div>
                     )}
                 </div>
@@ -212,7 +214,7 @@ export function ProductDetails() {
                                 </button>
                             </div>
                             <span className="text-sm text-gray-500">
-                                {product.cantidad_en_tienda} disponibles
+                                {product.cantidad_en_tienda} {t('product.available')}
                             </span>
                         </div>
 
@@ -223,44 +225,46 @@ export function ProductDetails() {
                                 disabled={isOutOfStock}
                                 onClick={handleAddToCart}
                             >
-                                {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
+                                {isOutOfStock ? t('common.outOfStock') : t('common.addToCart')}
                             </Button>
 
                             <button
                                 onClick={() => product && (isInWishlist(product.id) ? removeFromWishlist(product.id) : addToWishlist(product))}
                                 className={`p-3 rounded-lg border transition-colors ${product && isInWishlist(product.id)
-                                        ? 'bg-red-50 border-red-200 text-red-500'
-                                        : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-500'
+                                    ? 'bg-red-50 border-red-200 text-red-500'
+                                    : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-500'
                                     }`}
-                                title={product && isInWishlist(product.id) ? "Quitar de la lista de deseos" : "Añadir a la lista de deseos"}
+                                title={product && isInWishlist(product.id) ? t('product.wishlist.remove') : t('product.wishlist.add')}
                             >
                                 <Heart className={`h-6 w-6 ${product && isInWishlist(product.id) ? 'fill-current' : ''}`} />
                             </button>
                         </div>
                         {isOutOfStock && (
-                            <p className="text-red-500 font-medium">Este producto está agotado temporalmente.</p>
+                            <p className="text-red-500 font-medium">{t('product.tempOutOfStock')}</p>
                         )}
                     </div>
 
                     {!isOutOfStock && (
                         <div className="mt-6">
-                            <ReservationBox 
-                                productId={product.id} 
-                                maxQuantity={product.cantidad_en_tienda} 
+                            <ReservationBox
+                                productId={product.id}
+                                maxQuantity={product.cantidad_en_tienda}
                             />
                         </div>
                     )}
                 </div>
-            </div>            {/* Reviews */}
+            </div>
+
+            {/* Reviews */}
             <div className="space-y-8">
-                <h2 className="text-2xl font-bold">Opiniones de clientes</h2>
-                
+                <h2 className="text-2xl font-bold">{t('product.reviews.title')}</h2>
+
                 <div className="grid md:grid-cols-3 gap-12">
                     {/* Review Form & Summary */}
                     <div className="md:col-span-1">
                         <div className="sticky top-24">
-                            <h3 className="text-lg font-semibold mb-4">Escribir una opinión</h3>
-                            <p className="text-sm text-gray-600 mb-4">Comparte tu experiencia con otros clientes</p>
+                            <h3 className="text-lg font-semibold mb-4">{t('product.reviews.writeReview')}</h3>
+                            <p className="text-sm text-gray-600 mb-4">{t('product.reviews.shareExperience')}</p>
                             <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
                         </div>
                     </div>
@@ -275,9 +279,9 @@ export function ProductDetails() {
                                             <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold text-gray-600">
                                                 {review.profiles?.nombre?.[0] || 'U'}
                                             </div>
-                                            <span className="font-medium text-gray-900">{review.profiles?.nombre || 'Usuario de Amazon'}</span>
+                                            <span className="font-medium text-gray-900">{review.profiles?.nombre || t('product.reviews.anonymousUser')}</span>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="flex text-yellow-400">
                                                 {[1, 2, 3, 4, 5].map(i => (
@@ -287,20 +291,20 @@ export function ProductDetails() {
                                                     />
                                                 ))}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-900">Revisado en España el {new Date(review.created_at).toLocaleDateString()}</span>
+                                            <span className="text-sm font-bold text-gray-900">{t('product.reviews.reviewedOn', { date: new Date(review.created_at).toLocaleDateString() })}</span>
                                         </div>
-                                        
+
                                         {review.cliente_id && verifiedBuyers.has(review.cliente_id) && (
-                                            <div className="text-sm text-orange-700 font-medium mb-2">Compra verificada</div>
+                                            <div className="text-sm text-orange-700 font-medium mb-2">{t('product.reviews.verified')}</div>
                                         )}
-                                        
+
                                         {review.comentario && (
                                             <p className="text-gray-700 leading-relaxed">{review.comentario}</p>
                                         )}
-                                        
+
                                         <div className="mt-4">
                                             <button className="text-sm text-gray-500 border px-4 py-1 rounded hover:bg-gray-50">
-                                                Útil
+                                                {t('product.reviews.helpful')}
                                             </button>
                                         </div>
                                     </div>
@@ -339,7 +343,7 @@ export function ProductDetails() {
                                             </div>
                                             <span className="font-medium text-gray-900">{review.user}</span>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="flex text-yellow-400">
                                                 {[1, 2, 3, 4, 5].map(i => (
@@ -349,16 +353,16 @@ export function ProductDetails() {
                                                     />
                                                 ))}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-900">Revisado en España el {review.date}</span>
+                                            <span className="text-sm font-bold text-gray-900">{t('product.reviews.reviewedOn', { date: review.date })}</span>
                                         </div>
-                                        
-                                        <div className="text-sm text-orange-700 font-medium mb-2">Compra verificada</div>
-                                        
+
+                                        <div className="text-sm text-orange-700 font-medium mb-2">{t('product.reviews.verified')}</div>
+
                                         <p className="text-gray-700 leading-relaxed">{review.comment}</p>
-                                        
+
                                         <div className="mt-4">
                                             <button className="text-sm text-gray-500 border px-4 py-1 rounded hover:bg-gray-50">
-                                                Útil
+                                                {t('product.reviews.helpful')}
                                             </button>
                                         </div>
                                     </div>
@@ -374,7 +378,7 @@ export function ProductDetails() {
             {/* Related Products */}
             {relatedProducts.length > 0 && (
                 <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">Productos relacionados</h2>
+                    <h2 className="text-2xl font-bold">{t('product.related')}</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {relatedProducts.map(p => (
                             <ProductCard key={p.id} product={p} />

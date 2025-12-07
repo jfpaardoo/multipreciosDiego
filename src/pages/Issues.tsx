@@ -5,8 +5,10 @@ import { Incidencia, PedidoCliente, TipoIncidencia } from '../types';
 import { Button } from '../components/ui/button';
 import { AlertCircle, Plus, X, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function Issues() {
+    const { t } = useTranslation();
     const { profile } = useAuth();
     const navigate = useNavigate();
     const [issues, setIssues] = useState<Incidencia[]>([]);
@@ -86,7 +88,7 @@ export function Issues() {
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm('¿Estás seguro de que quieres eliminar esta incidencia?')) return;
+        if (!window.confirm(t('issues.deleteConfirm'))) return;
 
         try {
             const { error } = await supabase
@@ -98,7 +100,7 @@ export function Issues() {
             await fetchIssues();
         } catch (error) {
             console.error('Error deleting issue:', error);
-            alert('Error al eliminar la incidencia.');
+            alert(t('issues.deleteError'));
         }
     };
 
@@ -140,7 +142,7 @@ export function Issues() {
             closeModal();
         } catch (error) {
             console.error('Error saving issue:', error);
-            alert('Error al guardar la incidencia. Por favor, inténtalo de nuevo.');
+            alert(t('issues.saveError'));
         } finally {
             setSubmitting(false);
         }
@@ -153,16 +155,16 @@ export function Issues() {
             <div className="flex justify-between items-center">
                 <h1 className="text-2xl font-bold flex items-center gap-2">
                     <AlertCircle className="h-6 w-6" />
-                    Mis Incidencias
+                    {t('issues.title')}
                 </h1>
                 <Button onClick={openModal}>
                     <Plus className="h-4 w-4 mr-2" />
-                    Nueva Incidencia
+                    {t('issues.new')}
                 </Button>
             </div>
 
             {loading ? (
-                <p>Cargando incidencias...</p>
+                <p>{t('issues.loading')}</p>
             ) : issues.length > 0 ? (
                 <div className="grid gap-4">
                     {issues.map((issue) => (
@@ -202,9 +204,9 @@ export function Issues() {
             ) : (
                 <div className="text-center py-12 bg-white rounded-lg border">
                     <AlertCircle className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-                    <p className="text-gray-500">No tienes incidencias reportadas.</p>
+                    <p className="text-gray-500">{t('issues.empty')}</p>
                     <Button variant="ghost" onClick={() => navigate('/faq')} className="mt-2">
-                        ¿Tienes un problema? Consulta las FAQ
+                        {t('issues.faqLink')}
                     </Button>
                 </div>
             )}
@@ -214,7 +216,7 @@ export function Issues() {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6 border-b flex justify-between items-center">
-                            <h3 className="text-xl font-bold">{editingIssueId ? 'Editar Incidencia' : 'Nueva Incidencia'}</h3>
+                            <h3 className="text-xl font-bold">{editingIssueId ? t('issues.edit') : t('issues.new')}</h3>
                             <button onClick={closeModal} className="text-gray-500 hover:text-black">
                                 <X className="h-6 w-6" />
                             </button>
@@ -222,10 +224,10 @@ export function Issues() {
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Selecciona el Pedido
+                                    {t('issues.selectOrder')}
                                 </label>
                                 {loadingOrders ? (
-                                    <p className="text-sm text-gray-500">Cargando pedidos...</p>
+                                    <p className="text-sm text-gray-500">{t('issues.loadingOrders')}</p>
                                 ) : (
                                     <select
                                         value={selectedOrderId}
@@ -233,7 +235,7 @@ export function Issues() {
                                         className="w-full border rounded-md p-2 text-sm"
                                         required
                                     >
-                                        <option value="">-- Selecciona un pedido --</option>
+                                        <option value="">{t('issues.selectPlaceholder')}</option>
                                         {orders.map((order) => (
                                             <option key={order.id} value={order.id}>
                                                 #{order.id.slice(0, 8)} - {new Date(order.fecha_hora_pedido).toLocaleDateString()} ({order.total.toFixed(2)}€)
@@ -245,7 +247,7 @@ export function Issues() {
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Tipo de Incidencia
+                                    {t('issues.typeLabel')}
                                 </label>
                                 <select
                                     value={issueType}
@@ -253,33 +255,33 @@ export function Issues() {
                                     className="w-full border rounded-md p-2 text-sm"
                                     required
                                 >
-                                    <option value="CON_RETRASO">Pedido con retraso</option>
-                                    <option value="DAÑADO">Producto dañado</option>
-                                    <option value="DEVUELTO">Devolución</option>
-                                    <option value="PERDIDO">Pedido perdido</option>
-                                    <option value="FALLO_DE_PAGO">Fallo de pago</option>
+                                    <option value="CON_RETRASO">{t('issues.types.delay')}</option>
+                                    <option value="DAÑADO">{t('issues.types.damaged')}</option>
+                                    <option value="DEVUELTO">{t('issues.types.returned')}</option>
+                                    <option value="PERDIDO">{t('issues.types.lost')}</option>
+                                    <option value="FALLO_DE_PAGO">{t('issues.types.paymentError')}</option>
                                 </select>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Descripción del Problema
+                                    {t('issues.descriptionLabel')}
                                 </label>
                                 <textarea
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
                                     className="w-full border rounded-md p-2 text-sm h-32 resize-none"
-                                    placeholder="Describe detalladamente el problema..."
+                                    placeholder={t('issues.descriptionPlaceholder')}
                                     required
                                 />
                             </div>
 
                             <div className="flex justify-end gap-2 pt-4">
                                 <Button type="button" variant="ghost" onClick={closeModal}>
-                                    Cancelar
+                                    {t('profile.cancel')}
                                 </Button>
                                 <Button type="submit" disabled={submitting || !selectedOrderId}>
-                                    {submitting ? 'Guardando...' : (editingIssueId ? 'Actualizar' : 'Crear Incidencia')}
+                                    {submitting ? t('issues.submitting') : (editingIssueId ? t('issues.update') : t('issues.submit'))}
                                 </Button>
                             </div>
                         </form>

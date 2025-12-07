@@ -1,0 +1,337 @@
+{
+    "common": {
+        "loading": "Cargando...",
+        "search": "Buscar productos...",
+        "addToCart": "Añadir",
+        "outOfStock": "Agotado",
+        "price": "{{price}} €",
+        "noImage": "No imagen"
+    },
+    "layout": {
+        "nav": {
+            "catalog": "Catálogo",
+            "faq": "FAQ",
+            "adminPanel": "Panel Admin",
+            "users": "Usuarios",
+            "issues": "Gestión Incidencias"
+        },
+        "userMenu": {
+            "profile": "Mi Perfil",
+            "orders": "Mis Pedidos",
+            "logout": "Cerrar Sesión"
+        },
+        "auth": {
+            "register": "Registrarse",
+            "login": "Iniciar Sesión"
+        },
+        "footer": {
+            "contact": "Datos de contacto",
+            "address": "Dirección",
+            "email": "Correo",
+            "phone": "Teléfono",
+            "privacy": "Política de Privacidad",
+            "legal": "Aviso Legal",
+            "terms": "Términos y Condiciones",
+            "rights": "Todos los derechos reservados"
+        }
+    },
+    "product": {
+        "back": "Volver",
+        "reference": "Referencia",
+        "available": "disponibles",
+        "tempOutOfStock": "Este producto está agotado temporalmente.",
+        "reviews": {
+            "title": "Valoraciones",
+            "empty": "No hay valoraciones para este producto aún.",
+            "writeReview": "Escribir una opinión",
+            "shareExperience": "Comparte tu experiencia con otros clientes",
+            "anonymousUser": "Usuario de Amazon",
+            "reviewedOn": "Revisado en España el {{date}}",
+            "verified": "Compra verificada",
+            "helpful": "Útil"
+        },
+        "related": "Productos relacionados",
+        "wishlist": {
+            "add": "Añadir a la lista de deseos",
+            "remove": "Quitar de la lista de deseos"
+        }
+    },
+    "wishlist": {
+        "loading": "Cargando tu lista de deseos...",
+        "empty": {
+            "title": "Tu lista de deseos está vacía",
+            "subtitle": "Guarda los productos que más te gusten para no perderlos de vista.",
+            "explore": "Explorar productos"
+        },
+        "title": "Mi Lista de Deseos"
+    },
+    "legal": {
+        "privacy": {
+            "title": "Política de Privacidad",
+            "lastUpdated": "Última actualización",
+            "sections": {
+                "responsible": {
+                    "title": "1. Responsable del tratamiento",
+                    "text": "Multiprecios Diego es el responsable del tratamiento de sus datos personales. Nos comprometemos a proteger su privacidad y asegurar que sus datos estén seguros con nosotros."
+                },
+                "purpose": {
+                    "title": "2. Finalidad del tratamiento",
+                    "text": "Tratamos sus datos personales para las siguientes finalidades:",
+                    "list": {
+                        "1": "Gestionar sus pedidos, entregas y facturación.",
+                        "2": "Atender sus consultas, dudas o incidencias a través de nuestro soporte.",
+                        "3": "Enviarle información sobre nuestros productos y ofertas si nos ha dado su consentimiento expreso."
+                    }
+                },
+                "legitimation": {
+                    "title": "3. Legitimación",
+                    "text": "La base legal para el tratamiento de sus datos es la ejecución del contrato de compraventa (cuando realiza un pedido) y su consentimiento explícito (para el envío de comunicaciones comerciales o el uso de cookies)."
+                },
+                "recipients": {
+                    "title": "4. Destinatarios",
+                    "text": "No cederemos sus datos a terceros salvo obligación legal o a proveedores que sean estrictamente necesarios para la prestación del servicio, como empresas de transporte y logística para entregar sus pedidos."
+                },
+                "rights": {
+                    "title": "5. Sus derechos",
+                    "text": "Como usuario, tiene derecho a:",
+                    "access": {
+                        "title": "Acceso y Rectificación",
+                        "text": "Consultar sus datos y corregirlos si son inexactos."
+                    },
+                    "deletion": {
+                        "title": "Supresión",
+                        "text": "Solicitar el borrado de sus datos cuando ya no sean necesarios."
+                    },
+                    "contact": "Para ejercer estos derechos, escríbanos a"
+                }
+            }
+        },
+        "notice": {
+            "title": "Aviso Legal",
+            "sections": {
+                "id": {
+                    "title": "1. Datos Identificativos",
+                    "text": "En cumplimiento con el deber de información recogido en la normativa vigente, se facilitan los siguientes datos:",
+                    "holder": "Titular",
+                    "address": "Domicilio Social",
+                    "email": "Email de contacto",
+                    "activity": "Actividad"
+                },
+                "ip": {
+                    "title": "2. Propiedad Intelectual",
+                    "text": "Todos los contenidos del sitio web (incluyendo textos, fotografías, gráficos, imágenes, iconos, tecnología, software, así como su diseño gráfico y códigos fuente) son propiedad de Multiprecios Diego o de terceros que han autorizado su inclusión en el sitio web. Está prohibida su reproducción, distribución, comunicación pública y transformación sin autorización expresa."
+                },
+                "liability": {
+                    "title": "3. Exclusión de Responsabilidad",
+                    "text": "Multiprecios Diego no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo: errores u omisiones en los contenidos, falta de disponibilidad del portal o la transmisión de virus o programas maliciosos o lesivos en los contenidos, a pesar de haber adoptado todas las medidas tecnológicas necesarias para evitarlo."
+                }
+            }
+        },
+        "terms": {
+            "title": "Términos y Condiciones",
+            "sections": {
+                "object": {
+                    "title": "1. Objeto y Ámbito",
+                    "text": "Las presentes Condiciones Generales de Contratación regulan la relación comercial entre Multiprecios Diego y el usuario por la adquisición de productos a través de este sitio web. La aceptación de estas condiciones es requisito indispensable para realizar cualquier compra."
+                },
+                "prices": {
+                    "title": "2. Precios y Pagos",
+                    "text1": "Los precios publicados en la web son en Euros (€) e incluyen el Impuesto sobre el Valor Añadido (IVA) aplicable en cada momento.",
+                    "text2": "Multiprecios Diego se reserva el derecho a modificar precios, artículos, ofertas y otras condiciones comerciales sin previo aviso."
+                },
+                "shipping": {
+                    "title": "3. Envíos y Entregas",
+                    "list": {
+                        "1": "Los envíos se realizan a través de empresas de mensajería urgente.",
+                        "2": "El plazo de entrega habitual es de 24 a 72 horas laborables en la península.",
+                        "3": "Los gastos de envío se calculan automáticamente antes de finalizar el pedido."
+                    }
+                },
+                "returns": {
+                    "title": "4. Devoluciones y Garantía",
+                    "withdrawal": {
+                        "title": "Derecho de Desistimiento",
+                        "text": "Dispone de un plazo de 14 días naturales desde la recepción del pedido para realizar devoluciones sin necesidad de justificación, siempre que el producto esté en perfecto estado y en su embalaje original."
+                    },
+                    "text": "Todos nuestros productos cuentan con la garantía legal de conformidad vigente. Si recibe un producto defectuoso, nos encargaremos de la reparación, sustitución o devolución sin coste alguno para usted."
+                }
+            }
+        }
+    },
+    "home": {
+        "title": "Inicio",
+        "hero": {
+            "badge": "Nuevos productos cada semana",
+            "title": "Multiprecios Diego",
+            "subtitle": "Encuentra todo lo que necesitas al mejor precio. Desde electrónica hasta artículos para el hogar, con la mejor calidad y servicio.",
+            "stats": {
+                "products": "Productos",
+                "categories": "Categorías",
+                "support": "Atención"
+            }
+        },
+        "filters": {
+            "all": "Todos"
+        },
+        "empty": {
+            "title": "No se encontraron productos.",
+            "subtitle": "Prueba a ajustar los filtros o vuelve más tarde."
+        },
+        "loadingCatalog": "Cargando catálogo..."
+    },
+    "checkout": {
+        "empty": "Tu carrito está vacío",
+        "backToCatalog": "Volver al catálogo",
+        "addressRequired": "La dirección de envío es obligatoria para envíos a domicilio",
+        "success": "¡Pedido realizado con éxito!",
+        "error": "Error al procesar el pedido. Por favor, inténtalo de nuevo.",
+        "summary": "Resumen del Pedido",
+        "continueShopping": "Seguir comprando",
+        "total": "Total",
+        "shippingData": "Datos de Envío",
+        "deliveryType": "Tipo de Entrega",
+        "homeDelivery": "A Domicilio",
+        "storePickup": "Recogida en Tienda",
+        "addressLabel": "Dirección de envío",
+        "addressPlaceholder": "Introduce tu dirección completa",
+        "paymentMethod": "Método de Pago",
+        "types": {
+            "card": "Tarjeta",
+            "bizum": "Bizum",
+            "cash": "Efectivo"
+        },
+        "cashWarning": "El pago en efectivo no está disponible para envíos a domicilio.",
+        "processing": "Procesando...",
+        "pay": "Pagar"
+    },
+    "faq": {
+        "title": "Preguntas Frecuentes",
+        "subtitle": "Encuentra respuestas a las dudas más habituales sobre nuestros servicios",
+        "questions": {
+            "q1": "¿Cuánto tardan los envíos?",
+            "a1": "Los envíos suelen tardar 24-48 horas para la península.",
+            "q2": "¿Qué métodos de pago aceptáis?",
+            "a2": "Aceptamos tarjeta, Bizum y pago en efectivo (solo recogida).",
+            "q3": "¿Puedo devolver un producto?",
+            "a3": "Sí, tienes 14 días para devolver cualquier producto en su embalaje original.",
+            "q4": "¿Tenéis garantía?",
+            "a4": "Sí, todos nuestros productos tienen 3 años de garantía de tienda."
+        },
+        "notFoundTitle": "¿No encuentras lo que buscas?",
+        "notFoundText": "Si no encuentras respuesta a tu duda, puedes abrir una incidencia.",
+        "openIssue": "Abrir Incidencia"
+    },
+    "auth": {
+        "login": {
+            "title": "Iniciar Sesión",
+            "subtitle": "Introduce tus credenciales para acceder a tu cuenta",
+            "emailLabel": "Correo electrónico",
+            "emailPlaceholder": "ejemplo@correo.com",
+            "passwordLabel": "Contraseña",
+            "passwordPlaceholder": "********",
+            "submitting": "Iniciando...",
+            "submit": "Entrar",
+            "noAccount": "¿No tienes cuenta?",
+            "registerLink": "Regístrate",
+            "error": "Error al iniciar sesión. Comprueba tus credenciales."
+        },
+        "register": {
+            "title": "Registro",
+            "subtitle": "Crea una cuenta para gestionar tus pedidos",
+            "nameLabel": "Nombre",
+            "surnameLabel": "Apellidos",
+            "dniLabel": "DNI/NIF",
+            "phoneLabel": "Teléfono",
+            "emailLabel": "Correo electrónico",
+            "passwordLabel": "Contraseña",
+            "submitting": "Registrando...",
+            "submit": "Registrarse",
+            "hasAccount": "¿Ya tienes cuenta?",
+            "loginLink": "Inicia sesión",
+            "success": "¡Registro completado! Por favor inicia sesión.",
+            "error": "Error al registrar usuario."
+        }
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "edit": "Editar Perfil",
+        "save": "Guardar Cambios",
+        "cancel": "Cancelar",
+        "saving": "Guardando...",
+        "uploadPhoto": "Cambiar Foto",
+        "uploading": "Subiendo...",
+        "fields": {
+            "name": "Nombre",
+            "email": "Correo",
+            "phone": "Teléfono",
+            "dni": "DNI",
+            "address": "Dirección",
+            "postalCode": "Código Postal"
+        },
+        "orders": {
+            "title": "Mis Pedidos",
+            "empty": "No has realizado ningún pedido aún.",
+            "viewDetails": "Ver Detalles",
+            "status": "Estado",
+            "date": "Fecha",
+            "total": "Total",
+            "payment": "Método de Pago",
+            "delivery": "Método de Entrega",
+            "products": "Productos",
+            "totalPaid": "Total Pagado",
+            "cancel": "Cancelar Pedido",
+            "delete": "Eliminar Pedido"
+        },
+        "reservations": {
+            "title": "Mis Reservas",
+            "empty": "No tienes reservas activas.",
+            "code": "Código",
+            "qty": "Cant"
+        },
+        "issues": {
+            "title": "Mis Incidencias",
+            "empty": "No has reportado ninguna incidencia.",
+            "edit": "Editar Incidencia"
+        },
+        "dangerZone": {
+            "title": "Zona de Peligro",
+            "deleteAccount": "Eliminar Cuenta",
+            "warning": "Una vez elimines tu cuenta, no hay vuelta atrás. Por favor, asegúrate.",
+            "button": "Eliminar Mi Cuenta",
+            "confirm": "¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer."
+        }
+    },
+    "issues": {
+        "title": "Gestión de Incidencias",
+        "new": "Nueva Incidencia",
+        "edit": "Editar Incidencia",
+        "loading": "Cargando incidencias...",
+        "empty": "No se encontraron incidencias.",
+        "faqLink": "Visitar FAQ",
+        "deleteConfirm": "¿Estás seguro de que quieres eliminar esta incidencia?",
+        "deleteError": "Error al eliminar la incidencia.",
+        "saveError": "Error al guardar la incidencia.",
+        "submitting": "Guardando...",
+        "update": "Actualizar Incidencia",
+        "submit": "Enviar Incidencia",
+        "selectOrder": "Seleccionar Pedido",
+        "loadingOrders": "Cargando pedidos...",
+        "selectPlaceholder": "Selecciona un pedido...",
+        "typeLabel": "Tipo de Incidencia",
+        "descriptionLabel": "Descripción",
+        "descriptionPlaceholder": "Describe el problema en detalle...",
+        "types": {
+            "delay": "Retraso en Envío",
+            "damaged": "Producto Defectuoso",
+            "returned": "Envío Incorrecto",
+            "lost": "Paquete Perdido",
+            "paymentError": "Fallo de Pago"
+        }
+    },
+    "reviews": {
+        "title": "Opiniones de Clientes",
+        "google": "Reseñas de Google",
+        "verified": "Compra Verificada",
+        "viewAll": "Ver Todas"
+    }
+}

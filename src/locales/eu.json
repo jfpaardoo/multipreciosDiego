@@ -1,0 +1,337 @@
+{
+    "common": {
+        "loading": "Kargatzen...",
+        "search": "Bilatu produktuak...",
+        "addToCart": "Gehitu",
+        "outOfStock": "Agortuta",
+        "price": "{{price}} €",
+        "noImage": "Irudirik gabe"
+    },
+    "layout": {
+        "nav": {
+            "catalog": "Katalogoa",
+            "faq": "FAQ",
+            "adminPanel": "Admin Panela",
+            "users": "Erabiltzaileak",
+            "issues": "Gorabeheren Kudeaketa"
+        },
+        "userMenu": {
+            "profile": "Nire Profila",
+            "orders": "Nire Eskariak",
+            "logout": "Saioa Itxi"
+        },
+        "auth": {
+            "register": "Erregistratu",
+            "login": "Hasi Saioa"
+        },
+        "footer": {
+            "contact": "Harremanetarako datuak",
+            "address": "Helbidea",
+            "email": "Posta",
+            "phone": "Telefonoa",
+            "privacy": "Pribatutasun Politika",
+            "legal": "Lege Oharra",
+            "terms": "Baldintzak eta Zehaztapenak",
+            "rights": "Eskubide guztiak erreserbatuta"
+        }
+    },
+    "product": {
+        "back": "Itzuli",
+        "reference": "Erreferentzia",
+        "available": "eskuragarri",
+        "tempOutOfStock": "Produktu hau agortuta dago aldi baterako.",
+        "reviews": {
+            "title": "Balorazioak",
+            "empty": "Oraindik ez dago baloraziorik produktu honentzat.",
+            "writeReview": "Idatzi iritzi bat",
+            "shareExperience": "Partekatu zure esperientzia beste bezero batzuekin",
+            "anonymousUser": "Amazon erabiltzailea",
+            "reviewedOn": "Espainian berrikusita {{date}} datan",
+            "verified": "Erosketa egiaztatua",
+            "helpful": "Lagungarria"
+        },
+        "related": "Erlazionatutako produktuak",
+        "wishlist": {
+            "add": "Gehitu desioen zerrendara",
+            "remove": "Kendu desioen zerrendatik"
+        }
+    },
+    "wishlist": {
+        "loading": "Zure desioen zerrenda kargatzen...",
+        "empty": {
+            "title": "Zure desioen zerrenda hutsik dago",
+            "subtitle": "Gorde gehien gustatzen zaizkizun produktuak ez galtzeko.",
+            "explore": "Arakatu produktuak"
+        },
+        "title": "Nire Desioen Zerrenda"
+    },
+    "legal": {
+        "privacy": {
+            "title": "Pribatutasun Politika",
+            "lastUpdated": "Azken eguneratzea",
+            "sections": {
+                "responsible": {
+                    "title": "1. Tratamenduaren Arduraduna",
+                    "text": "Multiprecios Diego da zure datu pertsonalen tratamenduaren arduraduna. Zure pribatutasuna babesteko eta zure datuak gurekin seguru egon daitezen konpromisoa hartzen dugu."
+                },
+                "purpose": {
+                    "title": "2. Tratamenduaren Helburua",
+                    "text": "Zure datu pertsonalak ondorengo helburuetarako tratatzen ditugu:",
+                    "list": {
+                        "1": "Zure eskariak, bidalketak eta fakturazioa kudeatu.",
+                        "2": "Zure kontsultak, zalantzak edo gorabeherak gure laguntza zerbitzuaren bidez artatu.",
+                        "3": "Gure produktuei eta eskaintzei buruzko informazioa bidali, berariazko baimena eman badiguzu."
+                    }
+                },
+                "legitimation": {
+                    "title": "3. Legitimazioa",
+                    "text": "Zure datuak tratatzeko oinarri legala salmenta-kontratuaren betetzea da (eskari bat egiten duzunean) eta zure berariazko baimena (komunikazio komertzialak bidaltzeko edo cookie-ak erabiltzeko)."
+                },
+                "recipients": {
+                    "title": "4. Hartzaileak",
+                    "text": "Ez dizkiegu zure datuak hirugarrenei lagako legezko betebeharrik ezean edo zerbitzua emateko ezinbestekoak diren hornitzaileei, hala nola garraio eta logistika enpresei zure eskariak entregatzeko."
+                },
+                "rights": {
+                    "title": "5. Zure Eskubideak",
+                    "text": "Erabiltzaile gisa, eskubide hauek dituzu:",
+                    "access": {
+                        "title": "Sarbidea eta Zuzenketa",
+                        "text": "Zure datuak kontsultatu eta zuzendu, okerrak badira."
+                    },
+                    "deletion": {
+                        "title": "Ezabatzea",
+                        "text": "Zure datuak ezabatzeko eskatu, beharrezkoak ez direnean."
+                    },
+                    "contact": "Eskubide hauek erabiltzeko, idatzi helbide honetara:"
+                }
+            }
+        },
+        "notice": {
+            "title": "Lege Oharra",
+            "sections": {
+                "id": {
+                    "title": "1. Identifikazio Datuak",
+                    "text": "Indarrean dagoen araudian jasotako informazio-eginbeharra betez, datu hauek ematen dira:",
+                    "holder": "Titularra",
+                    "address": "Sozietate Egoitza",
+                    "email": "Harremanetarako Posta",
+                    "activity": "Jarduera"
+                },
+                "ip": {
+                    "title": "2. Jabetza Intelektuala",
+                    "text": "Webguneko eduki guztiak (testuak, argazkiak, grafikoak, irudiak, ikonoak, teknologia, softwarea, baita diseinu grafikoa eta iturburu-kodeak ere) Multiprecios Diegorenak edo webgunean sartzeko baimena eman duten hirugarrenenak dira. Debekatuta dago horiek erreproduzitzea, banatzea, publikoki komunikatzea eta eraldatzea berariazko baimenik gabe."
+                },
+                "liability": {
+                    "title": "3. Erantzukizuna Baztertzea",
+                    "text": "Multiprecios Diego ez da erantzule egiten, inola ere, sor litezkeen edozein izaeratako kalte-galeren aurrean, adibidez: edukietan egon daitezkeen akats edo hutsuneak, atariaren erabilgarritasun falta edo edukietan birus edo programa kaltegarri edo bortitzak transmititzea, hori saihesteko beharrezko neurri teknologiko guztiak hartu arren."
+                }
+            }
+        },
+        "terms": {
+            "title": "Baldintzak eta Zehaztapenak",
+            "sections": {
+                "object": {
+                    "title": "1. Helburua eta Esparrua",
+                    "text": "Kontratazio Baldintza Orokor hauek Multiprecios Diegoren eta erabiltzailearen arteko merkataritza-harremana arautzen dute, webgune honen bidez produktuak erosteko. Baldintza hauek onartzea ezinbesteko baldintza da edozein erosketa egiteko."
+                },
+                "prices": {
+                    "title": "2. Prezioak eta Ordainketak",
+                    "text1": "Webgunean argitaratutako prezioak Eurotan (€) daude eta une bakoitzean aplikagarria den Balio Erantsiaren gaineko Zerga (BEZ) barne hartzen dute.",
+                    "text2": "Multiprecios Diegok eskubidea du prezioak, artikuluak, eskaintzak eta bestelako merkataritza-baldintzak aldatzeko aurretiazko abisurik gabe."
+                },
+                "shipping": {
+                    "title": "3. Bidalketak eta Entregak",
+                    "list": {
+                        "1": "Bidalketak premiazko mezularitza-enpresen bidez egiten dira.",
+                        "2": "Ohiko entrega-epea 24 eta 72 ordu baliodun artekoa da penintsulan.",
+                        "3": "Bidalketa-gastuak automatikoki kalkulatzen dira eskaria amaitu aurretik."
+                    }
+                },
+                "returns": {
+                    "title": "4. Itzulketak eta Bermea",
+                    "withdrawal": {
+                        "title": "Atzera Egiteko Eskubidea",
+                        "text": "14 egun naturaleko epea duzu eskaria jasotzen duzunetik itzulketak egiteko arrazoirik eman gabe, produktua egoera ezin hobean eta jatorrizko bilgarrian badago."
+                    },
+                    "text": "Gure produktu guztiek indarrean dagoen legezko adostasun-bermea dute. Produktu akastun bat jasotzen baduzu, konponketaz, ordezkapenaz edo itzulketaz arduratuko gara, zuretzat inolako kosturik gabe."
+                }
+            }
+        }
+    },
+    "home": {
+        "title": "Hasiera",
+        "hero": {
+            "badge": "Produktu berriak astero",
+            "title": "Multiprecios Diego",
+            "subtitle": "Aurkitu behar duzun guztia preziorik onenean. Elektronikatik etxeko gauzetaraino, kalitate eta zerbitzu onenarekin.",
+            "stats": {
+                "products": "Produktuak",
+                "categories": "Kategoriak",
+                "support": "Arreta"
+            }
+        },
+        "filters": {
+            "all": "Denak"
+        },
+        "empty": {
+            "title": "Ez da produkturik aurkitu.",
+            "subtitle": "Saiatu iragazkiak aldatzen edo itzuli beranduago."
+        },
+        "loadingCatalog": "Katalogoa kargatzen..."
+    },
+    "checkout": {
+        "empty": "Zure saskia hutsik dago",
+        "backToCatalog": "Itzuli katalogora",
+        "addressRequired": "Bidalketa helbidea derrigorrezkoa da etxera bidaltzeko",
+        "success": "Eskaria ondo egin da!",
+        "error": "Errorea eskaria prozesatzean. Saiatu berriro, mesedez.",
+        "summary": "Eskariaren Laburpena",
+        "continueShopping": "Jarraitu erosten",
+        "total": "Guztira",
+        "shippingData": "Bidalketa Datuak",
+        "deliveryType": "Entrega Mota",
+        "homeDelivery": "Etxera",
+        "storePickup": "Dendan Jaso",
+        "addressLabel": "Bidalketa helbidea",
+        "addressPlaceholder": "Sartu zure helbide osoa",
+        "paymentMethod": "Ordainketa Metodoa",
+        "types": {
+            "card": "Txartela",
+            "bizum": "Bizum",
+            "cash": "Esku-dirua"
+        },
+        "cashWarning": "Esku-diruko ordainketa ez dago eskuragarri etxera bidaltzeko.",
+        "processing": "Prozesatzen...",
+        "pay": "Ordaindu"
+    },
+    "faq": {
+        "title": "Ohiko Galderak",
+        "subtitle": "Aurkitu erantzunak gure zerbitzuei buruzko galdera ohikoenei",
+        "questions": {
+            "q1": "Zenbat irauten dute bidalketek?",
+            "a1": "Bidalketek normalean 24-48 ordu irauten dute penintsularako.",
+            "q2": "Zer ordainketa metodo onartzen dituzue?",
+            "a2": "Txartela, Bizum eta esku-dirua (soilik jasotzeko) onartzen ditugu.",
+            "q3": "Produktu bat itzuli dezaket?",
+            "a3": "Bai, 14 egun dituzu edozein produktu itzultzeko bere jatorrizko bilgarrian.",
+            "q4": "Bermeik eskaintzen duzue?",
+            "a4": "Bai, gure produktu guztiek 3 urteko denda-bermea dute."
+        },
+        "notFoundTitle": "Ez duzu bilatzen duzuna aurkitzen?",
+        "notFoundText": "Zure galderari erantzunik aurkitzen ez badiozu, gorabehera bat ireki dezakezu.",
+        "openIssue": "Ireki Gorabehera"
+    },
+    "auth": {
+        "login": {
+            "title": "Hasi Saioa",
+            "subtitle": "Sartu zure kredentzialak zure kontura sartzeko",
+            "emailLabel": "Posta elektronikoa",
+            "emailPlaceholder": "adibidea@posta.com",
+            "passwordLabel": "Pasahitza",
+            "passwordPlaceholder": "********",
+            "submitting": "Hasten...",
+            "submit": "Sartu",
+            "noAccount": "Ez daukazu konturik?",
+            "registerLink": "Erregistratu",
+            "error": "Errorea saioa hastean. Egiaztatu zure kredentzialak."
+        },
+        "register": {
+            "title": "Erregistroa",
+            "subtitle": "Sortu kontu bat zure eskariak kudeatzeko",
+            "nameLabel": "Izena",
+            "surnameLabel": "Abizenak",
+            "dniLabel": "NAN/IFZ",
+            "phoneLabel": "Telefonoa",
+            "emailLabel": "Posta elektronikoa",
+            "passwordLabel": "Pasahitza",
+            "submitting": "Erregistratzen...",
+            "submit": "Erregistratu",
+            "hasAccount": "Badaukazu konturik?",
+            "loginLink": "Hasi saioa",
+            "success": "Erregistroa osatu da! Hasi saioa, mesedez.",
+            "error": "Errorea erabiltzailea erregistratzean."
+        }
+    },
+    "profile": {
+        "title": "Nire Profila",
+        "edit": "Editatu Profila",
+        "save": "Gorde Aldaketak",
+        "cancel": "Utzi",
+        "saving": "Gordetzen...",
+        "uploadPhoto": "Aldatu Argazkia",
+        "uploading": "Igotzen...",
+        "fields": {
+            "name": "Izena",
+            "email": "Posta",
+            "phone": "Telefonoa",
+            "dni": "NAN",
+            "address": "Helbidea",
+            "postalCode": "Posta Kodea"
+        },
+        "orders": {
+            "title": "Nire Eskariak",
+            "empty": "Ez duzu eskaririk egin oraindik.",
+            "viewDetails": "Ikusi Xehetasunak",
+            "status": "Egoera",
+            "date": "Data",
+            "total": "Guztira",
+            "payment": "Ordainketa Metodoa",
+            "delivery": "Entrega Metodoa",
+            "products": "Produktuak",
+            "totalPaid": "Guztira Ordainduta",
+            "cancel": "Ezeztatu Eskaria",
+            "delete": "Ezabatu Eskaria"
+        },
+        "reservations": {
+            "title": "Nire Erreserbak",
+            "empty": "Ez duzu erreserba aktiborik.",
+            "code": "Kodea",
+            "qty": "Kop"
+        },
+        "issues": {
+            "title": "Nire Gorabeherak",
+            "empty": "Ez duzu gorabeherarik jakinarazi.",
+            "edit": "Editatu Gorabehera"
+        },
+        "dangerZone": {
+            "title": "Arrisku Eremua",
+            "deleteAccount": "Ezabatu Kontua",
+            "warning": "Zure kontua ezabatzen duzunean, ez dago atzera bueltarik. Mesedez, ziurtatu.",
+            "button": "Ezabatu Nire Kontua",
+            "confirm": "Ziur zaude zure kontua ezabatu nahi duzula? Ekintza hau ezin da desegin."
+        }
+    },
+    "issues": {
+        "title": "Gorabeheren Kudeaketa",
+        "new": "Gorabehera Berria",
+        "edit": "Editatu Gorabehera",
+        "loading": "Gorabeherak kargatzen...",
+        "empty": "Ez da gorabeherarik aurkitu.",
+        "faqLink": "Bisitatu FAQ",
+        "deleteConfirm": "Ziur zaude gorabehera hau ezabatu nahi duzula?",
+        "deleteError": "Errorea gorabehera ezabatzean.",
+        "saveError": "Errorea gorabehera gordetzean.",
+        "submitting": "Gordetzen...",
+        "update": "Eguneratu Gorabehera",
+        "submit": "Bidali Gorabehera",
+        "selectOrder": "Aukeratu Eskaria",
+        "loadingOrders": "Eskariak kargatzen...",
+        "selectPlaceholder": "Aukeratu eskari bat...",
+        "typeLabel": "Gorabehera Mota",
+        "descriptionLabel": "Deskribapena",
+        "descriptionPlaceholder": "Deskribatu arazoa xehetasunez...",
+        "types": {
+            "delay": "Bidalketa Atzerapena",
+            "damaged": "Produktu Akastuna",
+            "returned": "Bidalketa Okerra",
+            "lost": "Pakete Galdua",
+            "paymentError": "Ordainketa Errorea"
+        }
+    },
+    "reviews": {
+        "title": "Bezeroen Iritziak",
+        "google": "Google Iritziak",
+        "verified": "Erosketa Egiaztatua",
+        "viewAll": "Ikusi Guztiak"
+    }
+}

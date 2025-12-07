@@ -1,0 +1,337 @@
+{
+    "common": {
+        "loading": "Carregant...",
+        "search": "Cercar productes...",
+        "addToCart": "Afegir",
+        "outOfStock": "Esgotat",
+        "price": "{{price}} €",
+        "noImage": "Sense imatge"
+    },
+    "layout": {
+        "nav": {
+            "catalog": "Catàleg",
+            "faq": "FAQ",
+            "adminPanel": "Panell Admin",
+            "users": "Usuaris",
+            "issues": "Gestió Incidències"
+        },
+        "userMenu": {
+            "profile": "El meu Perfil",
+            "orders": "Les meves Comandes",
+            "logout": "Tancar Sessió"
+        },
+        "auth": {
+            "register": "Registrar-se",
+            "login": "Iniciar Sessió"
+        },
+        "footer": {
+            "contact": "Dades de contacte",
+            "address": "Adreça",
+            "email": "Correu",
+            "phone": "Telèfon",
+            "privacy": "Política de Privacitat",
+            "legal": "Avís Legal",
+            "terms": "Termes i Condicions",
+            "rights": "Tots els drets reservats"
+        }
+    },
+    "product": {
+        "back": "Tornar",
+        "reference": "Referència",
+        "available": "disponibles",
+        "tempOutOfStock": "Aquest producte està esgotat temporalment.",
+        "reviews": {
+            "title": "Valoracions",
+            "empty": "No hi ha valoracions per a aquest producte encara.",
+            "writeReview": "Escriure una opinió",
+            "shareExperience": "Comparteix la teva experiència amb altres clients",
+            "anonymousUser": "Usuari d'Amazon",
+            "reviewedOn": "Revisat a Espanya el {{date}}",
+            "verified": "Compra verificada",
+            "helpful": "Útil"
+        },
+        "related": "Productes relacionats",
+        "wishlist": {
+            "add": "Afegir a la llista de desitjos",
+            "remove": "Treure de la llista de desitjos"
+        }
+    },
+    "wishlist": {
+        "loading": "Carregant la teva llista de desitjos...",
+        "empty": {
+            "title": "La teva llista de desitjos està buida",
+            "subtitle": "Desa els productes que més t'agradin per no perdre'ls de vista.",
+            "explore": "Explorar productes"
+        },
+        "title": "La meva Llista de Desitjos"
+    },
+    "legal": {
+        "privacy": {
+            "title": "Política de Privacitat",
+            "lastUpdated": "Última actualització",
+            "sections": {
+                "responsible": {
+                    "title": "1. Responsable del tractament",
+                    "text": "Multiprecios Diego és el responsable del tractament de les teves dades personals. Ens comprometem a protegir la teva privacitat i assegurar que les teves dades estiguin segures amb nosaltres."
+                },
+                "purpose": {
+                    "title": "2. Finalitat del tractament",
+                    "text": "Tractem les teves dades personals per a les següents finalitats:",
+                    "list": {
+                        "1": "Gestionar les comandes, lliuraments i facturació.",
+                        "2": "Atendre les consultes, dubtes o incidències a través del nostre suport.",
+                        "3": "Enviar-te informació sobre els nostres productes i ofertes si ens has donat el teu consentiment exprés."
+                    }
+                },
+                "legitimation": {
+                    "title": "3. Legitimació",
+                    "text": "La base legal per al tractament de les teves dades és l'execució del contracte de compravenda (quan realitzes una comanda) i el teu consentiment explícit (per a l'enviament de comunicacions comercials o l'ús de cookies)."
+                },
+                "recipients": {
+                    "title": "4. Destinataris",
+                    "text": "No cedirem les teves dades a tercers excepte obligació legal o a proveïdors que siguin estrictament necessaris per a la prestació del servei, com empreses de transport i logística per lliurar les teves comandes."
+                },
+                "rights": {
+                    "title": "5. Els teus drets",
+                    "text": "Com a usuari, tens dret a:",
+                    "access": {
+                        "title": "Accés i Rectificació",
+                        "text": "Consultar les teves dades i corregir-les si són inexactes."
+                    },
+                    "deletion": {
+                        "title": "Supressió",
+                        "text": "Sol·licitar l'esborrament de les teves dades quan ja no siguin necessàries."
+                    },
+                    "contact": "Per exercir aquests drets, escriu-nos a"
+                }
+            }
+        },
+        "notice": {
+            "title": "Avís Legal",
+            "sections": {
+                "id": {
+                    "title": "1. Dades Identificatives",
+                    "text": "En compliment amb el deure d'informació recollit en la normativa urgent, es faciliten les següents dades:",
+                    "holder": "Titular",
+                    "address": "Domicili Social",
+                    "email": "Email de contacte",
+                    "activity": "Activitat"
+                },
+                "ip": {
+                    "title": "2. Propietat Intel·lectual",
+                    "text": "Tots els continguts del lloc web (incloent textos, fotografies, gràfics, imatges, icones, tecnologia, programari, així com el seu disseny gràfic i codis font) són propietat de Multiprecios Diego o de tercers que han autoritzat la seva inclusió en el lloc web. Està prohibida la seva reproducció, distribució, comunicació pública i transformació sense autorització expressa."
+                },
+                "liability": {
+                    "title": "3. Exclusió de Responsabilitat",
+                    "text": "Multiprecios Diego no es fa responsable, en cap cas, dels danys i perjudicis de qualsevol naturalesa que poguessin ocasionar, a títol enunciatiu: errors o omissions en els continguts, falta de disponibilitat del portal o la transmissió de virus o programes maliciosos o lesius en els continguts, tot i haver adoptat totes les mesures tecnològiques necessàries per evitar-ho."
+                }
+            }
+        },
+        "terms": {
+            "title": "Termes i Condicions",
+            "sections": {
+                "object": {
+                    "title": "1. Objecte i Àmbit",
+                    "text": "Les presents Condicions Generals de Contractació regulen la relació comercial entre Multiprecios Diego i l'usuari per l'adquisició de productes a través d'aquest lloc web. L'acceptació d'aquestes condicions és requisit indispensable per realitzar qualsevol compra."
+                },
+                "prices": {
+                    "title": "2. Preus i Pagaments",
+                    "text1": "Els preus publicats a la web són en Euros (€) i inclouen l'Impost sobre el Valor Afegit (IVA) aplicable en cada moment.",
+                    "text2": "Multiprecios Diego es reserva el dret a modificar preus, articles, ofertes i altres condicions comercials sense previ avís."
+                },
+                "shipping": {
+                    "title": "3. Enviaments i Lliuraments",
+                    "list": {
+                        "1": "Els enviaments es realitzen a través d'empreses de missatgeria urgent.",
+                        "2": "El termini de lliurament habitual és de 24 a 72 hores laborables a la península.",
+                        "3": "Les despeses d'enviament es calculen automàticament abans de finalitzar la comanda."
+                    }
+                },
+                "returns": {
+                    "title": "4. Devolucions i Garantia",
+                    "withdrawal": {
+                        "title": "Dret de Desistiment",
+                        "text": "Disposes d'un termini de 14 dies naturals des de la recepció de la comanda per realitzar devolucions sense necessitat de justificació, sempre que el producte estigui en perfecte estat i en el seu embalatge original."
+                    },
+                    "text": "Tots els nostres productes compten amb la garantia legal de conformitat vigent. Si reps un producte defectuós, ens encarregarem de la reparació, substitució o devolució sense cap cost per a tu."
+                }
+            }
+        }
+    },
+    "home": {
+        "title": "Inici",
+        "hero": {
+            "badge": "Nous productes cada setmana",
+            "title": "Multiprecios Diego",
+            "subtitle": "Troba tot el que necessites al millor preu. Des d'electrònica fins a articles per a la llar, amb la millor qualitat i servei.",
+            "stats": {
+                "products": "Productes",
+                "categories": "Categories",
+                "support": "Atenció"
+            }
+        },
+        "filters": {
+            "all": "Tots"
+        },
+        "empty": {
+            "title": "No s'han trobat productes.",
+            "subtitle": "Prova d'ajustar els filtres o torna més tard."
+        },
+        "loadingCatalog": "Carregant catàleg..."
+    },
+    "checkout": {
+        "empty": "El teu carret està buit",
+        "backToCatalog": "Tornar al catàleg",
+        "addressRequired": "L'adreça d'enviament és obligatòria per a enviaments a domicili",
+        "success": "Comanda realitzada amb èxit!",
+        "error": "Error al processar la comanda. Si us plau, torna-ho a provar.",
+        "summary": "Resum de la Comanda",
+        "continueShopping": "Seguir comprant",
+        "total": "Total",
+        "shippingData": "Dades d'Enviament",
+        "deliveryType": "Tipus d'Entrega",
+        "homeDelivery": "A Domicili",
+        "storePickup": "Recollida a Botiga",
+        "addressLabel": "Adreça d'enviament",
+        "addressPlaceholder": "Introdueix la teva adreça completa",
+        "paymentMethod": "Mètode de Pagament",
+        "types": {
+            "card": "Targeta",
+            "bizum": "Bizum",
+            "cash": "Efectiu"
+        },
+        "cashWarning": "El pagament en efectiu no està disponible per a enviaments a domicili.",
+        "processing": "Processant...",
+        "pay": "Pagar"
+    },
+    "faq": {
+        "title": "Preguntes Freqüents",
+        "subtitle": "Troba respostes als dubtes més habituals sobre els nostres serveis",
+        "questions": {
+            "q1": "Quant triguen els enviaments?",
+            "a1": "Els enviaments solen trigar 24-48 hores per a la península.",
+            "q2": "Quins mètodes de pagament accepteu?",
+            "a2": "Acceptem targeta, Bizum i pagament en efectiu (només recollida).",
+            "q3": "Puc tornar un producte?",
+            "a3": "Sí, tens 14 dies per tornar qualsevol producte en el seu embalatge original.",
+            "q4": "Teniu garantia?",
+            "a4": "Sí, tots els nostres productes tenen 3 anys de garantia de botiga."
+        },
+        "notFoundTitle": "No trobes el que busques?",
+        "notFoundText": "Si no trobes resposta al teu dubte, pots obrir una incidència.",
+        "openIssue": "Obrir Incidència"
+    },
+    "auth": {
+        "login": {
+            "title": "Iniciar Sessió",
+            "subtitle": "Introdueix les teves credencials per accedir al teu compte",
+            "emailLabel": "Correu electrònic",
+            "emailPlaceholder": "exemple@correu.com",
+            "passwordLabel": "Contrasenya",
+            "passwordPlaceholder": "********",
+            "submitting": "Iniciant...",
+            "submit": "Entrar",
+            "noAccount": "No tens compte?",
+            "registerLink": "Registra't",
+            "error": "Error al iniciar sessió. Comprova les teves credencials."
+        },
+        "register": {
+            "title": "Registre",
+            "subtitle": "Crea un compte per gestionar les teves comandes",
+            "nameLabel": "Nom",
+            "surnameLabel": "Cognoms",
+            "dniLabel": "DNI/NIF",
+            "phoneLabel": "Telèfon",
+            "emailLabel": "Correu electrònic",
+            "passwordLabel": "Contrasenya",
+            "submitting": "Registrant...",
+            "submit": "Registrar-se",
+            "hasAccount": "Ja tens compte?",
+            "loginLink": "Inicia sessió",
+            "success": "Registre completat! Si us plau inicia sessió.",
+            "error": "Error al registrar usuari."
+        }
+    },
+    "profile": {
+        "title": "El meu Perfil",
+        "edit": "Editar Perfil",
+        "save": "Desar Canvis",
+        "cancel": "Cancel·lar",
+        "saving": "Desant...",
+        "uploadPhoto": "Canviar Foto",
+        "uploading": "Pujant...",
+        "fields": {
+            "name": "Nom",
+            "email": "Correu",
+            "phone": "Telèfon",
+            "dni": "DNI",
+            "address": "Adreça",
+            "postalCode": "Codi Postal"
+        },
+        "orders": {
+            "title": "Les meves Comandes",
+            "empty": "No has realitzat cap comanda encara.",
+            "viewDetails": "Veure Detalls",
+            "status": "Estat",
+            "date": "Data",
+            "total": "Total",
+            "payment": "Mètode de Pagament",
+            "delivery": "Mètode d'Entrega",
+            "products": "Productes",
+            "totalPaid": "Total Pagat",
+            "cancel": "Cancel·lar Comanda",
+            "delete": "Eliminar Comanda"
+        },
+        "reservations": {
+            "title": "Les meves Reserves",
+            "empty": "No tens reserves actives.",
+            "code": "Codi",
+            "qty": "Quant"
+        },
+        "issues": {
+            "title": "Les meves Incidències",
+            "empty": "No has reportat cap incidència.",
+            "edit": "Editar Incidència"
+        },
+        "dangerZone": {
+            "title": "Zona de Perill",
+            "deleteAccount": "Eliminar Compte",
+            "warning": "Un cop eliminis el teu compte, no hi ha marxa enrere. Si us plau, assegura't.",
+            "button": "Eliminar El Meu Compte",
+            "confirm": "Estàs segur que vols eliminar el teu compte? Aquesta acció no es pot desfer."
+        }
+    },
+    "issues": {
+        "title": "Gestió d'Incidències",
+        "new": "Nova Incidència",
+        "edit": "Editar Incidència",
+        "loading": "Carregant incidències...",
+        "empty": "No s'han trobat incidències.",
+        "faqLink": "Visitar FAQ",
+        "deleteConfirm": "Estàs segur que vols eliminar aquesta incidència?",
+        "deleteError": "Error al eliminar la incidència.",
+        "saveError": "Error al desar la incidència.",
+        "submitting": "Desant...",
+        "update": "Actualitzar Incidència",
+        "submit": "Enviar Incidència",
+        "selectOrder": "Seleccionar Comanda",
+        "loadingOrders": "Carregant comandes...",
+        "selectPlaceholder": "Selecciona una comanda...",
+        "typeLabel": "Tipus d'Incidència",
+        "descriptionLabel": "Descripció",
+        "descriptionPlaceholder": "Descriu el problema en detall...",
+        "types": {
+            "delay": "Retard en Enviament",
+            "damaged": "Producte Defectuós",
+            "returned": "Enviament Incorrecte",
+            "lost": "Paquet Perdut",
+            "paymentError": "Error de Pagament"
+        }
+    },
+    "reviews": {
+        "title": "Opinions dels Clients",
+        "google": "Ressenyes de Google",
+        "verified": "Compra Verificada",
+        "viewAll": "Veure Totes"
+    }
+}
