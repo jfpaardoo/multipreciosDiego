@@ -20,6 +20,12 @@
             "orders": "My Orders",
             "logout": "Log Out"
         },
+        "logoutModal": {
+            "title": "Confirmation",
+            "message": "Are you sure you want to log out?",
+            "cancel": "Cancel",
+            "confirm": "Yes, log out"
+        },
         "auth": {
             "register": "Register",
             "login": "Login"
@@ -249,7 +255,8 @@
             "hasAccount": "Already have an account?",
             "loginLink": "Login",
             "success": "Registration successful! Please login.",
-            "error": "Error registering user."
+            "error": "Error registering user.",
+            "accountCreated": "Account created!"
         }
     },
     "profile": {
@@ -298,7 +305,23 @@
             "deleteAccount": "Delete Account",
             "warning": "Once you delete your account, there is no going back. Please be certain.",
             "button": "Delete My Account",
-            "confirm": "Are you sure you want to delete your account? This action cannot be undone."
+            "confirm": "Are you sure you want to delete your account? This action cannot be undone.",
+            "modal": {
+                "title": "Delete Account",
+                "subtitle": "This action is irreversible",
+                "warningTitle": "Warning:",
+                "warningText": "Deleting your account will permanently lose:",
+                "item1": "Your personal information and profile data",
+                "item2": "Order and reservation history",
+                "item3": "Reported issues",
+                "item4": "Access to your user account",
+                "confirmLabel": "To confirm, type",
+                "confirmWord": "DELETE",
+                "confirmPlaceholder": "Type DELETE",
+                "cancel": "Cancel",
+                "deleteButton": "Delete Account",
+                "deleting": "Deleting..."
+            }
         }
     },
     "issues": {

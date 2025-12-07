@@ -183,7 +183,7 @@ export function Register() {
                         ) : success ? (
                             <span className="flex items-center justify-center gap-2">
                                 <CheckCircle className="h-4 w-4" />
-                                ¡Cuenta creada!
+                                {t('auth.register.accountCreated')}
                             </span>
                         ) : (
                             t('auth.register.submit')

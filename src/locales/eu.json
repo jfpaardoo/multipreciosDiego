@@ -20,6 +20,12 @@
             "orders": "Nire Eskariak",
             "logout": "Saioa Itxi"
         },
+        "logoutModal": {
+            "title": "Berrespena",
+            "message": "Ziur zaude saioa itxi nahi duzula?",
+            "cancel": "Utzi",
+            "confirm": "Bai, itxi"
+        },
         "auth": {
             "register": "Erregistratu",
             "login": "Hasi Saioa"
@@ -249,7 +255,8 @@
             "hasAccount": "Badaukazu konturik?",
             "loginLink": "Hasi saioa",
             "success": "Erregistroa osatu da! Hasi saioa, mesedez.",
-            "error": "Errorea erabiltzailea erregistratzean."
+            "error": "Errorea erabiltzailea erregistratzean.",
+            "accountCreated": "Kontua sortuta!"
         }
     },
     "profile": {
@@ -298,7 +305,23 @@
             "deleteAccount": "Ezabatu Kontua",
             "warning": "Zure kontua ezabatzen duzunean, ez dago atzera bueltarik. Mesedez, ziurtatu.",
             "button": "Ezabatu Nire Kontua",
-            "confirm": "Ziur zaude zure kontua ezabatu nahi duzula? Ekintza hau ezin da desegin."
+            "confirm": "Ziur zaude zure kontua ezabatu nahi duzula? Ekintza hau ezin da desegin.",
+            "modal": {
+                "title": "Ezabatu Kontua",
+                "subtitle": "Ekintza hau itzulezina da",
+                "warningTitle": "Abisua:",
+                "warningText": "Zure kontua ezabatzean betiko galduko dira:",
+                "item1": "Zure informazio pertsonala eta profil datuak",
+                "item2": "Eskarien eta erreserben historia",
+                "item3": "Jakinarazitako gorabeherak",
+                "item4": "Zure erabiltzaile konturako sarbidea",
+                "confirmLabel": "Berresteko, idatzi",
+                "confirmWord": "EZABATU",
+                "confirmPlaceholder": "Idatzi EZABATU",
+                "cancel": "Utzi",
+                "deleteButton": "Ezabatu Kontua",
+                "deleting": "Ezabatzen..."
+            }
         }
     },
     "issues": {
