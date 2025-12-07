@@ -179,6 +179,37 @@ export function ProductDetails() {
                             </span>
                         </div>
 
+                        <div className="text-3xl font-bold text-gray-900">
+                            {product.precio_venta.toFixed(2)} €
+                        </div>
+
+                        <div className="prose text-gray-500">
+                            <p>{product.descripcion}</p>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <div className="flex items-center border rounded-md">
+                                <button
+                                    className="p-2 hover:bg-gray-100"
+                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                    disabled={quantity <= 1}
+                                >
+                                    <Minus className="h-4 w-4" />
+                                </button>
+                                <span className="w-12 text-center font-medium">{quantity}</span>
+                                <button
+                                    className="p-2 hover:bg-gray-100"
+                                    onClick={() => setQuantity(Math.min(product.cantidad_en_tienda, quantity + 1))}
+                                    disabled={quantity >= product.cantidad_en_tienda}
+                                >
+                                    <Plus className="h-4 w-4" />
+                                </button>
+                            </div>
+                            <span className="text-sm text-gray-500">
+                                {product.cantidad_en_tienda} disponibles
+                            </span>
+                        </div>
+
                         <div className="flex gap-4 w-full md:w-auto">
                             <Button
                                 size="lg"
@@ -204,14 +235,12 @@ export function ProductDetails() {
                             <p className="text-red-500 font-medium">Este producto está agotado temporalmente.</p>
                         )}
                     </div>
-                    </div>
 
                     {!isOutOfStock && (
-                        <div className="mt-6 flex-1">
+                        <div className="mt-6">
                             <ReservationBox 
                                 productId={product.id} 
                                 maxQuantity={product.cantidad_en_tienda} 
-                                className="h-full"
                             />
                         </div>
                     )}
