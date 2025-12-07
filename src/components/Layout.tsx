@@ -2,13 +2,16 @@ import React from 'react';
 
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { ShoppingCart, User, Menu, Instagram, Facebook, Store, Heart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { Button } from './ui/button';
+import { LanguageSelector } from './LanguageSelector';
 
 
 export function Layout() {
+    const { t } = useTranslation();
     const { user, profile, signOut, isAdmin, isEncargado } = useAuth();
     const { itemCount } = useCart();
     const { wishlist } = useWishlist();
@@ -53,18 +56,19 @@ export function Layout() {
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
                         {!isAdmin && (
-                            <Link to="/faq" className="text-sm font-medium hover:underline">FAQ</Link>
+                            <Link to="/faq" className="text-sm font-medium hover:underline">{t('layout.nav.faq')}</Link>
                         )}
                         {isAdmin && (
                             <>
                                 {location.pathname !== '/admin' && (
-                                    <Link to="/admin" className="text-sm font-medium hover:underline">Panel Admin</Link>
+                                    <Link to="/admin" className="text-sm font-medium hover:underline">{t('layout.nav.adminPanel')}</Link>
                                 )}
                                 {location.pathname !== '/admin/users' && (
-                                    <Link to="/admin/users" className="text-sm font-medium hover:underline">Usuarios</Link>
+                                    <Link to="/admin/users" className="text-sm font-medium hover:underline">{t('layout.nav.users')}</Link>
                                 )}
                             </>
                         )}
+                        <LanguageSelector />
                     </div>
 
                     {/* Actions */}
@@ -121,23 +125,23 @@ export function Layout() {
                                         {!isAdmin && location.pathname !== '/profile' && (
                                             <>
                                                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    Mi Perfil
+                                                    {t('layout.userMenu.profile')}
                                                 </Link>
                                                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                    Mis Pedidos
+                                                    {t('layout.userMenu.orders')}
                                                 </Link>
                                             </>
                                         )}
                                         {isAdmin && location.pathname !== '/profile' && (
                                             <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                Mi Perfil
+                                                {t('layout.userMenu.profile')}
                                             </Link>
                                         )}
                                         <button
                                             onClick={handleSignOut}
                                             className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                                         >
-                                            Cerrar Sesión
+                                            {t('layout.userMenu.logout')}
                                         </button>
                                     </div>
                                 </div>
@@ -145,10 +149,10 @@ export function Layout() {
                         ) : (
                             <div className="flex items-center gap-2">
                                 <Link to="/register">
-                                    <Button variant="ghost" size="sm">Registrarse</Button>
+                                    <Button variant="ghost" size="sm">{t('layout.auth.register')}</Button>
                                 </Link>
                                 <Link to="/login">
-                                    <Button variant="primary" size="sm">Iniciar Sesión</Button>
+                                    <Button variant="primary" size="sm">{t('layout.auth.login')}</Button>
                                 </Link>
                             </div>
                         )}
@@ -170,7 +174,7 @@ export function Layout() {
                     <div className="md:hidden border-t p-4 space-y-4 bg-white">
                         <nav className="flex flex-col gap-2">
                             <Link to="/" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                Catálogo
+                                {t('layout.nav.catalog')}
                             </Link>
                             {(isAdmin || isEncargado) && (
                                 <>
@@ -178,24 +182,24 @@ export function Layout() {
                                         <>
                                             {location.pathname !== '/admin' && (
                                                 <Link to="/admin" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                                    Panel Admin
+                                                    {t('layout.nav.adminPanel')}
                                                 </Link>
                                             )}
                                             {location.pathname !== '/admin/users' && (
                                                 <Link to="/admin/users" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                                    Usuarios
+                                                    {t('layout.nav.users')}
                                                 </Link>
                                             )}
                                         </>
                                     )}
                                     <Link to="/admin/issues" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                        Gestión Incidencias
+                                        {t('layout.nav.issues')}
                                     </Link>
                                 </>
                             )}
                             {!isAdmin && (
                                 <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
-                                    FAQ
+                                    {t('layout.nav.faq')}
                                 </Link>
                             )}
                         </nav>
@@ -213,10 +217,10 @@ export function Layout() {
                 <div className="container mx-auto px-4">
                     {!isAdmin && (
                         <div className="text-center space-y-4">
-                            <h3 className="font-bold text-gray-900">Datos de contacto</h3>
+                            <h3 className="font-bold text-gray-900">{t('layout.footer.contact')}</h3>
                             <div className="text-sm text-gray-600 space-y-2">
                                 <p>
-                                    <span className="font-medium">Dirección:</span>{' '}
+                                    <span className="font-medium">{t('layout.footer.address')}:</span>{' '}
                                     <a
                                         href="https://www.google.com/maps/search/?api=1&query=Calle+Ronda+67,+Puerto+Serrano+(Cádiz)"
                                         target="_blank"
@@ -227,7 +231,7 @@ export function Layout() {
                                     </a>
                                 </p>
                                 <p>
-                                    <span className="font-medium">Correo:</span>{' '}
+                                    <span className="font-medium">{t('layout.footer.email')}:</span>{' '}
                                     <a
                                         href="mailto:multipreciosdiego@gmail.com"
                                         className="hover:underline hover:text-blue-600"
@@ -235,17 +239,17 @@ export function Layout() {
                                         multipreciosdiego@gmail.com
                                     </a>
                                 </p>
-                                <p><span className="font-medium">Teléfono:</span> 635 48 59 43</p>
+                                <p><span className="font-medium">{t('layout.footer.phone')}:</span> 635 48 59 43</p>
                             </div>
                         </div>
                     )}
                     <div className={`${!isAdmin ? 'mt-8 pt-8 border-t border-gray-200' : ''} text-center text-sm text-gray-500`}>
                         <div className="flex justify-center gap-6 mb-4">
-                            <Link to="/privacidad" className="hover:underline">Política de Privacidad</Link>
-                            <Link to="/aviso-legal" className="hover:underline">Aviso Legal</Link>
-                            <Link to="/terminos" className="hover:underline">Términos y Condiciones</Link>
+                            <Link to="/privacidad" className="hover:underline">{t('layout.footer.privacy')}</Link>
+                            <Link to="/aviso-legal" className="hover:underline">{t('layout.footer.legal')}</Link>
+                            <Link to="/terminos" className="hover:underline">{t('layout.footer.terms')}</Link>
                         </div>
-                        © {new Date().getFullYear()} Multiprecios Diego. Todos los derechos reservados.
+                        © {new Date().getFullYear()} Multiprecios Diego. {t('layout.footer.rights')}.
                     </div>
                 </div>
             </footer>

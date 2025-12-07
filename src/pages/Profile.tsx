@@ -4,8 +4,10 @@ import { supabase } from '../lib/supabase';
 import { PedidoCliente, Incidencia, Reserva, LineaPedido } from '../types';
 import { Button } from '../components/ui/button';
 import { Package, AlertCircle, Calendar, X, User, Pencil, Camera } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function Profile() {
+    const { t } = useTranslation();
     const { profile, isAdmin, signOut } = useAuth();
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
     const [issues, setIssues] = useState<Incidencia[]>([]);
@@ -357,7 +359,7 @@ export function Profile() {
         }
     };
 
-    if (!profile) return <div>Cargando perfil...</div>;
+    if (!profile) return <div>{t('profile.saving') || 'Cargando...'}</div>;
 
     return (
         <div className="space-y-8">
@@ -366,14 +368,14 @@ export function Profile() {
                 <div className="flex justify-between items-start mb-6">
                     <h1 className="text-2xl font-bold flex items-center gap-2">
                         <User className="h-6 w-6" />
-                        Mi Perfil
+                        {t('profile.title')}
                     </h1>
                     <Button onClick={() => setIsEditing(true)} variant="outline" size="sm">
                         <Pencil className="h-4 w-4 mr-2" />
-                        Editar Perfil
+                        {t('profile.edit')}
                     </Button>
                 </div>
-                
+
                 {/* Profile Photo Section */}
                 <div className="flex items-center gap-6 mb-6 pb-6 border-b">
                     <div className="relative">
@@ -407,34 +409,34 @@ export function Profile() {
                         <h3 className="font-semibold text-lg">{profile.nombre} {profile.apellidos}</h3>
                         <p className="text-sm text-gray-500">{profile.email}</p>
                         <p className="text-xs text-gray-400 mt-1">
-                            {uploadingPhoto ? 'Subiendo foto...' : 'Click en el ícono de cámara para cambiar tu foto'}
+                            {uploadingPhoto ? t('profile.uploading') : t('profile.uploadPhoto')}
                         </p>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
-                        <p className="text-gray-500">Nombre</p>
+                        <p className="text-gray-500">{t('profile.fields.name')}</p>
                         <p className="font-medium">{profile.nombre} {profile.apellidos}</p>
                     </div>
                     <div>
-                        <p className="text-gray-500">Email</p>
+                        <p className="text-gray-500">{t('profile.fields.email')}</p>
                         <p className="font-medium">{profile.email}</p>
                     </div>
                     <div>
-                        <p className="text-gray-500">Teléfono</p>
+                        <p className="text-gray-500">{t('profile.fields.phone')}</p>
                         <p className="font-medium">{profile.telefono || '-'}</p>
                     </div>
                     <div>
-                        <p className="text-gray-500">DNI</p>
+                        <p className="text-gray-500">{t('profile.fields.dni')}</p>
                         <p className="font-medium">{profile.dni || '-'}</p>
                     </div>
                     <div>
-                        <p className="text-gray-500">Dirección</p>
+                        <p className="text-gray-500">{t('profile.fields.address')}</p>
                         <p className="font-medium">{profile.direccion || '-'}</p>
                     </div>
                     <div>
-                        <p className="text-gray-500">Código Postal</p>
+                        <p className="text-gray-500">{t('profile.fields.postalCode')}</p>
                         <p className="font-medium">{profile.codigo_postal || '-'}</p>
                     </div>
                 </div>
@@ -445,7 +447,7 @@ export function Profile() {
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <Package className="h-5 w-5" />
-                        Mis Pedidos
+                        {t('profile.orders.title')}
                     </h2>
                     {orders.length > 0 ? (
                         <div className="grid gap-4">
@@ -459,18 +461,18 @@ export function Profile() {
                                             </span>
                                         </div>
                                         <p className="text-sm text-gray-600">
-                                            {new Date(order.fecha_hora_pedido).toLocaleDateString()} - {order.a_domicilio ? 'A Domicilio' : 'Recogida'}
+                                            {new Date(order.fecha_hora_pedido).toLocaleDateString()} - {order.a_domicilio ? t('checkout.homeDelivery') : t('checkout.storePickup')}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-4">
                                         <span className="font-bold text-lg">{order.total.toFixed(2)} €</span>
-                                        <Button variant="outline" size="sm" onClick={() => handleViewDetails(order)}>Ver Detalles</Button>
+                                        <Button variant="outline" size="sm" onClick={() => handleViewDetails(order)}>{t('profile.orders.viewDetails')}</Button>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">No has realizado pedidos aún.</p>
+                        <p className="text-gray-500">{t('profile.orders.empty')}</p>
                     )}
                 </div>
             )}
@@ -480,7 +482,7 @@ export function Profile() {
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <Calendar className="h-5 w-5" />
-                        Mis Reservas
+                        {t('profile.reservations.title')}
                     </h2>
                     {reservations.length > 0 ? (
                         <div className="grid gap-4">
@@ -488,24 +490,24 @@ export function Profile() {
                                 <div key={res.id} className="bg-white p-4 rounded-lg shadow-sm border flex flex-col md:flex-row justify-between gap-4">
                                     <div>
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className="font-mono text-sm text-gray-500">Código: {res.codigo}</span>
+                                            <span className="font-mono text-sm text-gray-500">{t('profile.reservations.code')}: {res.codigo}</span>
                                             <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(res.estado)}`}>
                                                 {res.estado}
                                             </span>
                                         </div>
                                         <p className="font-medium">{res.productos?.nombre}</p>
                                         <p className="text-sm text-gray-600">
-                                            Fecha: {new Date(res.fecha_hora_reserva).toLocaleDateString()}
+                                            {t('profile.orders.date')}: {new Date(res.fecha_hora_reserva).toLocaleDateString()}
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-4">
-                                        <span className="text-sm text-gray-500">Cant: {res.cantidad}</span>
+                                        <span className="text-sm text-gray-500">{t('profile.reservations.qty')}: {res.cantidad}</span>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">No tienes reservas activas.</p>
+                        <p className="text-gray-500">{t('profile.reservations.empty')}</p>
                     )}
                 </div>
             )}
@@ -514,7 +516,7 @@ export function Profile() {
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold flex items-center gap-2">
                         <AlertCircle className="h-5 w-5" />
-                        Mis Incidencias
+                        {t('profile.issues.title')}
                     </h2>
                     {issues.length > 0 ? (
                         <div className="grid gap-4">
@@ -528,7 +530,7 @@ export function Profile() {
                                             </span>
                                             <Button variant="outline" size="sm" onClick={() => handleEditIssue(issue)}>
                                                 <Pencil className="h-3 w-3 mr-1" />
-                                                Editar
+                                                {t('profile.issues.edit')}
                                             </Button>
                                         </div>
                                     </div>
@@ -537,7 +539,7 @@ export function Profile() {
                             ))}
                         </div>
                     ) : (
-                        <p className="text-gray-500">No tienes incidencias reportadas.</p>
+                        <p className="text-gray-500">{t('profile.issues.empty')}</p>
                     )}
                 </div>
             )}
@@ -555,17 +557,17 @@ export function Profile() {
                         <div className="p-6 space-y-4">
                             <div className="grid grid-cols-2 gap-4 text-sm mb-6">
                                 <div>
-                                    <p className="text-gray-500">Fecha</p>
+                                    <p className="text-gray-500">{t('profile.orders.date')}</p>
                                     <p className="font-medium">{new Date(selectedOrder.fecha_hora_pedido).toLocaleString()}</p>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">Estado</p>
+                                    <p className="text-gray-500">{t('profile.orders.status')}</p>
                                     <span className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(selectedOrder.estado)}`}>
                                         {selectedOrder.estado}
                                     </span>
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">Método de Pago</p>
+                                    <p className="text-gray-500">{t('profile.orders.payment')}</p>
                                     {isEditingOrder ? (
                                         <select
                                             value={orderFormData.metodo_pago}
@@ -584,7 +586,7 @@ export function Profile() {
                                     )}
                                 </div>
                                 <div>
-                                    <p className="text-gray-500">Entrega</p>
+                                    <p className="text-gray-500">{t('profile.orders.delivery')}</p>
                                     {isEditingOrder ? (
                                         <div className="flex items-center gap-2">
                                             <input
@@ -593,15 +595,15 @@ export function Profile() {
                                                 onChange={(e) => setOrderFormData({ ...orderFormData, a_domicilio: e.target.checked })}
                                                 id="a_domicilio"
                                             />
-                                            <label htmlFor="a_domicilio">A Domicilio</label>
+                                            <label htmlFor="a_domicilio">{t('checkout.homeDelivery')}</label>
                                         </div>
                                     ) : (
-                                        <p className="font-medium">{selectedOrder.a_domicilio ? 'A Domicilio' : 'Recogida en Tienda'}</p>
+                                        <p className="font-medium">{selectedOrder.a_domicilio ? t('checkout.homeDelivery') : t('checkout.storePickup')}</p>
                                     )}
                                 </div>
                                 {(selectedOrder.direccion_envio || isEditingOrder) && (
                                     <div className="col-span-2">
-                                        <p className="text-gray-500">Dirección de Envío</p>
+                                        <p className="text-gray-500">{t('checkout.addressLabel')}</p>
                                         {isEditingOrder && orderFormData.a_domicilio ? (
                                             <input
                                                 type="text"
@@ -616,7 +618,7 @@ export function Profile() {
                                 )}
                             </div>
 
-                            <h4 className="font-bold border-b pb-2">Productos</h4>
+                            <h4 className="font-bold border-b pb-2">{t('profile.orders.products')}</h4>
                             {loadingItems ? (
                                 <p className="text-center py-4">Cargando productos...</p>
                             ) : (
@@ -647,7 +649,7 @@ export function Profile() {
                             )}
 
                             <div className="border-t pt-4 flex justify-between items-center text-lg font-bold">
-                                <span>Total Pagado</span>
+                                <span>{t('profile.orders.totalPaid')}</span>
                                 <span>{selectedOrder.total.toFixed(2)} €</span>
                             </div>
                         </div>
@@ -657,43 +659,44 @@ export function Profile() {
                                     <div className="flex gap-2">
                                         {isEditingOrder ? (
                                             <>
-                                                <Button variant="outline" onClick={() => setIsEditingOrder(false)}>Cancelar Edición</Button>
-                                                <Button onClick={handleUpdateOrder}>Guardar Cambios</Button>
+                                                <Button variant="outline" onClick={() => setIsEditingOrder(false)}>{t('profile.cancel')}</Button>
+                                                <Button onClick={handleUpdateOrder}>{t('profile.save')}</Button>
                                             </>
                                         ) : (
                                             <>
-                                                <Button variant="danger" onClick={handleCancelOrder}>Cancelar Pedido</Button>
-                                                <Button variant="danger" onClick={handleDeleteOrder}>Eliminar Pedido</Button>
+                                                <Button variant="danger" onClick={handleCancelOrder}>{t('profile.orders.cancel')}</Button>
+                                                <Button variant="danger" onClick={handleDeleteOrder}>{t('profile.orders.delete')}</Button>
                                                 <Button variant="outline" onClick={() => setIsEditingOrder(true)}>Editar Pedido</Button>
                                             </>
                                         )}
                                     </div>
                                 )}
                             </div>
-                            <Button onClick={closeDetails}>Cerrar</Button>
+                            <Button onClick={closeDetails}>{t('profile.cancel')}</Button>
                         </div>
                     </div>
                 </div>
             )}
+
             {/* Danger Zone */}
             <div className="border-t pt-8 mt-8">
-                <h2 className="text-xl font-bold text-red-600 mb-4">Zona de Peligro</h2>
+                <h2 className="text-xl font-bold text-red-600 mb-4">{t('profile.dangerZone.title')}</h2>
                 <div className="bg-red-50 border border-red-200 rounded-lg p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
-                        <h3 className="font-medium text-red-900">Eliminar Cuenta</h3>
+                        <h3 className="font-medium text-red-900">{t('profile.dangerZone.deleteAccount')}</h3>
                         <p className="text-sm text-red-700 mt-1">
-                            Esta acción es irreversible. Se eliminarán tus datos de perfil y no podrás acceder a tu historial.
+                            {t('profile.dangerZone.warning')}
                         </p>
                     </div>
                     <Button
                         variant="danger"
                         onClick={() => {
-                            if (window.confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+                            if (window.confirm(t('profile.dangerZone.confirm'))) {
                                 handleDeleteProfile();
                             }
                         }}
                     >
-                        Eliminar mi cuenta
+                        {t('profile.dangerZone.button')}
                     </Button>
                 </div>
             </div>
@@ -703,7 +706,7 @@ export function Profile() {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="p-6 border-b flex justify-between items-center sticky top-0 bg-white">
-                            <h3 className="text-xl font-bold">Editar Perfil</h3>
+                            <h3 className="text-xl font-bold">{t('profile.edit')}</h3>
                             <button onClick={() => setIsEditing(false)} className="text-gray-500 hover:text-black">
                                 <X className="h-6 w-6" />
                             </button>
@@ -711,7 +714,7 @@ export function Profile() {
                         <form onSubmit={handleUpdateProfile} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Nombre</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.name')}</label>
                                     <input
                                         type="text"
                                         value={formData.nombre}
@@ -721,7 +724,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Apellidos</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.name')}</label>
                                     <input
                                         type="text"
                                         value={formData.apellidos}
@@ -730,7 +733,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Teléfono</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.phone')}</label>
                                     <input
                                         type="tel"
                                         value={formData.telefono}
@@ -739,7 +742,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">DNI</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.dni')}</label>
                                     <input
                                         type="text"
                                         value={formData.dni}
@@ -748,7 +751,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Dirección</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.address')}</label>
                                     <input
                                         type="text"
                                         value={formData.direccion}
@@ -757,7 +760,7 @@ export function Profile() {
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">Código Postal</label>
+                                    <label className="text-sm font-medium">{t('profile.fields.postalCode')}</label>
                                     <input
                                         type="text"
                                         value={formData.codigo_postal}
@@ -768,10 +771,10 @@ export function Profile() {
                             </div>
                             <div className="flex justify-end gap-2 pt-4 border-t mt-4">
                                 <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
-                                    Cancelar
+                                    {t('profile.cancel')}
                                 </Button>
                                 <Button type="submit" disabled={isSaving}>
-                                    {isSaving ? 'Guardando...' : 'Guardar Cambios'}
+                                    {isSaving ? t('profile.saving') : t('profile.save')}
                                 </Button>
                             </div>
                         </form>
@@ -784,14 +787,14 @@ export function Profile() {
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6 border-b flex justify-between items-center">
-                            <h3 className="text-xl font-bold">Editar Incidencia</h3>
+                            <h3 className="text-xl font-bold">{t('issues.edit')}</h3>
                             <button onClick={() => setSelectedIssue(null)} className="text-gray-500 hover:text-black">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
                         <div className="p-6 space-y-4">
                             <div className="space-y-2">
-                                <label className="text-sm font-medium">Tipo de Incidencia</label>
+                                <label className="text-sm font-medium">{t('issues.typeLabel')}</label>
                                 <select
                                     value={issueFormData.tipo_incidencia}
                                     onChange={(e) => setIssueFormData({ ...issueFormData, tipo_incidencia: e.target.value })}
@@ -816,10 +819,10 @@ export function Profile() {
                             </div>
                             <div className="flex justify-end gap-2 pt-4">
                                 <Button type="button" variant="outline" onClick={() => setSelectedIssue(null)}>
-                                    Cancelar
+                                    {t('profile.cancel')}
                                 </Button>
                                 <Button onClick={handleUpdateIssue}>
-                                    Guardar Cambios
+                                    {t('profile.save')}
                                 </Button>
                             </div>
                         </div>

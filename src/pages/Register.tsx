@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
+import { useTranslation } from 'react-i18next';
 
 export function Register() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
@@ -51,11 +53,11 @@ export function Register() {
 
                 if (profileError) throw profileError;
 
-                alert('Registro exitoso. Por favor inicia sesión.');
+                alert(t('auth.register.success'));
                 navigate('/login');
             }
         } catch (err: any) {
-            setError(err.message || 'Error al registrarse');
+            setError(err.message || t('auth.register.error'));
         } finally {
             setLoading(false);
         }
@@ -65,9 +67,9 @@ export function Register() {
         <div className="flex min-h-[80vh] items-center justify-center py-12">
             <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-lg">
                 <div className="text-center">
-                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">Crear Cuenta</h2>
+                    <h2 className="text-3xl font-bold tracking-tight text-gray-900">{t('auth.register.title')}</h2>
                     <p className="mt-2 text-sm text-gray-600">
-                        Únete a Multiprecios Diego
+                        {t('auth.register.subtitle')}
                     </p>
                 </div>
 
@@ -75,14 +77,14 @@ export function Register() {
                     <div className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                             <Input
-                                label="Nombre"
+                                label={t('auth.register.nameLabel')}
                                 name="nombre"
                                 required
                                 value={formData.nombre}
                                 onChange={handleChange}
                             />
                             <Input
-                                label="Apellidos"
+                                label={t('auth.register.surnameLabel')}
                                 name="apellidos"
                                 required
                                 value={formData.apellidos}
@@ -90,14 +92,14 @@ export function Register() {
                             />
                         </div>
                         <Input
-                            label="DNI"
+                            label={t('auth.register.dniLabel')}
                             name="dni"
                             required
                             value={formData.dni}
                             onChange={handleChange}
                         />
                         <Input
-                            label="Teléfono"
+                            label={t('auth.register.phoneLabel')}
                             name="telefono"
                             type="tel"
                             required
@@ -105,7 +107,7 @@ export function Register() {
                             onChange={handleChange}
                         />
                         <Input
-                            label="Correo electrónico"
+                            label={t('auth.register.emailLabel')}
                             name="email"
                             type="email"
                             required
@@ -113,7 +115,7 @@ export function Register() {
                             onChange={handleChange}
                         />
                         <Input
-                            label="Contraseña"
+                            label={t('auth.register.passwordLabel')}
                             name="password"
                             type="password"
                             required
@@ -134,13 +136,13 @@ export function Register() {
                         className="w-full"
                         disabled={loading}
                     >
-                        {loading ? 'Registrando...' : 'Registrarse'}
+                        {loading ? t('auth.register.submitting') : t('auth.register.submit')}
                     </Button>
 
                     <div className="text-center text-sm">
-                        <span className="text-gray-500">¿Ya tienes cuenta? </span>
+                        <span className="text-gray-500">{t('auth.register.hasAccount')} </span>
                         <Link to="/login" className="font-medium text-black hover:underline">
-                            Inicia sesión aquí
+                            {t('auth.register.loginLink')}
                         </Link>
                     </div>
                 </form>
