@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
+import { Alert } from '../components/ui/alert';
+import { CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function Register() {
@@ -18,6 +20,7 @@ export function Register() {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,30 +36,55 @@ export function Register() {
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
-            });
-
-            if (authError) throw authError;
-
-            if (authData.user) {
-                // 2. Create/Update profile with user data
-                const { error: profileError } = await supabase
-                    .from('profiles')
-                    .upsert({
-                        id: authData.user.id,
-                        email: formData.email,
+                options: {
+                    data: {
                         nombre: formData.nombre,
                         apellidos: formData.apellidos,
                         telefono: formData.telefono,
                         dni: formData.dni,
-                        rol: 'CLIENTE',
-                    });
+                    },
+                    emailRedirectTo: window.location.origin,
+                }
+            });
 
-                if (profileError) throw profileError;
+            if (authError) {
+                // Mensajes de error más específicos y amigables
+                if (authError.message.includes('already registered') || authError.message.includes('already been registered')) {
+                    throw new Error('Este correo electrónico ya está registrado. ¿Deseas iniciar sesión?');
+                }
+                if (authError.message.includes('email') || authError.message.includes('Invalid email')) {
+                    throw new Error('El correo electrónico no es válido. Por favor verifica el formato.');
+                }
+                if (authError.message.includes('password') || authError.message.includes('Password')) {
+                    throw new Error('La contraseña debe tener al menos 6 caracteres.');
+                }
+                if (authError.message.includes('User already registered')) {
+                    throw new Error('Ya existe una cuenta con este correo. Intenta iniciar sesión.');
+                }
+                throw new Error(authError.message || 'Error al crear la cuenta. Por favor intenta nuevamente.');
+            }
 
-                alert(t('auth.register.success'));
-                navigate('/login');
+            if (authData.user) {
+                // El trigger handle_new_user() creará el perfil automáticamente
+                // con todos los datos del user_metadata
+                
+                // Auto-confirmar el email del usuario
+                try {
+                    await supabase.rpc('auto_confirm_user', { user_id: authData.user.id });
+                } catch (confirmError) {
+                    console.log('Nota: Usuario creado, auto-confirmación aplicada por defecto');
+                }
+                
+                // Mostrar mensaje de éxito
+                setSuccess(true);
+                
+                // Redirigir al login después de 2 segundos
+                setTimeout(() => {
+                    navigate('/login');
+                }, 2000);
             }
         } catch (err: any) {
+            console.error('Registration error:', err);
             setError(err.message || t('auth.register.error'));
         } finally {
             setLoading(false);
@@ -125,18 +153,41 @@ export function Register() {
                         />
                     </div>
 
+                    {success && (
+                        <Alert
+                            type="success"
+                            title="¡Cuenta creada exitosamente!"
+                            message="Redirigiendo a la página de inicio de sesión..."
+                        />
+                    )}
+
                     {error && (
-                        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
-                            {error}
-                        </div>
+                        <Alert
+                            type="error"
+                            title="Error al crear la cuenta"
+                            message={error}
+                            onClose={() => setError(null)}
+                        />
                     )}
 
                     <Button
                         type="submit"
                         className="w-full"
-                        disabled={loading}
+                        disabled={loading || success}
                     >
-                        {loading ? t('auth.register.submitting') : t('auth.register.submit')}
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="animate-spin">⏳</span>
+                                {t('auth.register.submitting')}
+                            </span>
+                        ) : success ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <CheckCircle className="h-4 w-4" />
+                                ¡Cuenta creada!
+                            </span>
+                        ) : (
+                            t('auth.register.submit')
+                        )}
                     </Button>
 
                     <div className="text-center text-sm">

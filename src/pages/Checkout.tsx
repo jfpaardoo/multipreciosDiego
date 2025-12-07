@@ -5,7 +5,8 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/Input';
-import { Trash2 } from 'lucide-react';
+import { Alert } from '../components/ui/alert';
+import { Trash2, ShoppingBag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 type DeliveryType = 'DOMICILIO' | 'RECOGIDA';
@@ -21,6 +22,8 @@ export function Checkout() {
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('TARJETA');
     const [address, setAddress] = useState(profile?.direccion || '');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     if (!items || items.length === 0) {
         return (
@@ -46,9 +49,11 @@ export function Checkout() {
         }
 
         if (deliveryType === 'DOMICILIO' && !address) {
-            alert(t('checkout.addressRequired'));
+            setError(t('checkout.addressRequired'));
             return;
         }
+
+        setError(null);
 
         setLoading(true);
 
@@ -104,11 +109,15 @@ export function Checkout() {
             }
 
             clearCart();
-            alert(t('checkout.success'));
-            navigate('/profile');
-        } catch (error) {
+            setSuccess(true);
+            
+            // Redirigir después de mostrar el mensaje de éxito
+            setTimeout(() => {
+                navigate('/profile');
+            }, 2000);
+        } catch (error: any) {
             console.error('Error creating order:', error);
-            alert(t('checkout.error'));
+            setError(t('checkout.error'));
         } finally {
             setLoading(false);
         }
@@ -237,13 +246,42 @@ export function Checkout() {
                         )}
                     </div>
 
+                    {error && (
+                        <Alert
+                            type="error"
+                            title="Error al procesar el pedido"
+                            message={error}
+                            onClose={() => setError(null)}
+                        />
+                    )}
+
+                    {success && (
+                        <Alert
+                            type="success"
+                            title="¡Pedido realizado con éxito!"
+                            message="Redirigiendo a tu perfil para ver el estado del pedido..."
+                        />
+                    )}
+
                     <Button
                         className="w-full mt-6"
                         size="lg"
                         onClick={handleCheckout}
-                        disabled={loading}
+                        disabled={loading || success}
                     >
-                        {loading ? t('checkout.processing') : `${t('checkout.pay')} ${total.toFixed(2)} €`}
+                        {loading ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <span className="animate-spin">⏳</span>
+                                {t('checkout.processing')}
+                            </span>
+                        ) : success ? (
+                            <span className="flex items-center justify-center gap-2">
+                                <ShoppingBag className="h-5 w-5" />
+                                ¡Pedido completado!
+                            </span>
+                        ) : (
+                            `${t('checkout.pay')} ${(total || 0).toFixed(2)} €`
+                        )}
                     </Button>
                 </div>
             </div>

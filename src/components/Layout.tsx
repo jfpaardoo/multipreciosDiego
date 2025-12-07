@@ -18,10 +18,12 @@ export function Layout() {
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+    const [showLogoutModal, setShowLogoutModal] = React.useState(false);
 
     const handleSignOut = async () => {
         await signOut();
         navigate('/login');
+        setShowLogoutModal(false);
     };
 
     // Redirect admin users to dashboard on initial load
@@ -55,7 +57,7 @@ export function Layout() {
                     <div className="flex-1" />
 
                     <div className="hidden md:flex items-center gap-6 mr-4">
-                        {!isAdmin && (
+                        {user && !isAdmin && (
                             <Link to="/faq" className="text-sm font-medium hover:underline">{t('layout.nav.faq')}</Link>
                         )}
                         {isAdmin && (
@@ -73,8 +75,8 @@ export function Layout() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                        {/* Cart - Hidden for admin users */}
-                        {!isAdmin && (
+                        {/* Cart - Hidden for admin users and logged out users */}
+                        {user && !isAdmin && (
                             <Link to="/cart">
                                 <Button variant="ghost" size="icon" className="relative">
                                     <ShoppingCart className="h-5 w-5" />
@@ -138,7 +140,7 @@ export function Layout() {
                                             </Link>
                                         )}
                                         <button
-                                            onClick={handleSignOut}
+                                            onClick={() => setShowLogoutModal(true)}
                                             className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                                         >
                                             {t('layout.userMenu.logout')}
@@ -197,7 +199,7 @@ export function Layout() {
                                     </Link>
                                 </>
                             )}
-                            {!isAdmin && (
+                            {user && !isAdmin && (
                                 <Link to="/faq" onClick={() => setIsMenuOpen(false)} className="py-2 text-sm font-medium">
                                     {t('layout.nav.faq')}
                                 </Link>
@@ -253,6 +255,32 @@ export function Layout() {
                     </div>
                 </div>
             </footer>
+
+            {/* Logout Confirmation Modal */}
+            {showLogoutModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Confirmación</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            ¿Estás seguro de que quieres cerrar sesión?
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => setShowLogoutModal(false)}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                onClick={handleSignOut}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Sí, cerrar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

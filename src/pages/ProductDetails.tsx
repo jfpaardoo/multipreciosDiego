@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '../lib/supabase';
 import { Product, Valoracion } from '../types';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Star, Minus, Plus, ArrowLeft, Heart } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
@@ -16,6 +17,7 @@ export function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { addItem } = useCart();
+    const { user } = useAuth();
     const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
     const [product, setProduct] = useState<Product | null>(null);
@@ -26,11 +28,15 @@ export function ProductDetails() {
     const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
+        if (!user) {
+            navigate('/login');
+            return;
+        }
         if (id) {
             fetchProduct(id);
             window.scrollTo(0, 0);
         }
-    }, [id]);
+    }, [id, user, navigate]);
 
     const fetchProduct = async (productId: string) => {
         setLoading(true);

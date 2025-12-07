@@ -35,10 +35,8 @@ function App() {
                                 <Route path="/" element={<Layout />}>
                                     {/* Public Routes */}
                                     <Route index element={<Home />} />
-                                    <Route path="product/:id" element={<ProductDetails />} />
                                     <Route path="login" element={<Login />} />
                                     <Route path="register" element={<Register />} />
-                                    <Route path="faq" element={<FAQ />} />
                                     <Route path="admin-setup" element={<AdminSetup />} />
                                     <Route path="privacidad" element={<PrivacyPolicy />} />
                                     <Route path="aviso-legal" element={<LegalNotice />} />
@@ -46,6 +44,8 @@ function App() {
 
                                     {/* Customer Routes */}
                                     <Route element={<ProtectedRoute />}>
+                                        <Route path="product/:id" element={<ProductDetails />} />
+                                        <Route path="faq" element={<FAQ />} />
                                         <Route path="checkout" element={<Checkout />} />
                                         <Route path="profile" element={<Profile />} />
                                         <Route path="cart" element={<Checkout />} />
