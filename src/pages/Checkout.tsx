@@ -22,11 +22,19 @@ export function Checkout() {
     const [address, setAddress] = useState(profile?.direccion || '');
     const [loading, setLoading] = useState(false);
 
-    if (items.length === 0) {
+    if (!items || items.length === 0) {
         return (
-            <div className="text-center py-12">
-                <h2 className="text-2xl font-bold mb-4">{t('checkout.empty')}</h2>
-                <Button onClick={() => navigate('/')}>{t('checkout.backToCatalog')}</Button>
+            <div className="flex flex-col items-center justify-center py-16 px-4">
+                <div className="text-center max-w-md">
+                    <svg className="mx-auto h-24 w-24 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Tu carrito está vacío</h2>
+                    <p className="text-gray-600 mb-6">Explora nuestro catálogo y añade productos a tu carrito</p>
+                    <Button onClick={() => navigate('/')} className="px-6">
+                        Volver al catálogo
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -125,8 +133,8 @@ export function Checkout() {
                                 className="h-16 w-16 rounded object-cover bg-gray-100"
                             />
                             <div className="flex-1">
-                                <h3 className="font-medium">{item.nombre}</h3>
-                                <p className="text-sm text-gray-500">{item.precio_venta.toFixed(2)} € / ud</p>
+                                <h3 className="font-medium">{item.nombre || 'Producto'}</h3>
+                                <p className="text-sm text-gray-500">{(item.precio_venta || 0).toFixed(2)} € / ud</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Button
@@ -137,13 +145,13 @@ export function Checkout() {
                                 >
                                     -
                                 </Button>
-                                <span className="w-8 text-center">{item.quantity}</span>
+                                <span className="w-8 text-center">{item.quantity || 0}</span>
                                 <Button
                                     variant="outline"
                                     size="sm"
                                     className="h-8 w-8 p-0"
                                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                    disabled={item.quantity >= item.cantidad_en_tienda}
+                                    disabled={item.quantity >= (item.cantidad_en_tienda || 0)}
                                 >
                                     +
                                 </Button>
