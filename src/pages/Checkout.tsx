@@ -128,22 +128,22 @@ export function Checkout() {
             {/* Cart Items */}
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">{t('checkout.summary')}</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('checkout.summary')}</h2>
                     <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
                         {t('checkout.continueShopping')}
                     </Button>
                 </div>
                 <div className="space-y-4">
                     {items.map((item) => (
-                        <div key={item.id} className="flex items-center gap-4 border-b pb-4">
+                        <div key={item.id} className="flex items-center gap-4 border-b dark:border-gray-700 pb-4">
                             <img
                                 src={item.imagen_producto || ''}
                                 alt={item.nombre}
-                                className="h-16 w-16 rounded object-cover bg-gray-100"
+                                className="h-16 w-16 rounded object-cover bg-gray-100 dark:bg-gray-700"
                             />
                             <div className="flex-1">
-                                <h3 className="font-medium">{item.nombre || 'Producto'}</h3>
-                                <p className="text-sm text-gray-500">{(item.precio_venta || 0).toFixed(2)} € / ud</p>
+                                <h3 className="font-medium text-gray-900 dark:text-white">{item.nombre || 'Producto'}</h3>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">{(item.precio_venta || 0).toFixed(2)} € / ud</p>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Button
@@ -154,7 +154,7 @@ export function Checkout() {
                                 >
                                     -
                                 </Button>
-                                <span className="w-8 text-center">{item.quantity || 0}</span>
+                                <span className="w-8 text-center text-gray-900 dark:text-white">{item.quantity || 0}</span>
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -183,12 +183,12 @@ export function Checkout() {
             </div>
 
             {/* Checkout Form */}
-            <div className="space-y-6 bg-white p-6 rounded-lg shadow-sm h-fit">
-                <h2 className="text-2xl font-bold">{t('checkout.shippingData')}</h2>
+            <div className="space-y-6 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm h-fit border dark:border-gray-700">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('checkout.shippingData')}</h2>
 
                 <div className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium mb-2">{t('checkout.deliveryType')}</label>
+                        <label className="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">{t('checkout.deliveryType')}</label>
                         <div className="flex gap-4">
                             <button
                                 className={`flex-1 py-2 px-4 rounded border ${deliveryType === 'DOMICILIO' ? 'bg-black text-white border-black' : 'bg-white text-gray-700'

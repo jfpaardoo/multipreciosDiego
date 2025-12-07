@@ -22,9 +22,9 @@ export function ProductCard({ product }: ProductCardProps) {
     const inWishlist = isInWishlist(product.id);
 
     return (
-        <div className="group relative flex flex-col h-full overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow hover:shadow-md">
+        <div className="group relative flex flex-col h-full overflow-hidden rounded-lg border dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm transition-shadow hover:shadow-md">
             <Link to={`/product/${product.id}`} className="flex flex-col flex-1">
-                <div className="aspect-square overflow-hidden bg-gray-100">
+                <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
                     {product.imagen_producto ? (
                         <img
                             src={product.imagen_producto}
@@ -32,7 +32,7 @@ export function ProductCard({ product }: ProductCardProps) {
                             className="h-full w-full object-cover object-center transition-transform group-hover:scale-105"
                         />
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center text-gray-400">
+                        <div className="flex h-full w-full items-center justify-center text-gray-400 dark:text-gray-500">
                             {t('common.noImage')}
                         </div>
                     )}
@@ -43,27 +43,27 @@ export function ProductCard({ product }: ProductCardProps) {
                             e.preventDefault();
                             inWishlist ? removeFromWishlist(product.id) : addToWishlist(product);
                         }}
-                        className={`absolute top-2 right-2 p-2 rounded-full ${inWishlist ? 'bg-red-50 text-red-500' : 'bg-white text-gray-400 hover:text-red-500'} shadow-sm transition-colors z-10`}
+                        className={`absolute top-2 right-2 p-2 rounded-full ${inWishlist ? 'bg-red-50 dark:bg-red-900/30 text-red-500' : 'bg-white dark:bg-gray-800 text-gray-400 hover:text-red-500'} shadow-sm transition-colors z-10`}
                         title={product && inWishlist ? t('product.wishlist.remove') : t('product.wishlist.add')}
                     >
                         <Heart className={`h-5 w-5 ${inWishlist ? 'fill-current' : ''}`} />
                     </button>
                     {isOutOfStock && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-20">
-                            <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black">
+                            <span className="rounded-full bg-white dark:bg-gray-200 px-3 py-1 text-sm font-bold text-black">
                                 {t('common.outOfStock')}
                             </span>
                         </div>
                     )}
                 </div>
                 <div className="flex flex-1 flex-col p-4">
-                    <h3 className="text-lg font-medium text-gray-900">{product.nombre}</h3>
-                    <p className="mt-1 text-sm text-gray-500 line-clamp-2">{product.descripcion}</p>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">{product.nombre}</h3>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2">{product.descripcion}</p>
                 </div>
             </Link >
             <div className="px-4 pb-4">
                 <div className="mt-4 flex items-center justify-between">
-                    <p className="text-lg font-bold text-gray-900">{t('common.price', { price: product.precio_venta.toFixed(2) })}</p>
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">{t('common.price', { price: product.precio_venta.toFixed(2) })}</p>
                     <Button
                         size="sm"
                         disabled={isOutOfStock}

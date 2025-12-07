@@ -92,6 +92,53 @@
         "submitting": "Bidaltzen...",
         "submit": "Argitaratu balorazioa"
     },
+    "accessibility": {
+        "title": "Irisgarritasuna",
+        "openMenu": "Ireki irisgarritasun menua",
+        "close": "Itxi",
+        "theme": "Gaia",
+        "toggleTheme": "Aldatu gaia",
+        "lightMode": "Modu Argia",
+        "darkMode": "Modu Iluna",
+        "fontSize": "Letra Tamaina",
+        "small": "Txikia",
+        "medium": "Ertaina",
+        "large": "Handia"
+    },
+    "chatbot": {
+        "title": "Bezeroaren Arreta",
+        "subtitle": "Hemen gaude zu laguntzeko",
+        "needHelp": "Laguntza behar duzu?",
+        "openChat": "Ireki txata",
+        "close": "Itxi txata",
+        "placeholder": "Idatzi zure mezua...",
+        "send": "Bidali mezua",
+        "welcome": "Kaixo! 👋 Nola lagundu dezaket gaur?",
+        "greeting": "Kaixo! Zure laguntzaile birtuala naiz. Eskariekin, bidalketekin, itzulketekin eta gehiagorekin lagundu dezaket. Zer jakin nahi zenuke?",
+        "response": {
+            "shipping": "Bidalketak normalean 24-72 ordu irauten dute penintsulan. Bidalketa kostuak automatikoki kalkulatzen dira erosketa amaitzean zure kokapenaren arabera.",
+            "payment": "Kreditu/zordunketa txartelak, Bizum eta eskudirua (dendan jasotzeko soilik) onartzen ditugu. Eskudiruko ordainketa ez dago eskuragarri etxeko bidalketetarako.",
+            "returns": "14 egun naturaleko epea duzu jasotzetik itzulketak egiteko arrazoitu gabe, produktua egoera ezin hobean eta jatorrizko bilgarrian badago.",
+            "orderTracking": "Zure eskarien egoera ikusi dezakezu 'Nire Profila' → 'Nire Eskariak' atalean. Laguntza gehiago behar baduzu, eman zure eskari zenbakia.",
+            "stock": "Produktuen eskuragarritasuna denbora errealean eguneratzen da. Produktu bat agortuta badago, erreserbatu dezakezu eta gordeko dizugu iristen denean.",
+            "reservation": "Produktuak zuzenean produktuaren orrialdetik erreserbatu ditzakezu. Erreserbak 7 egunez gordeko ditugu. Dendan sartu behar duzu zure erreserba kodearekin.",
+            "contact": "Gurekin harremanetan jar zaitezke multipreciosdiego@gmail.com helbidean edo 635 48 59 43 telefonoan. Calle Ronda 67, Puerto Serrano (Cadiz) kokalekuan ere gaude.",
+            "default": "Ez naiz ziur ulertu dudanik. Zure galdera berridatzi zenezake? Edo gure FAQ atala bisitatu informazio gehiagorako."
+        },
+        "suggestion": {
+            "orderStatus": "Nire eskaria kontsultatu",
+            "shipping": "Bidalketa informazioa",
+            "returns": "Nola itzuli",
+            "shippingCost": "Bidalketa kostuak",
+            "howToReturn": "Itzulketa prozesua",
+            "myOrders": "Nire eskariak",
+            "reservation": "Erreserbatu",
+            "myReservations": "Nire erreserbak",
+            "faq": "FAQ bisitatu",
+            "issues": "Gorabehera jakinarazi",
+            "contact": "Harremanetan jarri"
+        }
+    },
     "legal": {
         "privacy": {
             "title": "Pribatutasun Politika",

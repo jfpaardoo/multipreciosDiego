@@ -154,7 +154,7 @@ export function ProductDetails() {
 
             <div className="grid md:grid-cols-2 gap-12">
                 {/* Image */}
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden">
                     {product.imagen_producto ? (
                         <img
                             src={product.imagen_producto}
@@ -162,7 +162,7 @@ export function ProductDetails() {
                             className="w-full h-full object-cover"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <div className="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
                             {t('common.noImage')}
                         </div>
                     )}
@@ -171,7 +171,7 @@ export function ProductDetails() {
                 {/* Details */}
                 <div className="flex flex-col h-full space-y-6">
                     <div className="space-y-6">
-                        <h1 className="text-4xl font-bold text-gray-900">{product.nombre}</h1>
+                        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">{product.nombre}</h1>
 
                         <div className="flex items-center gap-2">
                             <div className="flex text-yellow-400">
@@ -182,38 +182,38 @@ export function ProductDetails() {
                                     />
                                 ))}
                             </div>
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
                                 ({reviews.length} valoraciones)
                             </span>
                         </div>
 
-                        <div className="text-3xl font-bold text-gray-900">
+                        <div className="text-3xl font-bold text-gray-900 dark:text-white">
                             {product.precio_venta.toFixed(2)} €
                         </div>
 
-                        <div className="prose text-gray-500">
+                        <div className="prose text-gray-500 dark:text-gray-400">
                             <p>{product.descripcion}</p>
                         </div>
 
                         <div className="flex items-center gap-4">
-                            <div className="flex items-center border rounded-md">
+                            <div className="flex items-center border dark:border-gray-600 rounded-md">
                                 <button
-                                    className="p-2 hover:bg-gray-100"
+                                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
                                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
                                     disabled={quantity <= 1}
                                 >
                                     <Minus className="h-4 w-4" />
                                 </button>
-                                <span className="w-12 text-center font-medium">{quantity}</span>
+                                <span className="w-12 text-center font-medium text-gray-900 dark:text-white">{quantity}</span>
                                 <button
-                                    className="p-2 hover:bg-gray-100"
+                                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white"
                                     onClick={() => setQuantity(Math.min(product.cantidad_en_tienda, quantity + 1))}
                                     disabled={quantity >= product.cantidad_en_tienda}
                                 >
                                     <Plus className="h-4 w-4" />
                                 </button>
                             </div>
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
                                 {product.cantidad_en_tienda} {t('product.available')}
                             </span>
                         </div>
@@ -231,8 +231,8 @@ export function ProductDetails() {
                             <button
                                 onClick={() => product && (isInWishlist(product.id) ? removeFromWishlist(product.id) : addToWishlist(product))}
                                 className={`p-3 rounded-lg border transition-colors ${product && isInWishlist(product.id)
-                                    ? 'bg-red-50 border-red-200 text-red-500'
-                                    : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-500'
+                                    ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-500'
+                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-red-500'
                                     }`}
                                 title={product && isInWishlist(product.id) ? t('product.wishlist.remove') : t('product.wishlist.add')}
                             >
@@ -257,14 +257,14 @@ export function ProductDetails() {
 
             {/* Reviews */}
             <div className="space-y-8">
-                <h2 className="text-2xl font-bold">{t('product.reviews.title')}</h2>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{t('product.reviews.title')}</h2>
 
                 <div className="grid md:grid-cols-3 gap-12">
                     {/* Review Form & Summary */}
                     <div className="md:col-span-1">
                         <div className="sticky top-24">
-                            <h3 className="text-lg font-semibold mb-4">{t('product.reviews.writeReview')}</h3>
-                            <p className="text-sm text-gray-600 mb-4">{t('product.reviews.shareExperience')}</p>
+                            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">{t('product.reviews.writeReview')}</h3>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{t('product.reviews.shareExperience')}</p>
                             <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
                         </div>
                     </div>
@@ -274,12 +274,12 @@ export function ProductDetails() {
                         {reviews.length > 0 ? (
                             <div className="space-y-8">
                                 {reviews.map((review) => (
-                                    <div key={review.id} className="border-b pb-6 last:border-0">
+                                    <div key={review.id} className="border-b dark:border-gray-700 pb-6 last:border-0">
                                         <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold text-gray-600">
+                                            <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold text-gray-600 dark:text-gray-300">
                                                 {review.profiles?.nombre?.[0] || 'U'}
                                             </div>
-                                            <span className="font-medium text-gray-900">{review.profiles?.nombre || t('product.reviews.anonymousUser')}</span>
+                                            <span className="font-medium text-gray-900 dark:text-white">{review.profiles?.nombre || t('product.reviews.anonymousUser')}</span>
                                         </div>
 
                                         <div className="flex items-center gap-2 mb-2">
@@ -291,7 +291,7 @@ export function ProductDetails() {
                                                     />
                                                 ))}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-900">{t('product.reviews.reviewedOn', { date: new Date(review.created_at).toLocaleDateString() })}</span>
+                                            <span className="text-sm font-bold text-gray-900 dark:text-white">{t('product.reviews.reviewedOn', { date: new Date(review.created_at).toLocaleDateString() })}</span>
                                         </div>
 
                                         {review.cliente_id && verifiedBuyers.has(review.cliente_id) && (
@@ -299,11 +299,11 @@ export function ProductDetails() {
                                         )}
 
                                         {review.comentario && (
-                                            <p className="text-gray-700 leading-relaxed">{review.comentario}</p>
+                                            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{review.comentario}</p>
                                         )}
 
                                         <div className="mt-4">
-                                            <button className="text-sm text-gray-500 border px-4 py-1 rounded hover:bg-gray-50">
+                                            <button className="text-sm text-gray-500 dark:text-gray-400 border dark:border-gray-600 px-4 py-1 rounded hover:bg-gray-50 dark:hover:bg-gray-700">
                                                 {t('product.reviews.helpful')}
                                             </button>
                                         </div>

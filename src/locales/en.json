@@ -92,6 +92,53 @@
         "submitting": "Submitting...",
         "submit": "Post Review"
     },
+    "accessibility": {
+        "title": "Accessibility",
+        "openMenu": "Open accessibility menu",
+        "close": "Close",
+        "theme": "Theme",
+        "toggleTheme": "Toggle theme",
+        "lightMode": "Light Mode",
+        "darkMode": "Dark Mode",
+        "fontSize": "Font Size",
+        "small": "Small",
+        "medium": "Medium",
+        "large": "Large"
+    },
+    "chatbot": {
+        "title": "Customer Support",
+        "subtitle": "We're here to help",
+        "needHelp": "Need help?",
+        "openChat": "Open chat",
+        "close": "Close chat",
+        "placeholder": "Type your message...",
+        "send": "Send message",
+        "welcome": "Hi! 👋 How can I help you today?",
+        "greeting": "Hello! I'm your virtual assistant. I can help you with orders, shipping, returns, and more. What would you like to know?",
+        "response": {
+            "shipping": "Shipping usually takes 24-72 hours for mainland Spain. Shipping costs are calculated automatically at checkout based on your location.",
+            "payment": "We accept credit/debit cards, Bizum, and cash (for store pickup only). Cash payment is not available for home delivery.",
+            "returns": "You have 14 calendar days from receipt to make returns without justification, provided the product is in perfect condition and in its original packaging.",
+            "orderTracking": "You can view the status of your orders in 'My Profile' → 'My Orders'. If you need more help, please let us know your order number.",
+            "stock": "Product availability is updated in real-time. If a product is out of stock, you can make a reservation and we'll hold it for you when it arrives.",
+            "reservation": "You can reserve products directly from the product page. We'll hold the reservation for 7 days. Just visit the store with your reservation code.",
+            "contact": "You can contact us at multipreciosdiego@gmail.com or call 635 48 59 43. We're also at Calle Ronda 67, Puerto Serrano (Cádiz).",
+            "default": "I'm not sure I understood. Could you rephrase your question? Or you can visit our FAQ section for more information."
+        },
+        "suggestion": {
+            "orderStatus": "Check my order",
+            "shipping": "Shipping information",
+            "returns": "How to return",
+            "shippingCost": "Shipping costs",
+            "howToReturn": "Return process",
+            "myOrders": "My orders",
+            "reservation": "Make a reservation",
+            "myReservations": "My reservations",
+            "faq": "Visit FAQ",
+            "issues": "Report an issue",
+            "contact": "Contact us"
+        }
+    },
     "legal": {
         "privacy": {
             "title": "Privacy Policy",

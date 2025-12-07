@@ -8,12 +8,12 @@ interface LegalSectionProps {
 
 function LegalSection({ title, children }: LegalSectionProps) {
     return (
-        <div className="mb-8 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <div className="mb-8 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
                 <div className="w-2 h-6 bg-blue-600 rounded-full"></div>
                 {title}
             </h2>
-            <div className="text-gray-600 leading-relaxed">
+            <div className="text-gray-600 dark:text-gray-400 leading-relaxed">
                 {children}
             </div>
         </div>
@@ -30,15 +30,15 @@ function LegalHeader({ title, icon, lastUpdated }: LegalHeaderProps) {
     const { t } = useTranslation();
     return (
         <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center p-4 bg-blue-50 rounded-full mb-6">
+            <div className="inline-flex items-center justify-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-full mb-6 border dark:border-blue-800">
                 <div className="text-blue-600">
                     {icon}
                 </div>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{title}</h1>
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{title}</h1>
             {lastUpdated && (
-                <p className="text-gray-500">
-                    {t('legal.privacy.lastUpdated')}: <span className="font-medium text-gray-900">{lastUpdated}</span>
+                <p className="text-gray-500 dark:text-gray-400">
+                    {t('legal.privacy.lastUpdated')}: <span className="font-medium text-gray-900 dark:text-white">{lastUpdated}</span>
                 </p>
             )}
             <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-cyan-500 mx-auto mt-6 rounded-full"></div>
@@ -126,7 +126,7 @@ export function LegalNotice() {
             <div className="space-y-6">
                 <LegalSection title={t('legal.notice.sections.id.title')}>
                     <p>{t('legal.notice.sections.id.text')}</p>
-                    <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-100">
+                    <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-100 dark:border-blue-800">
                         <ul className="space-y-2 text-sm text-blue-900">
                             <li><strong>{t('legal.notice.sections.id.holder')}:</strong> Multiprecios Diego</li>
                             <li><strong>{t('legal.notice.sections.id.address')}:</strong> Calle Ronda 67, Puerto Serrano (Cádiz)</li>

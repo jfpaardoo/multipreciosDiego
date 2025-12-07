@@ -92,6 +92,53 @@
         "submitting": "Enviando...",
         "submit": "Publicar valoración"
     },
+    "accessibility": {
+        "title": "Accesibilidad",
+        "openMenu": "Abrir menú de accesibilidad",
+        "close": "Cerrar",
+        "theme": "Tema",
+        "toggleTheme": "Cambiar tema",
+        "lightMode": "Modo Claro",
+        "darkMode": "Modo Oscuro",
+        "fontSize": "Tamaño de Fuente",
+        "small": "Pequeño",
+        "medium": "Mediano",
+        "large": "Grande"
+    },
+    "chatbot": {
+        "title": "Atención al Cliente",
+        "subtitle": "Estamos aquí para ayudarte",
+        "needHelp": "¿Necesitas ayuda?",
+        "openChat": "Abrir chat",
+        "close": "Cerrar chat",
+        "placeholder": "Escribe tu mensaje...",
+        "send": "Enviar mensaje",
+        "welcome": "¡Hola! 👋 ¿Cómo puedo ayudarte hoy?",
+        "greeting": "¡Hola! Soy tu asistente virtual. Puedo ayudarte con pedidos, envíos, devoluciones y más. ¿Qué te gustaría saber?",
+        "response": {
+            "shipping": "Los envíos suelen tardar 24-72 horas para la península. Los gastos de envío se calculan automáticamente al finalizar la compra según tu ubicación.",
+            "payment": "Aceptamos tarjeta de crédito/débito, Bizum y efectivo (solo para recogida en tienda). El pago en efectivo no está disponible para envíos a domicilio.",
+            "returns": "Dispones de un plaza de 14 días naturales desde la recepción para realizar devoluciones sin justificación, siempre que el producto esté en perfecto estado y en su embalaje original.",
+            "orderTracking": "Puedes ver el estado de tus pedidos en 'Mi Perfil' → 'Mis Pedidos'. Si necesitas más ayuda, indícanos tu número de pedido.",
+            "stock": "La disponibilidad de productos se actualiza en tiempo real. Si un producto está agotado, puedes hacer una reserva y te lo guardaremos cuando llegue.",
+            "reservation": "Puedes reservar productos directamente desde la página del producto. Mantendremos la reserva durante 7 días. Solo tienes que visitar la tienda con tu código de reserva.",
+            "contact": "Puedes contactarnos en multipreciosdiego@gmail.com o llamar al 635 48 59 43. También estamos en Calle Ronda 67, Puerto Serrano (Cádiz).",
+            "default": "No estoy seguro de haber entendido. ¿Podrías reformular tu pregunta? O puedes visitar nuestra sección de FAQ para más información."
+        },
+        "suggestion": {
+            "orderStatus": "Consultar mi pedido",
+            "shipping": "Información de envío",
+            "returns": "Cómo devolver",
+            "shippingCost": "Costes de envío",
+            "howToReturn": "Proceso de devolución",
+            "myOrders": "Mis pedidos",
+            "reservation": "Hacer una reserva",
+            "myReservations": "Mis reservas",
+            "faq": "Visitar FAQ",
+            "issues": "Reportar incidencia",
+            "contact": "Contactar"
+        }
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacidad",

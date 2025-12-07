@@ -153,7 +153,7 @@ export function Issues() {
     return (
         <div className="space-y-8">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold flex items-center gap-2">
+                <h1 className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
                     <AlertCircle className="h-6 w-6" />
                     {t('issues.title')}
                 </h1>
@@ -168,12 +168,12 @@ export function Issues() {
             ) : issues.length > 0 ? (
                 <div className="grid gap-4">
                     {issues.map((issue) => (
-                        <div key={issue.id} className="bg-white p-4 rounded-lg shadow-sm border">
+                        <div key={issue.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700">
                             <div className="flex justify-between items-start mb-2">
                                 <div>
-                                    <span className="font-medium block">{issue.tipo_incidencia}</span>
+                                    <span className="font-medium block text-gray-900 dark:text-white">{issue.tipo_incidencia}</span>
                                     {issue.pedidos_cliente && (
-                                        <span className="text-xs text-gray-500">
+                                        <span className="text-xs text-gray-500 dark:text-gray-400">
                                             Pedido #{issue.pedidos_cliente.id.slice(0, 8)}
                                         </span>
                                     )}
@@ -194,17 +194,17 @@ export function Issues() {
                                     )}
                                 </div>
                             </div>
-                            <p className="text-sm text-gray-600 mt-2">{issue.descripcion}</p>
-                            <p className="text-xs text-gray-400 mt-2">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">{issue.descripcion}</p>
+                            <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
                                 Fecha: {new Date(issue.created_at).toLocaleDateString()}
                             </p>
                         </div>
                     ))}
                 </div>
             ) : (
-                <div className="text-center py-12 bg-white rounded-lg border">
-                    <AlertCircle className="h-12 w-12 mx-auto text-gray-300 mb-4" />
-                    <p className="text-gray-500">{t('issues.empty')}</p>
+                <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg border dark:border-gray-700">
+                    <AlertCircle className="h-12 w-12 mx-auto text-gray-300 dark:text-gray-600 mb-4" />
+                    <p className="text-gray-500 dark:text-gray-400">{t('issues.empty')}</p>
                     <Button variant="ghost" onClick={() => navigate('/faq')} className="mt-2">
                         {t('issues.faqLink')}
                     </Button>
@@ -214,16 +214,16 @@ export function Issues() {
             {/* Create/Edit Issue Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-                        <div className="p-6 border-b flex justify-between items-center">
-                            <h3 className="text-xl font-bold">{editingIssueId ? t('issues.edit') : t('issues.new')}</h3>
-                            <button onClick={closeModal} className="text-gray-500 hover:text-black">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+                        <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">{editingIssueId ? t('issues.edit') : t('issues.new')}</h3>
+                            <button onClick={closeModal} className="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
                         <form onSubmit={handleSubmit} className="p-6 space-y-4">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {t('issues.selectOrder')}
                                 </label>
                                 {loadingOrders ? (
@@ -232,7 +232,7 @@ export function Issues() {
                                     <select
                                         value={selectedOrderId}
                                         onChange={(e) => setSelectedOrderId(e.target.value)}
-                                        className="w-full border rounded-md p-2 text-sm"
+                                        className="w-full border dark:border-gray-600 rounded-md p-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                         required
                                     >
                                         <option value="">{t('issues.selectPlaceholder')}</option>
@@ -246,13 +246,13 @@ export function Issues() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {t('issues.typeLabel')}
                                 </label>
                                 <select
                                     value={issueType}
                                     onChange={(e) => setIssueType(e.target.value as TipoIncidencia)}
-                                    className="w-full border rounded-md p-2 text-sm"
+                                    className="w-full border dark:border-gray-600 rounded-md p-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                                     required
                                 >
                                     <option value="CON_RETRASO">{t('issues.types.delay')}</option>
@@ -264,13 +264,13 @@ export function Issues() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                     {t('issues.descriptionLabel')}
                                 </label>
                                 <textarea
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full border rounded-md p-2 text-sm h-32 resize-none"
+                                    className="w-full border dark:border-gray-600 rounded-md p-2 text-sm h-32 resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500"
                                     placeholder={t('issues.descriptionPlaceholder')}
                                     required
                                 />

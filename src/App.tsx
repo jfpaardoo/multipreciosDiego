@@ -3,6 +3,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { Layout } from './components/Layout';
 import { ProtectedRoute } from './components/ProtectedRoute';
 
@@ -28,43 +29,48 @@ function App() {
     return (
         <HelmetProvider>
             <BrowserRouter>
-                <AuthProvider>
-                    <CartProvider>
-                        <WishlistProvider>
-                            <Routes>
-                                <Route path="/" element={<Layout />}>
-                                    {/* Public Routes */}
-                                    <Route index element={<Home />} />
-                                    <Route path="login" element={<Login />} />
-                                    <Route path="register" element={<Register />} />
-                                    <Route path="admin-setup" element={<AdminSetup />} />
-                                    <Route path="privacidad" element={<PrivacyPolicy />} />
-                                    <Route path="aviso-legal" element={<LegalNotice />} />
-                                    <Route path="terminos" element={<Terms />} />
-
-                                    {/* Customer Routes */}
-                                    <Route element={<ProtectedRoute />}>
+                <ThemeProvider>
+                    <AuthProvider>
+                        <CartProvider>
+                            <WishlistProvider>
+                                <Routes>
+                                    <Route path="/" element={<Layout />}>
+                                        {/* Public Routes */}
+                                        {/* Se permite ver productos y FAQ sin estar logueado (Mejor práctica E-commerce) */}
+                                        <Route index element={<Home />} />
                                         <Route path="product/:id" element={<ProductDetails />} />
+                                        <Route path="login" element={<Login />} />
+                                        <Route path="register" element={<Register />} />
                                         <Route path="faq" element={<FAQ />} />
-                                        <Route path="checkout" element={<Checkout />} />
-                                        <Route path="profile" element={<Profile />} />
-                                        <Route path="cart" element={<Checkout />} />
-                                        <Route path="issues" element={<Issues />} />
-                                        <Route path="wishlist" element={<Wishlist />} />
-                                    </Route>
+                                        <Route path="admin-setup" element={<AdminSetup />} />
+                                        <Route path="privacidad" element={<PrivacyPolicy />} />
+                                        <Route path="aviso-legal" element={<LegalNotice />} />
+                                        <Route path="terminos" element={<Terms />} />
 
-                                    {/* Admin Routes */}
-                                    <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
-                                        <Route path="admin" element={<AdminPanel />} />
-                                        <Route path="admin/users" element={<AdminUsers />} />
-                                        <Route path="admin/issues" element={<AdminIssues />} />
+                                        {/* Customer Routes (Requieren Login) */}
+                                        <Route element={<ProtectedRoute />}>
+                                            <Route path="checkout" element={<Checkout />} />
+                                            <Route path="profile" element={<Profile />} />
+                                            <Route path="cart" element={<Checkout />} />
+                                            <Route path="issues" element={<Issues />} />
+                                            <Route path="wishlist" element={<Wishlist />} />
+                                        </Route>
+
+                                        {/* Admin Routes (Requieren Rol ADMIN o ENCARGADO) */}
+                                        <Route element={<ProtectedRoute allowedRoles={['ADMIN', 'ENCARGADO']} />}>
+                                            <Route path="admin" element={<AdminPanel />} />
+                                            <Route path="admin/users" element={<AdminUsers />} />
+                                            <Route path="admin/issues" element={<AdminIssues />} />
+                                        </Route>
                                     </Route>
-                                </Route>
-                                <Route path="*" element={<Navigate to="/" replace />} />
-                            </Routes>
-                        </WishlistProvider>
-                    </CartProvider>
-                </AuthProvider>
+                                    
+                                    {/* Catch all - Redirect to Home */}
+                                    <Route path="*" element={<Navigate to="/" replace />} />
+                                </Routes>
+                            </WishlistProvider>
+                        </CartProvider>
+                    </AuthProvider>
+                </ThemeProvider>
             </BrowserRouter>
         </HelmetProvider>
     );

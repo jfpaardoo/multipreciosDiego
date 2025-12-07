@@ -122,7 +122,7 @@ export function Home() {
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white p-4 rounded-lg shadow-sm">
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-between bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border dark:border-gray-700">
                 <div className="relative w-full md:w-96">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
                     <Input
@@ -139,8 +139,8 @@ export function Home() {
                             key={cat}
                             onClick={() => setCategoryFilter(cat)}
                             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${categoryFilter === cat
-                                ? 'bg-black text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                ? 'bg-black dark:bg-white text-white dark:text-black'
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600'
                                 }`}
                         >
                             {cat === 'Todos' ? t('home.filters.all') : cat}
@@ -164,7 +164,7 @@ export function Home() {
                     />
                 </>
             ) : (
-                <div className="text-center py-12 text-gray-500">
+                <div className="text-center py-12 text-gray-500 dark:text-gray-400">
                     <p className="text-xl">{t('home.empty.title')}</p>
                     <p className="mt-2 text-sm">{t('home.empty.subtitle')}</p>
                 </div>

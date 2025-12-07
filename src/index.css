@@ -2,6 +2,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CSS Variables for Theming */
+:root {
+    /* Light theme colors */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-text-primary: #111827;
+    --color-text-secondary: #6b7280;
+    --color-border: #e5e7eb;
+
+    /* Font sizes */
+    --font-base: 1rem;
+    --font-scale: 1;
+}
+
+/* Dark theme */
+:root.dark {
+    --color-bg-primary: #1f2937;
+    --color-bg-secondary: #111827;
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-border: #374151;
+}
+
+/* Font size scales */
+:root.font-small {
+    --font-scale: 0.875;
+}
+
+:root.font-medium {
+    --font-scale: 1;
+}
+
+:root.font-large {
+    --font-scale: 1.125;
+}
+
+/* Apply font scale */
+body {
+    font-size: calc(var(--font-base) * var(--font-scale));
+}
+
+/* Smooth transitions for theme changes */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+
 @layer utilities {
     @keyframes blob {
 
