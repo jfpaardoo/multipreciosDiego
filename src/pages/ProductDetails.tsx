@@ -86,7 +86,7 @@ export function ProductDetails() {
         const userIds = currentReviews
             .map(r => r.cliente_id)
             .filter((id): id is string => !!id);
-        
+
         if (userIds.length === 0) return;
 
         // Remove duplicates
@@ -240,23 +240,25 @@ export function ProductDetails() {
 
                     {!isOutOfStock && (
                         <div className="mt-6">
-                            <ReservationBox 
-                                productId={product.id} 
-                                maxQuantity={product.cantidad_en_tienda} 
+                            <ReservationBox
+                                productId={product.id}
+                                maxQuantity={product.cantidad_en_tienda}
                             />
                         </div>
                     )}
                 </div>
-            </div>            {/* Reviews */}
+            </div>
+
+            {/* Reviews */}
             <div className="space-y-8">
-                <h2 className="text-2xl font-bold">Opiniones de clientes</h2>
-                
+                <h2 className="text-2xl font-bold">{t('product.reviews.title')}</h2>
+
                 <div className="grid md:grid-cols-3 gap-12">
                     {/* Review Form & Summary */}
                     <div className="md:col-span-1">
                         <div className="sticky top-24">
-                            <h3 className="text-lg font-semibold mb-4">Escribir una opinión</h3>
-                            <p className="text-sm text-gray-600 mb-4">Comparte tu experiencia con otros clientes</p>
+                            <h3 className="text-lg font-semibold mb-4">{t('product.reviews.writeReview')}</h3>
+                            <p className="text-sm text-gray-600 mb-4">{t('product.reviews.shareExperience')}</p>
                             <ReviewForm productId={product.id} onReviewAdded={handleReviewAdded} />
                         </div>
                     </div>
@@ -271,9 +273,9 @@ export function ProductDetails() {
                                             <div className="w-8 h-8 bg-gray-200 rounded-full overflow-hidden flex items-center justify-center text-xs font-bold text-gray-600">
                                                 {review.profiles?.nombre?.[0] || 'U'}
                                             </div>
-                                            <span className="font-medium text-gray-900">{review.profiles?.nombre || 'Usuario de Amazon'}</span>
+                                            <span className="font-medium text-gray-900">{review.profiles?.nombre || t('product.reviews.anonymousUser')}</span>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="flex text-yellow-400">
                                                 {[1, 2, 3, 4, 5].map(i => (
@@ -283,20 +285,20 @@ export function ProductDetails() {
                                                     />
                                                 ))}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-900">Revisado en España el {new Date(review.created_at).toLocaleDateString()}</span>
+                                            <span className="text-sm font-bold text-gray-900">{t('product.reviews.reviewedOn', { date: new Date(review.created_at).toLocaleDateString() })}</span>
                                         </div>
-                                        
+
                                         {review.cliente_id && verifiedBuyers.has(review.cliente_id) && (
-                                            <div className="text-sm text-orange-700 font-medium mb-2">Compra verificada</div>
+                                            <div className="text-sm text-orange-700 font-medium mb-2">{t('product.reviews.verified')}</div>
                                         )}
-                                        
+
                                         {review.comentario && (
                                             <p className="text-gray-700 leading-relaxed">{review.comentario}</p>
                                         )}
-                                        
+
                                         <div className="mt-4">
                                             <button className="text-sm text-gray-500 border px-4 py-1 rounded hover:bg-gray-50">
-                                                Útil
+                                                {t('product.reviews.helpful')}
                                             </button>
                                         </div>
                                     </div>
@@ -335,7 +337,7 @@ export function ProductDetails() {
                                             </div>
                                             <span className="font-medium text-gray-900">{review.user}</span>
                                         </div>
-                                        
+
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="flex text-yellow-400">
                                                 {[1, 2, 3, 4, 5].map(i => (
@@ -345,16 +347,16 @@ export function ProductDetails() {
                                                     />
                                                 ))}
                                             </div>
-                                            <span className="text-sm font-bold text-gray-900">Revisado en España el {review.date}</span>
+                                            <span className="text-sm font-bold text-gray-900">{t('product.reviews.reviewedOn', { date: review.date })}</span>
                                         </div>
-                                        
-                                        <div className="text-sm text-orange-700 font-medium mb-2">Compra verificada</div>
-                                        
+
+                                        <div className="text-sm text-orange-700 font-medium mb-2">{t('product.reviews.verified')}</div>
+
                                         <p className="text-gray-700 leading-relaxed">{review.comment}</p>
-                                        
+
                                         <div className="mt-4">
                                             <button className="text-sm text-gray-500 border px-4 py-1 rounded hover:bg-gray-50">
-                                                Útil
+                                                {t('product.reviews.helpful')}
                                             </button>
                                         </div>
                                     </div>
@@ -362,9 +364,7 @@ export function ProductDetails() {
                             </div>
                         )}
                     </div>
-                ) : (
-                    <p className="text-gray-500">{t('product.reviews.empty')}</p>
-                )}
+                </div>
             </div>
 
             {/* Related Products */}

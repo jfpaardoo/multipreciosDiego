@@ -42,7 +42,13 @@
         "tempOutOfStock": "Este producto está agotado temporalmente.",
         "reviews": {
             "title": "Valoraciones",
-            "empty": "No hay valoraciones para este producto aún."
+            "empty": "No hay valoraciones para este producto aún.",
+            "writeReview": "Escribir una opinión",
+            "shareExperience": "Comparte tu experiencia con otros clientes",
+            "anonymousUser": "Usuario de Amazon",
+            "reviewedOn": "Revisado en España el {{date}}",
+            "verified": "Compra verificada",
+            "helpful": "Útil"
         },
         "related": "Productos relacionados",
         "wishlist": {

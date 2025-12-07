@@ -42,7 +42,13 @@
         "tempOutOfStock": "Produktu hau agortuta dago aldi baterako.",
         "reviews": {
             "title": "Balorazioak",
-            "empty": "Oraindik ez dago baloraziorik produktu honentzat."
+            "empty": "Oraindik ez dago baloraziorik produktu honentzat.",
+            "writeReview": "Idatzi iritzi bat",
+            "shareExperience": "Partekatu zure esperientzia beste bezero batzuekin",
+            "anonymousUser": "Amazon erabiltzailea",
+            "reviewedOn": "Espainian berrikusita {{date}} datan",
+            "verified": "Erosketa egiaztatua",
+            "helpful": "Lagungarria"
         },
         "related": "Erlazionatutako produktuak",
         "wishlist": {

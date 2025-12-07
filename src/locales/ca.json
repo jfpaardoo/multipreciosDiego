@@ -42,7 +42,13 @@
         "tempOutOfStock": "Aquest producte està esgotat temporalment.",
         "reviews": {
             "title": "Valoracions",
-            "empty": "No hi ha valoracions per a aquest producte encara."
+            "empty": "No hi ha valoracions per a aquest producte encara.",
+            "writeReview": "Escriure una opinió",
+            "shareExperience": "Comparteix la teva experiència amb altres clients",
+            "anonymousUser": "Usuari d'Amazon",
+            "reviewedOn": "Revisat a Espanya el {{date}}",
+            "verified": "Compra verificada",
+            "helpful": "Útil"
         },
         "related": "Productes relacionats",
         "wishlist": {

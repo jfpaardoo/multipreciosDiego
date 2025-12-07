@@ -42,7 +42,13 @@
         "tempOutOfStock": "This product is temporarily out of stock.",
         "reviews": {
             "title": "Reviews",
-            "empty": "No reviews yet for this product."
+            "empty": "No reviews yet for this product.",
+            "writeReview": "Write a Review",
+            "shareExperience": "Share your experience with other customers",
+            "anonymousUser": "Amazon User",
+            "reviewedOn": "Reviewed in Spain on {{date}}",
+            "verified": "Verified Purchase",
+            "helpful": "Helpful"
         },
         "related": "Related Products",
         "wishlist": {
