@@ -16,6 +16,7 @@ export interface Profile {
     codigo_postal: string | null;
     dni: string | null;
     rol: UserRole;
+    avatar_url: string | null;
     created_at: string;
 }
 

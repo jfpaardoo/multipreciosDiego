@@ -168,7 +168,7 @@ export function AdminPanel() {
     const fetchIssues = async () => {
         const { data, error } = await supabase
             .from('incidencias')
-            .select('*, profiles(nombre, apellidos)')
+            .select('*, profiles(nombre, apellidos, avatar_url)')
             .order('created_at', { ascending: false });
 
         if (!error) setIssues(data || []);
@@ -649,12 +649,23 @@ export function AdminPanel() {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {issues.map((issue) => (
                                     <tr key={issue.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <button
                                                 onClick={() => navigateToUser((issue as any).profiles?.nombre, (issue as any).profiles?.apellidos)}
-                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                                className="flex items-center gap-3 text-blue-600 hover:text-blue-900 hover:underline"
                                             >
-                                                {(issue as any).profiles?.nombre} {(issue as any).profiles?.apellidos || 'Cliente'}
+                                                {(issue as any).profiles?.avatar_url ? (
+                                                    <img
+                                                        src={(issue as any).profiles.avatar_url}
+                                                        alt={(issue as any).profiles?.nombre || 'Usuario'}
+                                                        className="h-8 w-8 rounded-full object-cover flex-shrink-0"
+                                                    />
+                                                ) : (
+                                                    <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-semibold flex-shrink-0">
+                                                        {(issue as any).profiles?.nombre ? (issue as any).profiles.nombre.charAt(0).toUpperCase() : 'U'}
+                                                    </div>
+                                                )}
+                                                <span className="text-sm">{(issue as any).profiles?.nombre} {(issue as any).profiles?.apellidos || 'Cliente'}</span>
                                             </button>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">

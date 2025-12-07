@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { PedidoCliente, Incidencia, Reserva, LineaPedido } from '../types';
 import { Button } from '../components/ui/button';
-import { Package, AlertCircle, Calendar, X, User, Pencil } from 'lucide-react';
+import { Package, AlertCircle, Calendar, X, User, Pencil, Camera } from 'lucide-react';
 
 export function Profile() {
     const { profile, isAdmin, signOut } = useAuth();
@@ -18,6 +18,7 @@ export function Profile() {
     // Edit Profile State
     const [isEditing, setIsEditing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [uploadingPhoto, setUploadingPhoto] = useState(false);
     const [formData, setFormData] = useState({
         nombre: '',
         apellidos: '',
@@ -117,6 +118,81 @@ export function Profile() {
         setSelectedOrder(null);
         setOrderItems([]);
         setIsEditingOrder(false);
+    };
+
+    const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file || !profile) return;
+
+        // Validar tipo de archivo
+        if (!file.type.startsWith('image/')) {
+            alert('Por favor selecciona una imagen válida');
+            return;
+        }
+
+        // Validar tamaño (máximo 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('La imagen no debe superar los 5MB');
+            return;
+        }
+
+        setUploadingPhoto(true);
+        try {
+            // Subir nueva foto
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+            const filePath = `${profile.id}/${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('avatars')
+                .upload(filePath, file, {
+                    upsert: false
+                });
+
+            if (uploadError) {
+                console.error('Upload error:', uploadError);
+                throw uploadError;
+            }
+
+            // Obtener URL pública
+            const { data: { publicUrl } } = supabase.storage
+                .from('avatars')
+                .getPublicUrl(filePath);
+
+            console.log('Public URL:', publicUrl);
+
+            // Actualizar perfil con nueva URL
+            const { error: updateError } = await supabase
+                .from('profiles')
+                .update({ avatar_url: publicUrl })
+                .eq('id', profile.id);
+
+            if (updateError) {
+                console.error('Update error:', updateError);
+                throw updateError;
+            }
+
+            // Eliminar foto anterior si existe (después de subir la nueva)
+            if (profile.avatar_url) {
+                try {
+                    const urlParts = profile.avatar_url.split('/avatars/');
+                    if (urlParts.length > 1) {
+                        const oldFilePath = urlParts[1];
+                        await supabase.storage.from('avatars').remove([oldFilePath]);
+                    }
+                } catch (deleteError) {
+                    console.log('No se pudo eliminar la foto anterior:', deleteError);
+                    // No lanzamos error aquí, la nueva foto ya está guardada
+                }
+            }
+
+            window.location.reload();
+        } catch (error: any) {
+            console.error('Error uploading photo:', error);
+            alert(`Error al subir la foto: ${error.message || 'Inténtalo de nuevo'}`);
+        } finally {
+            setUploadingPhoto(false);
+        }
     };
 
     const handleUpdateProfile = async (e: React.FormEvent) => {
@@ -287,7 +363,7 @@ export function Profile() {
         <div className="space-y-8">
             {/* Profile Header */}
             <div className="bg-white p-6 rounded-lg shadow-sm">
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-6">
                     <h1 className="text-2xl font-bold flex items-center gap-2">
                         <User className="h-6 w-6" />
                         Mi Perfil
@@ -297,6 +373,45 @@ export function Profile() {
                         Editar Perfil
                     </Button>
                 </div>
+                
+                {/* Profile Photo Section */}
+                <div className="flex items-center gap-6 mb-6 pb-6 border-b">
+                    <div className="relative">
+                        {profile.avatar_url ? (
+                            <img
+                                src={profile.avatar_url}
+                                alt={profile.nombre || 'Usuario'}
+                                className="h-24 w-24 rounded-full object-cover border-2 border-gray-200"
+                            />
+                        ) : (
+                            <div className="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-3xl font-semibold border-2 border-gray-300">
+                                {profile.nombre ? profile.nombre.charAt(0).toUpperCase() : 'U'}
+                            </div>
+                        )}
+                        <label
+                            htmlFor="photo-upload"
+                            className="absolute bottom-0 right-0 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full p-2 cursor-pointer shadow-lg transition-colors"
+                        >
+                            <Camera className="h-4 w-4" />
+                            <input
+                                id="photo-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handlePhotoUpload}
+                                disabled={uploadingPhoto}
+                                className="hidden"
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <h3 className="font-semibold text-lg">{profile.nombre} {profile.apellidos}</h3>
+                        <p className="text-sm text-gray-500">{profile.email}</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                            {uploadingPhoto ? 'Subiendo foto...' : 'Click en el ícono de cámara para cambiar tu foto'}
+                        </p>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
                         <p className="text-gray-500">Nombre</p>

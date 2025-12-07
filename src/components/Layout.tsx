@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { Link, Outlet, useNavigate, useLocation  } from 'react-router-dom';
-import { ShoppingCart, User, Menu, Instagram, Facebook, Store } from 'lucide-react';
+import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { ShoppingCart, User, Menu, Instagram, Facebook, Store, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
 import { Button } from './ui/button';
 
 
 export function Layout() {
     const { user, profile, signOut, isAdmin, isEncargado } = useAuth();
     const { itemCount } = useCart();
+    const { wishlist } = useWishlist();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -81,11 +83,32 @@ export function Layout() {
                             </Link>
                         )}
 
+                        {!isAdmin && user && (
+                            <Link to="/wishlist">
+                                <Button variant="ghost" size="icon" className="relative">
+                                    <Heart className="h-5 w-5" />
+                                    {wishlist.length > 0 && (
+                                        <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
+                                            {wishlist.length}
+                                        </span>
+                                    )}
+                                </Button>
+                            </Link>
+                        )}
+
                         {/* User Menu */}
                         {user ? (
                             <div className="relative group">
                                 <Button variant="ghost" className="gap-2 h-auto py-2 px-3">
-                                    <User className="h-5 w-5" />
+                                    {profile?.avatar_url ? (
+                                        <img
+                                            src={profile.avatar_url}
+                                            alt={profile.nombre || 'Usuario'}
+                                            className="h-8 w-8 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <User className="h-5 w-5" />
+                                    )}
                                     <span className="hidden md:inline text-sm font-medium">
                                         {profile?.nombre || user.email?.split('@')[0]}
                                     </span>
@@ -217,6 +240,11 @@ export function Layout() {
                         </div>
                     )}
                     <div className={`${!isAdmin ? 'mt-8 pt-8 border-t border-gray-200' : ''} text-center text-sm text-gray-500`}>
+                        <div className="flex justify-center gap-6 mb-4">
+                            <Link to="/privacidad" className="hover:underline">Política de Privacidad</Link>
+                            <Link to="/aviso-legal" className="hover:underline">Aviso Legal</Link>
+                            <Link to="/terminos" className="hover:underline">Términos y Condiciones</Link>
+                        </div>
                         © {new Date().getFullYear()} Multiprecios Diego. Todos los derechos reservados.
                     </div>
                 </div>

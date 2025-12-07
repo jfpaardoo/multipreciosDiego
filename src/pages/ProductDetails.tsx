@@ -4,15 +4,17 @@ import { supabase } from '../lib/supabase';
 import { Product, Valoracion } from '../types';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
-import { Star, Minus, Plus, ArrowLeft } from 'lucide-react';
+import { Star, Minus, Plus, ArrowLeft, Heart } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
 import { ReviewForm } from '../components/ReviewForm';
 import { ReservationBox } from '../components/ReservationBox';
+import { useWishlist } from '../context/WishlistContext';
 
 export function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { addItem } = useCart();
+    const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
     const [product, setProduct] = useState<Product | null>(null);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -177,51 +179,27 @@ export function ProductDetails() {
                             </span>
                         </div>
 
-                        <div className="prose text-gray-500">
-                            <p>{product.descripcion}</p>
-                        </div>
-
-                        <div className="text-3xl font-bold text-gray-900">
-                            {product.precio_venta.toFixed(2)} €
-                        </div>
-
-                        <div className="text-sm text-gray-500">
-                            Referencia: {product.referencia}
-                        </div>
-
-                        {/* Quantity & Add to Cart */}
-                        <div className="space-y-4 pt-6 border-t">
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center border rounded-md">
-                                    <button
-                                        className="p-2 hover:bg-gray-100"
-                                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                        disabled={quantity <= 1}
-                                    >
-                                        <Minus className="h-4 w-4" />
-                                    </button>
-                                    <span className="w-12 text-center font-medium">{quantity}</span>
-                                    <button
-                                        className="p-2 hover:bg-gray-100"
-                                        onClick={() => setQuantity(Math.min(product.cantidad_en_tienda, quantity + 1))}
-                                        disabled={quantity >= product.cantidad_en_tienda}
-                                    >
-                                        <Plus className="h-4 w-4" />
-                                    </button>
-                                </div>
-                                <span className="text-sm text-gray-500">
-                                    {product.cantidad_en_tienda} disponibles
-                                </span>
-                            </div>
-
+                        <div className="flex gap-4 w-full md:w-auto">
                             <Button
                                 size="lg"
-                                className="w-full md:w-auto min-w-[200px]"
+                                className="flex-1 md:w-auto min-w-[200px]"
                                 disabled={isOutOfStock}
                                 onClick={handleAddToCart}
                             >
                                 {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
                             </Button>
+
+                            <button
+                                onClick={() => product && (isInWishlist(product.id) ? removeFromWishlist(product.id) : addToWishlist(product))}
+                                className={`p-3 rounded-lg border transition-colors ${product && isInWishlist(product.id)
+                                        ? 'bg-red-50 border-red-200 text-red-500'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-500'
+                                    }`}
+                                title={product && isInWishlist(product.id) ? "Quitar de la lista de deseos" : "Añadir a la lista de deseos"}
+                            >
+                                <Heart className={`h-6 w-6 ${product && isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                            </button>
+                        </div>
                         {isOutOfStock && (
                             <p className="text-red-500 font-medium">Este producto está agotado temporalmente.</p>
                         )}
