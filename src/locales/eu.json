@@ -139,6 +139,18 @@
             "contact": "Harremanetan jarri"
         }
     },
+    "changePassword": {
+        "title": "Pasahitza Aldatu",
+        "currentPassword": "Oraingo Pasahitza",
+        "newPassword": "Pasahitz Berria",
+        "confirmPassword": "Berretsi Pasahitz Berria",
+        "button": "Pasahitza Aldatu",
+        "updating": "Eguneratzen...",
+        "success": "Pasahitza behar bezala eguneratu da",
+        "errorMismatch": "Pasahitzak ez datoz bat",
+        "errorLength": "Pasahitzak gutxienez 6 karaktere izan behar ditu",
+        "errorGeneric": "Errorea pasahitza aldatzean"
+    },
     "legal": {
         "privacy": {
             "title": "Pribatutasun Politika",

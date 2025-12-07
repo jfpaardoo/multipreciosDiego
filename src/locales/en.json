@@ -139,6 +139,18 @@
             "contact": "Contact us"
         }
     },
+    "changePassword": {
+        "title": "Change Password",
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm New Password",
+        "button": "Change Password",
+        "updating": "Updating...",
+        "success": "Password updated successfully",
+        "errorMismatch": "Passwords do not match",
+        "errorLength": "Password must be at least 6 characters",
+        "errorGeneric": "Error changing password"
+    },
     "legal": {
         "privacy": {
             "title": "Privacy Policy",
@@ -245,7 +257,15 @@
             }
         },
         "filters": {
-            "all": "All"
+            "all": "All",
+            "inStock": "In Stock Only",
+            "priceRange": "Price Range"
+        },
+        "sort": {
+            "newest": "Newest",
+            "name": "Name A-Z",
+            "priceAsc": "Price: Low to High",
+            "priceDesc": "Price: High to Low"
         },
         "empty": {
             "title": "No products found.",

@@ -7,6 +7,7 @@ import { ProductCard } from '../components/ProductCard';
 import { Input } from '../components/ui/Input';
 import { Pagination } from '../components/ui/Pagination';
 import { ReviewsSection } from '../components/ReviewsSection';
+import { ProductCardSkeleton } from '../components/ui/SkeletonLoader';
 import { Search } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 12;
@@ -65,7 +66,26 @@ export function Home() {
     );
 
     if (loading) {
-        return <div className="flex justify-center py-12">{t('common.loading')}</div>;
+        return (
+            <div className="space-y-8">
+                <SEO
+                    title={t('home.title')}
+                    description={t('home.hero.subtitle', { interpolation: { escapeValue: false } }).replace(/<[^>]*>/g, '')}
+                />
+                {/* Hero Skeleton */}
+                <div className="h-96 bg-gray-200 dark:bg-gray-700 rounded-3xl animate-pulse"></div>
+
+                {/* Filters Skeleton */}
+                <div className="h-16 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
+
+                {/* Products Grid Skeleton */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {Array.from({ length: 8 }).map((_, i) => (
+                        <ProductCardSkeleton key={i} />
+                    ))}
+                </div>
+            </div>
+        );
     }
 
     return (

@@ -139,6 +139,18 @@
             "contact": "Contactar"
         }
     },
+    "changePassword": {
+        "title": "Cambiar Contraseña",
+        "currentPassword": "Contraseña Actual",
+        "newPassword": "Nueva Contraseña",
+        "confirmPassword": "Confirmar Nueva Contraseña",
+        "button": "Cambiar Contraseña",
+        "updating": "Actualizando...",
+        "success": "Contraseña actualizada correctamente",
+        "errorMismatch": "Las contraseñas no coinciden",
+        "errorLength": "La contraseña debe tener al menos 6 caracteres",
+        "errorGeneric": "Error al cambiar la contraseña"
+    },
     "legal": {
         "privacy": {
             "title": "Política de Privacidad",
@@ -245,7 +257,15 @@
             }
         },
         "filters": {
-            "all": "Todos"
+            "all": "Todos",
+            "inStock": "Solo en stock",
+            "priceRange": "Rango de precio"
+        },
+        "sort": {
+            "newest": "Más recientes",
+            "name": "Nombre A-Z",
+            "priceAsc": "Precio: Menor a Mayor",
+            "priceDesc": "Precio: Mayor a Menor"
         },
         "empty": {
             "title": "No se encontraron productos.",
