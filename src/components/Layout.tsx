@@ -85,7 +85,15 @@ export function Layout() {
                         {user ? (
                             <div className="relative group">
                                 <Button variant="ghost" className="gap-2 h-auto py-2 px-3">
-                                    <User className="h-5 w-5" />
+                                    {profile?.avatar_url ? (
+                                        <img
+                                            src={profile.avatar_url}
+                                            alt={profile.nombre || 'Usuario'}
+                                            className="h-8 w-8 rounded-full object-cover"
+                                        />
+                                    ) : (
+                                        <User className="h-5 w-5" />
+                                    )}
                                     <span className="hidden md:inline text-sm font-medium">
                                         {profile?.nombre || user.email?.split('@')[0]}
                                     </span>

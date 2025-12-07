@@ -107,8 +107,21 @@ export function AdminUsers() {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {filteredUsers.map((user) => (
                                     <tr key={user.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
-                                            {user.nombre} {user.apellidos || ''}
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex items-center gap-3">
+                                                {user.avatar_url ? (
+                                                    <img
+                                                        src={user.avatar_url}
+                                                        alt={`${user.nombre || 'Usuario'}`}
+                                                        className="h-10 w-10 rounded-full object-cover flex-shrink-0"
+                                                    />
+                                                ) : (
+                                                    <div className="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold flex-shrink-0">
+                                                        {user.nombre ? user.nombre.charAt(0).toUpperCase() : 'U'}
+                                                    </div>
+                                                )}
+                                                <span className="text-sm text-gray-900">{user.nombre} {user.apellidos || ''}</span>
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
                                             {user.email ? (

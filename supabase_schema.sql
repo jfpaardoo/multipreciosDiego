@@ -59,6 +59,7 @@ create table public.profiles (
   direccion text,
   codigo_postal text,
   dni text,
+  avatar_url text,
   rol user_role default 'CLIENTE'::user_role,
   created_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
