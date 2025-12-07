@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import { SEO } from '../components/SEO';
 import { supabase } from '../lib/supabase';
 import { Product } from '../types';
 import { ProductCard } from '../components/ProductCard';
 import { Input } from '../components/ui/Input';
 import { Pagination } from '../components/ui/Pagination';
+import { ReviewsSection } from '../components/ReviewsSection';
 import { Search } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 12;
@@ -66,6 +68,10 @@ export function Home() {
 
     return (
         <div className="space-y-8">
+            <SEO
+                title="Inicio"
+                description="Bienvenido a Multiprecios Diego. Encuentra electrónica, hogar, papelería y más al mejor precio en Puerto Serrano."
+            />
             {/* Hero Section */}
             <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-cyan-500 to-teal-500 rounded-3xl p-1">
                 <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-3xl p-8 md:p-16">
@@ -162,6 +168,9 @@ export function Home() {
                     <p className="mt-2 text-sm">Prueba a ajustar los filtros o vuelve más tarde.</p>
                 </div>
             )}
+
+            {/* Reviews Section */}
+            <ReviewsSection />
         </div>
     );
 }

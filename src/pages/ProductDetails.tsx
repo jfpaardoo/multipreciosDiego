@@ -4,13 +4,15 @@ import { supabase } from '../lib/supabase';
 import { Product, Valoracion } from '../types';
 import { useCart } from '../context/CartContext';
 import { Button } from '../components/ui/button';
-import { Star, Minus, Plus, ArrowLeft } from 'lucide-react';
+import { Star, Minus, Plus, ArrowLeft, Heart } from 'lucide-react';
 import { ProductCard } from '../components/ProductCard';
+import { useWishlist } from '../context/WishlistContext';
 
 export function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { addItem } = useCart();
+    const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
 
     const [product, setProduct] = useState<Product | null>(null);
     const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
@@ -151,14 +153,27 @@ export function ProductDetails() {
                             </span>
                         </div>
 
-                        <Button
-                            size="lg"
-                            className="w-full md:w-auto min-w-[200px]"
-                            disabled={isOutOfStock}
-                            onClick={handleAddToCart}
-                        >
-                            {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
-                        </Button>
+                        <div className="flex gap-4 w-full md:w-auto">
+                            <Button
+                                size="lg"
+                                className="flex-1 md:w-auto min-w-[200px]"
+                                disabled={isOutOfStock}
+                                onClick={handleAddToCart}
+                            >
+                                {isOutOfStock ? 'Agotado' : 'Añadir al carrito'}
+                            </Button>
+
+                            <button
+                                onClick={() => product && (isInWishlist(product.id) ? removeFromWishlist(product.id) : addToWishlist(product))}
+                                className={`p-3 rounded-lg border transition-colors ${product && isInWishlist(product.id)
+                                        ? 'bg-red-50 border-red-200 text-red-500'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-red-500'
+                                    }`}
+                                title={product && isInWishlist(product.id) ? "Quitar de la lista de deseos" : "Añadir a la lista de deseos"}
+                            >
+                                <Heart className={`h-6 w-6 ${product && isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                            </button>
+                        </div>
                         {isOutOfStock && (
                             <p className="text-red-500 font-medium">Este producto está agotado temporalmente.</p>
                         )}
