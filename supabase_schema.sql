@@ -280,6 +280,16 @@ create policy "Users can view their own reservations" on public.reservas for sel
   auth.uid() = cliente_id or exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
 );
 create policy "Users can insert their own reservations" on public.reservas for insert with check (auth.uid() = cliente_id);
+
+-- Valoraciones policies
+create policy "Valoraciones are viewable by everyone" on public.valoraciones for select using (true);
+create policy "Users can insert their own valoraciones" on public.valoraciones for insert with check (auth.uid() = cliente_id);
+create policy "Users can update their own valoraciones" on public.valoraciones for update using (auth.uid() = cliente_id);
+create policy "Users can delete their own valoraciones" on public.valoraciones for delete using (auth.uid() = cliente_id);
+create policy "Admins/Encargados can delete any valoracion" on public.valoraciones for delete using (
+  exists (select 1 from public.profiles where id = auth.uid() and rol in ('ADMIN', 'ENCARGADO'))
+);
+
 -- Insert categorias
 insert into public.categorias (nombre, descripcion) values
 ('Electrónica', 'Dispositivos y accesorios electrónicos'),
@@ -533,6 +543,35 @@ select
   'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?w=500&q=80',
   id 
 from public.categorias where nombre = 'Papelería';
+
+-- Insert dummy reviews
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 5, '¡Excelente producto! Muy recomendado.'
+from public.productos where referencia = 'REF001';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 4, 'Buena calidad, aunque el envío tardó un poco.'
+from public.productos where referencia = 'REF001';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 5, 'Precioso, queda genial en el salón.'
+from public.productos where referencia = 'REF002';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 3, 'Es bonito pero suelta algunas hojas.'
+from public.productos where referencia = 'REF002';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 5, 'Las mejores sartenes que he tenido.'
+from public.productos where referencia = 'REF003';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 4, 'Muy buena iluminación y diseño moderno.'
+from public.productos where referencia = 'REF004';
+
+insert into public.valoraciones (producto_id, estrellas, comentario)
+select id, 5, 'Perfecta para el colegio, muy resistente.'
+from public.productos where referencia = 'REF005';
 
 -- TRIGGERS
 -- Function to handle new user creation
