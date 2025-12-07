@@ -260,22 +260,22 @@ export function Layout() {
             {showLogoutModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Confirmación</h2>
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('layout.logoutModal.title')}</h2>
                         <p className="text-gray-600 mb-6 text-center">
-                            ¿Estás seguro de que quieres cerrar sesión?
+                            {t('layout.logoutModal.message')}
                         </p>
                         <div className="flex gap-3 justify-center">
                             <Button
                                 variant="ghost"
                                 onClick={() => setShowLogoutModal(false)}
                             >
-                                Cancelar
+                                {t('layout.logoutModal.cancel')}
                             </Button>
                             <Button
                                 onClick={handleSignOut}
                                 className="bg-red-600 hover:bg-red-700 text-white"
                             >
-                                Sí, cerrar
+                                {t('layout.logoutModal.confirm')}
                             </Button>
                         </div>
                     </div>
