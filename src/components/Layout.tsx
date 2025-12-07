@@ -224,7 +224,7 @@ export function Layout() {
                                 <p>
                                     <span className="font-medium">{t('layout.footer.address')}:</span>{' '}
                                     <a
-                                        href="https://www.google.com/maps/search/?api=1&query=Calle+Ronda+67,+Puerto+Serrano+(Cádiz)"
+                                        href="https://maps.app.goo.gl/XB5x4FzYAsjMRrjC9"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="hover:underline hover:text-blue-600"
