@@ -36,7 +36,7 @@ export function Layout() {
                     {/* Logo */}
                     {/* Logo */}
                     <Link to="/" className="text-xl font-bold tracking-tight relative z-10 flex items-center gap-2">
-                        <Store className="h-6 w-6" />
+                        <img src="/logo.png" alt="MD Logo" className="h-14 w-auto object-contain" />
                         Multiprecios Diego
                     </Link>
 
@@ -118,7 +118,7 @@ export function Layout() {
                                         <div className="px-4 py-2 text-sm text-gray-500 border-b">
                                             {profile?.nombre || user.email}
                                         </div>
-                                        {!isAdmin && (
+                                        {!isAdmin && location.pathname !== '/profile' && (
                                             <>
                                                 <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                     Mi Perfil
@@ -128,7 +128,7 @@ export function Layout() {
                                                 </Link>
                                             </>
                                         )}
-                                        {isAdmin && (
+                                        {isAdmin && location.pathname !== '/profile' && (
                                             <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                                 Mi Perfil
                                             </Link>
