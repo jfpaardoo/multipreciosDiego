@@ -30,6 +30,11 @@ export function Home() {
         setCurrentPage(1);
     }, [searchTerm, categoryFilter]);
 
+    // Scroll to top when page changes
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
+
     const fetchProducts = async () => {
         try {
             const { data, error } = await supabase
