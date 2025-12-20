@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 export function AdminProducts() {
     const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
     useEffect(() => {
         fetchProducts();
@@ -24,16 +26,22 @@ export function AdminProducts() {
     };
 
 
+    const openDeleteModal = (id: string) => {
+        setProductToDelete(id);
+        setShowDeleteModal(true);
+    };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    const handleDelete = async () => {
+        if (!productToDelete) return;
 
         const { error } = await supabase
             .from('productos')
             .delete()
-            .eq('id', id);
+            .eq('id', productToDelete);
 
         if (!error) fetchProducts();
+        setShowDeleteModal(false);
+        setProductToDelete(null);
     };
 
     return (
@@ -84,7 +92,7 @@ export function AdminProducts() {
                                     <button onClick={() => navigate(`/admin/products/${product.id}`)} className="text-indigo-600 hover:text-indigo-900 mr-4">
                                         <Edit className="h-4 w-4" />
                                     </button>
-                                    <button onClick={() => handleDelete(product.id)} className="text-red-600 hover:text-red-900">
+                                    <button onClick={() => openDeleteModal(product.id)} className="text-red-600 hover:text-red-900">
                                         <Trash className="h-4 w-4" />
                                     </button>
                                 </td>
@@ -93,6 +101,35 @@ export function AdminProducts() {
                     </tbody>
                 </table>
             </div>
+
+            {/* Delete Product Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar producto</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            ¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setProductToDelete(null);
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                onClick={handleDelete}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Eliminar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
