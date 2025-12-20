@@ -39,7 +39,6 @@
 - [Despliegue](#-despliegue)
 - [Documentación Relacionada](#-documentación-relacionada)
 - [Contribución](#-contribución)
-- [Licencia](#-licencia)
 
 ---
 
