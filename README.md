@@ -290,7 +290,7 @@ multipreciosDiego/
 
 ### Diagrama Entidad-Relación
 
-![Diagrama Entidad-Relación](public/er_diagram.png)
+![Diagrama Entidad-Relación](docs/diagramas/DiagramaColores4.png)
 
 
 ---
