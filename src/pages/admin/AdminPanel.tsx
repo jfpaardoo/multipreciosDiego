@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../lib/supabase';
 import { PedidoCliente, EstadoPedidoCliente, Product, Categoria, Incidencia, Reserva, EstadoReserva } from '../../types';
 import { Button } from '../../components/ui/button';
@@ -8,6 +9,7 @@ import { Plus, X, Search } from 'lucide-react';
 
 export function AdminPanel() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Orders state
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
@@ -114,18 +116,31 @@ export function AdminPanel() {
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            // Extract only the fields that belong to the productos table
+            const productData = {
+                nombre: currentProduct.nombre,
+                referencia: currentProduct.referencia,
+                descripcion: currentProduct.descripcion,
+                precio_venta: currentProduct.precio_venta,
+                precio_por_mayor: currentProduct.precio_por_mayor,
+                cantidad_en_tienda: currentProduct.cantidad_en_tienda,
+                categoria_id: currentProduct.categoria_id,
+                imagen_producto: currentProduct.imagen_producto,
+                activo: currentProduct.activo ?? true,
+            };
+
             if (currentProduct.id) {
                 // Update
                 const { error } = await supabase
                     .from('productos')
-                    .update(currentProduct)
+                    .update(productData)
                     .eq('id', currentProduct.id);
                 if (error) throw error;
             } else {
                 // Create
                 const { error } = await supabase
                     .from('productos')
-                    .insert([{ ...currentProduct, referencia: currentProduct.referencia || `REF${Date.now()}` }]);
+                    .insert([{ ...productData, referencia: productData.referencia || `REF${Date.now()}` }]);
                 if (error) throw error;
             }
             setIsEditing(false);
@@ -133,7 +148,6 @@ export function AdminPanel() {
             fetchProducts();
         } catch (error) {
             console.error('Error saving product:', error);
-            alert('Error al guardar el producto');
         }
     };
 
@@ -204,14 +218,14 @@ export function AdminPanel() {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="bg-white border-b px-6 py-4">
-                <h1 className="text-2xl font-bold text-gray-900">Gestión del negocio</h1>
+            <div className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-6 py-4">
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('admin.title')}</h1>
             </div>
 
             {/* ===== ORDERS SECTION ===== */}
-            <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">Gestión de pedidos</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900">
+                <div className="px-6 py-4 border-b dark:border-gray-700">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('admin.orders.title')}</h2>
                 </div>
                 <div className="p-6">
                     <div className="mb-4">
@@ -228,42 +242,42 @@ export function AdminPanel() {
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-900">
                                 <tr>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nº pedido
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.orderNumber')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Cliente
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.client')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Estado
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.status')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Pago
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.payment')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Método de pago
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.paymentMethod')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Fecha
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.date')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tipo
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.type')}
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {filteredOrders.map((order) => (
-                                    <tr key={order.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                    <tr key={order.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white text-center">
                                             {order.id.slice(0, 8).toUpperCase()}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white text-center">
                                             <button
                                                 onClick={() => navigateToUser((order as any).profiles?.nombre, (order as any).profiles?.apellidos)}
-                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                                className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
                                             >
                                                 {(order as any).profiles?.nombre} {(order as any).profiles?.apellidos || ''}
                                             </button>
@@ -272,7 +286,7 @@ export function AdminPanel() {
                                             <select
                                                 value={order.estado}
                                                 onChange={(e) => updateStatus(order.id, e.target.value as EstadoPedidoCliente)}
-                                                className="text-xs px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-indigo-500"
+                                                className="text-xs px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:text-white"
                                             >
                                                 <option value="EN_PREPARACION">En preparación</option>
                                                 <option value="ENVIADO">Enviado</option>
@@ -287,10 +301,10 @@ export function AdminPanel() {
                                                 {order.pagado ? 'Pagado' : 'Pendiente'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {order.metodo_pago}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {new Date(order.fecha_hora_pedido).toLocaleDateString('es-ES', {
                                                 day: '2-digit',
                                                 month: '2-digit',
@@ -299,7 +313,7 @@ export function AdminPanel() {
                                                 minute: '2-digit'
                                             })}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {getTipoLabel(order.a_domicilio)}
                                         </td>
                                     </tr>
@@ -311,9 +325,9 @@ export function AdminPanel() {
             </div>
 
             {/* ===== RESERVATIONS SECTION ===== */}
-            <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">Gestión de reservas</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900">
+                <div className="px-6 py-4 border-b dark:border-gray-700">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('admin.reservations.title')}</h2>
                 </div>
                 <div className="p-6">
                     <div className="mb-4">
@@ -330,50 +344,50 @@ export function AdminPanel() {
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-900">
                                 <tr>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Código
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.reservations.code')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Cliente
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.client')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Producto
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.reservations.product')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Cantidad
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.reservations.quantity')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Fecha
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.date')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Estado
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.status')}
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {filteredReservations.map((reservation) => (
-                                    <tr key={reservation.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                    <tr key={reservation.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white text-center">
                                             {reservation.codigo}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white text-center">
                                             <button
                                                 onClick={() => navigateToUser((reservation as any).profiles?.nombre, (reservation as any).profiles?.apellidos)}
-                                                className="text-blue-600 hover:text-blue-900 hover:underline"
+                                                className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
                                             >
                                                 {(reservation as any).profiles?.nombre} {(reservation as any).profiles?.apellidos || ''}
                                             </button>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white text-center">
                                             {(reservation as any).productos?.nombre || '-'}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white text-center">
                                             {reservation.cantidad}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {new Date(reservation.fecha_hora_reserva).toLocaleDateString('es-ES', {
                                                 day: '2-digit',
                                                 month: '2-digit',
@@ -386,7 +400,7 @@ export function AdminPanel() {
                                             <select
                                                 value={reservation.estado}
                                                 onChange={(e) => updateReservationStatus(reservation.id, e.target.value as EstadoReserva)}
-                                                className="text-xs px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-indigo-500"
+                                                className="text-xs px-2 py-1 rounded-full border-none focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:text-white"
                                             >
                                                 <option value="PENDIENTE">Pendiente</option>
                                                 <option value="PAGADA">Pagada</option>
@@ -397,7 +411,7 @@ export function AdminPanel() {
                                 ))}
                                 {filteredReservations.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                                             No hay reservas.
                                         </td>
                                     </tr>
@@ -409,9 +423,9 @@ export function AdminPanel() {
             </div>
 
             {/* ===== PRODUCTS SECTION ===== */}
-            <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">Gestión de productos</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900">
+                <div className="px-6 py-4 border-b dark:border-gray-700">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('admin.products.title')}</h2>
                 </div>
                 <div className="p-6">
                     <div className="mb-4 flex gap-4 items-center justify-between">
@@ -438,32 +452,32 @@ export function AdminPanel() {
                     </div>
 
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-900">
                                 <tr>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Producto
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.product')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Categoría
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.category')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Referencia
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.reference')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Precio
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.price')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Stock
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.stock')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Acciones
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.actions')}
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {filteredProducts.map((product) => (
-                                    <tr key={product.id} className="hover:bg-gray-50">
+                                    <tr key={product.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex items-center">
                                                 <div className="h-10 w-10 flex-shrink-0">
@@ -474,23 +488,23 @@ export function AdminPanel() {
                                                             alt={product.nombre}
                                                         />
                                                     ) : (
-                                                        <div className="h-10 w-10 rounded bg-gray-200 flex items-center justify-center text-xs text-gray-400">
+                                                        <div className="h-10 w-10 rounded bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-xs text-gray-400">
                                                             Sin img
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div className="ml-4">
-                                                    <div className="text-sm font-medium text-gray-900">{product.nombre}</div>
+                                                    <div className="text-sm font-medium text-gray-900 dark:text-white">{product.nombre}</div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {product.categorias?.nombre || '-'}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {product.referencia}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white text-center">
                                             {product.precio_venta.toFixed(2)} €
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -507,13 +521,13 @@ export function AdminPanel() {
                                                     setCurrentProduct(product);
                                                     setIsEditing(true);
                                                 }}
-                                                className="text-blue-600 hover:text-blue-900 mr-4"
+                                                className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
                                             >
                                                 Editar
                                             </button>
                                             <button
                                                 onClick={() => openDeleteModal(product.id)}
-                                                className="text-red-600 hover:text-red-900"
+                                                className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                                             >
                                                 Eliminar
                                             </button>
@@ -528,11 +542,11 @@ export function AdminPanel() {
 
             {/* Product Edit Modal */}
             {isEditing && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">{currentProduct.id ? 'Editar' : 'Crear'} Producto</h2>
-                            <button onClick={() => setIsEditing(false)}>
+                            <h2 className="text-xl font-bold dark:text-white">{currentProduct.id ? 'Editar' : 'Crear'} Producto</h2>
+                            <button onClick={() => setIsEditing(false)} className="dark:text-gray-400 dark:hover:text-white">
                                 <X className="h-6 w-6" />
                             </button>
                         </div>
@@ -550,9 +564,9 @@ export function AdminPanel() {
                                 required
                             />
                             <div>
-                                <label className="block text-sm font-medium mb-1">Descripción</label>
+                                <label className="block text-sm font-medium mb-1 dark:text-gray-200">Descripción</label>
                                 <textarea
-                                    className="w-full border rounded-md p-2 text-sm"
+                                    className="w-full border dark:border-gray-600 rounded-md p-2 text-sm bg-white dark:bg-gray-700 dark:text-white"
                                     rows={3}
                                     value={currentProduct.descripcion || ''}
                                     onChange={(e) => setCurrentProduct({ ...currentProduct, descripcion: e.target.value })}
@@ -584,9 +598,9 @@ export function AdminPanel() {
                                 required
                             />
                             <div>
-                                <label className="block text-sm font-medium mb-1">Categoría</label>
+                                <label className="block text-sm font-medium mb-1 dark:text-gray-200">Categoría</label>
                                 <select
-                                    className="w-full border rounded-md p-2 text-sm"
+                                    className="w-full border dark:border-gray-600 rounded-md p-2 text-sm bg-white dark:bg-gray-700 dark:text-white"
                                     value={currentProduct.categoria_id || ''}
                                     onChange={(e) => setCurrentProduct({ ...currentProduct, categoria_id: e.target.value })}
                                     required
@@ -611,7 +625,7 @@ export function AdminPanel() {
                                     checked={currentProduct.activo ?? true}
                                     onChange={(e) => setCurrentProduct({ ...currentProduct, activo: e.target.checked })}
                                 />
-                                <label htmlFor="activo" className="text-sm font-medium">
+                                <label htmlFor="activo" className="text-sm font-medium dark:text-gray-200">
                                     Activo
                                 </label>
                             </div>
@@ -625,10 +639,10 @@ export function AdminPanel() {
 
             {/* Delete Product Confirmation Modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar producto</h2>
-                        <p className="text-gray-600 mb-6 text-center">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">Eliminar producto</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
                             ¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.
                         </p>
                         <div className="flex gap-3 justify-center">
@@ -653,42 +667,42 @@ export function AdminPanel() {
             )}
 
             {/* ===== ISSUES SECTION ===== */}
-            <div className="bg-white rounded-lg shadow">
-                <div className="px-6 py-4 border-b">
-                    <h2 className="text-xl font-bold text-gray-900">Gestión de incidencias</h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-gray-900">
+                <div className="px-6 py-4 border-b dark:border-gray-700">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-white">{t('admin.issues.title')}</h2>
                 </div>
                 <div className="p-6">
                     <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                            <thead className="bg-gray-50 dark:bg-gray-900">
                                 <tr>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Cliente
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.client')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Tipo
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.issues.type')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Descripción
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.issues.description')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Estado
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.status')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Fecha
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.orders.date')}
                                     </th>
-                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Acciones
+                                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                        {t('admin.products.actions')}
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                                 {issues.map((issue) => (
-                                    <tr key={issue.id} className="hover:bg-gray-50">
+                                    <tr key={issue.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <button
                                                 onClick={() => navigateToUser((issue as any).profiles?.nombre, (issue as any).profiles?.apellidos)}
-                                                className="flex items-center gap-3 text-blue-600 hover:text-blue-900 hover:underline"
+                                                className="flex items-center gap-3 text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
                                             >
                                                 {(issue as any).profiles?.avatar_url ? (
                                                     <img
@@ -697,7 +711,7 @@ export function AdminPanel() {
                                                         className="h-8 w-8 rounded-full object-cover flex-shrink-0"
                                                     />
                                                 ) : (
-                                                    <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-xs font-semibold flex-shrink-0">
+                                                    <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center text-gray-600 dark:text-gray-300 text-xs font-semibold flex-shrink-0">
                                                         {(issue as any).profiles?.nombre ? (issue as any).profiles.nombre.charAt(0).toUpperCase() : 'U'}
                                                     </div>
                                                 )}
@@ -709,7 +723,7 @@ export function AdminPanel() {
                                                 {getTipoIncidenciaLabel(issue.tipo_incidencia)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 text-sm text-gray-900 text-center">
+                                        <td className="px-6 py-4 text-sm text-gray-900 dark:text-white text-center">
                                             {issue.descripcion}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -720,7 +734,7 @@ export function AdminPanel() {
                                                 {issue.estado === 'ACEPTADA' ? 'Aceptada' : issue.estado === 'RECHAZADA' ? 'Rechazada' : 'Pendiente'}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300 text-center">
                                             {new Date(issue.created_at).toLocaleDateString('es-ES', {
                                                 day: '2-digit',
                                                 month: '2-digit',
@@ -738,7 +752,7 @@ export function AdminPanel() {
                                                         .eq('id', issue.id)
                                                         .then(() => fetchIssues());
                                                 }}
-                                                className="text-xs px-2 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-indigo-500"
+                                                className="text-xs px-2 py-1 rounded border border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 dark:text-white"
                                             >
                                                 <option value="PENDIENTE">Pendiente</option>
                                                 <option value="ACEPTADA">Aceptada</option>
@@ -749,7 +763,7 @@ export function AdminPanel() {
                                 ))}
                                 {issues.length === 0 && (
                                     <tr>
-                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                                        <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500 dark:text-gray-400">
                                             No hay incidencias.
                                         </td>
                                     </tr>

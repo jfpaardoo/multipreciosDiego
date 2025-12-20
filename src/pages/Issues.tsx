@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { AlertCircle, Plus, X, Pencil, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { showSuccess } from '../utils/toast';
 
 export function Issues() {
     const { t } = useTranslation();
@@ -108,10 +109,10 @@ export function Issues() {
             if (error) throw error;
             setShowDeleteIssueModal(false);
             setIssueToDelete(null);
+            showSuccess('Incidencia eliminada correctamente');
             await fetchIssues();
         } catch (error) {
             console.error('Error deleting issue:', error);
-            alert(t('issues.deleteError'));
         }
     };
 
@@ -149,11 +150,11 @@ export function Issues() {
                 if (error) throw error;
             }
 
+            showSuccess(editingIssueId ? 'Incidencia actualizada' : 'Incidencia creada correctamente');
             await fetchIssues();
             closeModal();
         } catch (error) {
             console.error('Error saving issue:', error);
-            alert(t('issues.saveError'));
         } finally {
             setSubmitting(false);
         }
@@ -224,7 +225,7 @@ export function Issues() {
 
             {/* Create/Edit Issue Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{editingIssueId ? t('issues.edit') : t('issues.new')}</h3>
@@ -302,10 +303,10 @@ export function Issues() {
 
             {/* Delete Issue Confirmation Modal */}
             {showDeleteIssueModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar incidencia</h2>
-                        <p className="text-gray-600 mb-6 text-center">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">Eliminar incidencia</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
                             {t('issues.deleteConfirm')}
                         </p>
                         <div className="flex gap-3 justify-center">

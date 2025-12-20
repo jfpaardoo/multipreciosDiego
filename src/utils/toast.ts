@@ -1,7 +1,38 @@
 import { Toaster, toast } from 'react-hot-toast';
 
+const PENDING_TOAST_KEY = 'pending_toast_message';
+
 // Export the toaster component
 export { Toaster };
+
+// Check for pending toast message after page reload
+export const checkPendingToast = () => {
+    const pending = localStorage.getItem(PENDING_TOAST_KEY);
+    if (pending) {
+        try {
+            const { message, type } = JSON.parse(pending);
+            localStorage.removeItem(PENDING_TOAST_KEY);
+            if (type === 'success') {
+                showSuccess(message);
+            } else if (type === 'error') {
+                showError(message);
+            } else {
+                showInfo(message);
+            }
+        } catch {
+            localStorage.removeItem(PENDING_TOAST_KEY);
+        }
+    }
+};
+
+// Schedule a toast to show after page reload
+export const showSuccessAfterReload = (message: string) => {
+    localStorage.setItem(PENDING_TOAST_KEY, JSON.stringify({ message, type: 'success' }));
+};
+
+export const showErrorAfterReload = (message: string) => {
+    localStorage.setItem(PENDING_TOAST_KEY, JSON.stringify({ message, type: 'error' }));
+};
 
 // Success toast
 export const showSuccess = (message: string) => {
@@ -12,7 +43,6 @@ export const showSuccess = (message: string) => {
             background: '#10B981',
             color: '#fff',
         },
-        icon: '✓',
     });
 };
 
@@ -25,7 +55,6 @@ export const showError = (message: string) => {
             background: '#EF4444',
             color: '#fff',
         },
-        icon: '✕',
     });
 };
 
@@ -38,7 +67,6 @@ export const showInfo = (message: string) => {
             background: '#3B82F6',
             color: '#fff',
         },
-        icon: 'ℹ',
     });
 };
 

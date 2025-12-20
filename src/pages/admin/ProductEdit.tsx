@@ -27,7 +27,6 @@ export function ProductEdit() {
             if (data) setProduct(data);
         } catch (error) {
             console.error('Error fetching product:', error);
-            alert('Error al cargar el producto');
         } finally {
             setLoading(false);
         }
