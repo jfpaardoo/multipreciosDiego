@@ -51,6 +51,10 @@ export function Profile() {
     const [isDeleting, setIsDeleting] = useState(false);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
+    // Order Action Modals
+    const [showCancelOrderModal, setShowCancelOrderModal] = useState(false);
+    const [showDeleteOrderModal, setShowDeleteOrderModal] = useState(false);
+
     useEffect(() => {
         if (profile) {
             fetchUserData();
@@ -234,7 +238,6 @@ export function Profile() {
 
     const handleCancelOrder = async () => {
         if (!selectedOrder) return;
-        if (!confirm('¿Estás seguro de que quieres cancelar este pedido?')) return;
 
         try {
             const { error } = await supabase
@@ -244,6 +247,7 @@ export function Profile() {
 
             if (error) throw error;
 
+            setShowCancelOrderModal(false);
             alert('Pedido cancelado correctamente');
             window.location.reload();
         } catch (error) {
@@ -277,7 +281,6 @@ export function Profile() {
 
     const handleDeleteOrder = async () => {
         if (!selectedOrder) return;
-        if (!confirm('¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.')) return;
 
         try {
             const { error } = await supabase
@@ -287,6 +290,7 @@ export function Profile() {
 
             if (error) throw error;
 
+            setShowDeleteOrderModal(false);
             alert('Pedido eliminado correctamente');
             window.location.reload();
         } catch (error) {
@@ -678,8 +682,7 @@ export function Profile() {
                                             </>
                                         ) : (
                                             <>
-                                                <Button variant="danger" onClick={handleCancelOrder}>{t('profile.orders.cancel')}</Button>
-                                                <Button variant="danger" onClick={handleDeleteOrder}>{t('profile.orders.delete')}</Button>
+                                                <Button variant="danger" onClick={() => setShowCancelOrderModal(true)}>{t('profile.orders.cancel')}</Button>
                                                 <Button variant="outline" onClick={() => setIsEditingOrder(true)}>Editar Pedido</Button>
                                             </>
                                         )}
@@ -687,6 +690,58 @@ export function Profile() {
                                 )}
                             </div>
                             <Button onClick={closeDetails}>{t('profile.cancel')}</Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Cancel Order Confirmation Modal */}
+            {showCancelOrderModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Cancelar pedido</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            ¿Estás seguro de que quieres cancelar este pedido?
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => setShowCancelOrderModal(false)}
+                            >
+                                Volver
+                            </Button>
+                            <Button
+                                onClick={handleCancelOrder}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Cancelar pedido
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Order Confirmation Modal */}
+            {showDeleteOrderModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar pedido</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            ¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => setShowDeleteOrderModal(false)}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                onClick={handleDeleteOrder}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Eliminar
+                            </Button>
                         </div>
                     </div>
                 </div>

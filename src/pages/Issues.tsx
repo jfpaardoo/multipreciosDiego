@@ -26,6 +26,10 @@ export function Issues() {
     const [description, setDescription] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
+    // Delete Issue Modal
+    const [showDeleteIssueModal, setShowDeleteIssueModal] = useState(false);
+    const [issueToDelete, setIssueToDelete] = useState<string | null>(null);
+
     useEffect(() => {
         if (profile) {
             fetchIssues();
@@ -87,16 +91,23 @@ export function Issues() {
         openModal();
     };
 
-    const handleDelete = async (id: string) => {
-        if (!window.confirm(t('issues.deleteConfirm'))) return;
+    const openDeleteModal = (id: string) => {
+        setIssueToDelete(id);
+        setShowDeleteIssueModal(true);
+    };
+
+    const handleDelete = async () => {
+        if (!issueToDelete) return;
 
         try {
             const { error } = await supabase
                 .from('incidencias')
                 .delete()
-                .eq('id', id);
+                .eq('id', issueToDelete);
 
             if (error) throw error;
+            setShowDeleteIssueModal(false);
+            setIssueToDelete(null);
             await fetchIssues();
         } catch (error) {
             console.error('Error deleting issue:', error);
@@ -187,7 +198,7 @@ export function Issues() {
                                             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleEdit(issue)}>
                                                 <Pencil className="h-4 w-4" />
                                             </Button>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(issue.id)}>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => openDeleteModal(issue.id)}>
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
@@ -285,6 +296,35 @@ export function Issues() {
                                 </Button>
                             </div>
                         </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Issue Confirmation Modal */}
+            {showDeleteIssueModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar incidencia</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            {t('issues.deleteConfirm')}
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    setShowDeleteIssueModal(false);
+                                    setIssueToDelete(null);
+                                }}
+                            >
+                                {t('profile.cancel')}
+                            </Button>
+                            <Button
+                                onClick={handleDelete}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Eliminar
+                            </Button>
+                        </div>
                     </div>
                 </div>
             )}

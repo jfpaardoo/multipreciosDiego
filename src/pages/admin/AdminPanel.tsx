@@ -8,7 +8,7 @@ import { Plus, X, Search } from 'lucide-react';
 
 export function AdminPanel() {
     const navigate = useNavigate();
-    
+
     // Orders state
     const [orders, setOrders] = useState<PedidoCliente[]>([]);
     const [searchOrder, setSearchOrder] = useState('');
@@ -23,6 +23,8 @@ export function AdminPanel() {
     const [searchProduct, setSearchProduct] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [currentProduct, setCurrentProduct] = useState<Partial<Product>>({});
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [productToDelete, setProductToDelete] = useState<string | null>(null);
 
     // Issues state
     const [issues, setIssues] = useState<Incidencia[]>([]);
@@ -135,15 +137,22 @@ export function AdminPanel() {
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('¿Estás seguro de eliminar este producto?')) return;
+    const openDeleteModal = (id: string) => {
+        setProductToDelete(id);
+        setShowDeleteModal(true);
+    };
+
+    const handleDelete = async () => {
+        if (!productToDelete) return;
 
         const { error } = await supabase
             .from('productos')
             .delete()
-            .eq('id', id);
+            .eq('id', productToDelete);
 
         if (!error) fetchProducts();
+        setShowDeleteModal(false);
+        setProductToDelete(null);
     };
 
     const filteredProducts = products.filter(product => {
@@ -273,9 +282,8 @@ export function AdminPanel() {
                                             </select>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-center">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                order.pagado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                            }`}>
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${order.pagado ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                                }`}>
                                                 {order.pagado ? 'Pagado' : 'Pendiente'}
                                             </span>
                                         </td>
@@ -486,11 +494,10 @@ export function AdminPanel() {
                                             {product.precio_venta.toFixed(2)} €
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                product.cantidad_en_tienda > 0 
-                                                    ? 'bg-green-100 text-green-800' 
-                                                    : 'bg-red-100 text-red-800'
-                                            }`}>
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${product.cantidad_en_tienda > 0
+                                                ? 'bg-green-100 text-green-800'
+                                                : 'bg-red-100 text-red-800'
+                                                }`}>
                                                 {product.cantidad_en_tienda}
                                             </span>
                                         </td>
@@ -505,7 +512,7 @@ export function AdminPanel() {
                                                 Editar
                                             </button>
                                             <button
-                                                onClick={() => handleDelete(product.id)}
+                                                onClick={() => openDeleteModal(product.id)}
                                                 className="text-red-600 hover:text-red-900"
                                             >
                                                 Eliminar
@@ -616,6 +623,35 @@ export function AdminPanel() {
                 </div>
             )}
 
+            {/* Delete Product Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar producto</h2>
+                        <p className="text-gray-600 mb-6 text-center">
+                            ¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.
+                        </p>
+                        <div className="flex gap-3 justify-center">
+                            <Button
+                                variant="ghost"
+                                onClick={() => {
+                                    setShowDeleteModal(false);
+                                    setProductToDelete(null);
+                                }}
+                            >
+                                Cancelar
+                            </Button>
+                            <Button
+                                onClick={handleDelete}
+                                className="bg-red-600 hover:bg-red-700 text-white"
+                            >
+                                Eliminar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* ===== ISSUES SECTION ===== */}
             <div className="bg-white rounded-lg shadow">
                 <div className="px-6 py-4 border-b">
@@ -677,11 +713,10 @@ export function AdminPanel() {
                                             {issue.descripcion}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-center">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' :
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${issue.estado === 'ACEPTADA' ? 'bg-green-100 text-green-800' :
                                                 issue.estado === 'RECHAZADA' ? 'bg-red-100 text-red-800' :
-                                                'bg-gray-100 text-gray-800'
-                                            }`}>
+                                                    'bg-gray-100 text-gray-800'
+                                                }`}>
                                                 {issue.estado === 'ACEPTADA' ? 'Aceptada' : issue.estado === 'RECHAZADA' ? 'Rechazada' : 'Pendiente'}
                                             </span>
                                         </td>
