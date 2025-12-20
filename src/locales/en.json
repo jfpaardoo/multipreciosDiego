@@ -292,7 +292,10 @@
         "types": {
             "card": "Card",
             "bizum": "Bizum",
-            "cash": "Cash"
+            "cash": "Cash",
+            "transfer": "Bank Transfer",
+            "cashOnDelivery": "Cash on Delivery",
+            "paypal": "PayPal"
         },
         "cashWarning": "Cash payment is not available for home delivery.",
         "processing": "Processing...",
@@ -444,5 +447,78 @@
         "google": "Google Reviews",
         "verified": "Verified Purchase",
         "viewAll": "View All Reviews"
+    },
+    "admin": {
+        "title": "Business Management",
+        "orders": {
+            "title": "Order Management",
+            "searchPlaceholder": "Search by order, customer...",
+            "orderNumber": "Order #",
+            "client": "Customer",
+            "status": "Status",
+            "payment": "Payment",
+            "paymentMethod": "Payment Method",
+            "date": "Date",
+            "type": "Type",
+            "paid": "Paid",
+            "pending": "Pending",
+            "inPrep": "In preparation",
+            "shipped": "Shipped",
+            "inDelivery": "Out for delivery",
+            "delivered": "Delivered",
+            "cancelled": "Cancelled",
+            "homeDelivery": "Home Delivery",
+            "pickup": "Pickup"
+        },
+        "reservations": {
+            "title": "Reservation Management",
+            "searchPlaceholder": "Search by code, customer, product...",
+            "code": "Code",
+            "product": "Product",
+            "quantity": "Quantity",
+            "pendingStatus": "Pending",
+            "paidStatus": "Paid",
+            "pickedUp": "Picked Up",
+            "noReservations": "No reservations."
+        },
+        "products": {
+            "title": "Product Management",
+            "searchPlaceholder": "Search by product, category...",
+            "addProduct": "Add product",
+            "product": "Product",
+            "category": "Category",
+            "reference": "Reference",
+            "price": "Price",
+            "stock": "Stock",
+            "actions": "Actions",
+            "edit": "Edit",
+            "delete": "Delete",
+            "noImage": "No img",
+            "createProduct": "Create Product",
+            "editProduct": "Edit Product",
+            "name": "Name",
+            "description": "Description",
+            "salePrice": "Sale Price",
+            "wholesalePrice": "Wholesale Price",
+            "stockStore": "Stock (Store)",
+            "selectCategory": "Select category",
+            "imageUrl": "Image URL",
+            "active": "Active",
+            "save": "Save",
+            "deleteTitle": "Delete product",
+            "deleteConfirm": "Are you sure you want to delete this product? This action cannot be undone.",
+            "cancel": "Cancel"
+        },
+        "issues": {
+            "title": "Issue Management",
+            "type": "Type",
+            "description": "Description",
+            "damaged": "Damaged",
+            "wrong": "Wrong Item",
+            "missing": "Missing",
+            "accepted": "Accepted",
+            "rejected": "Rejected",
+            "noIssues": "No issues."
+        }
     }
 }

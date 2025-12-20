@@ -284,7 +284,10 @@
         "types": {
             "card": "Txartela",
             "bizum": "Bizum",
-            "cash": "Esku-dirua"
+            "cash": "Esku-dirua",
+            "transfer": "Transferentzia",
+            "cashOnDelivery": "Ordainketa Entregatzean",
+            "paypal": "PayPal"
         },
         "cashWarning": "Esku-diruko ordainketa ez dago eskuragarri etxera bidaltzeko.",
         "processing": "Prozesatzen...",
@@ -436,5 +439,78 @@
         "google": "Google Iritziak",
         "verified": "Erosketa Egiaztatua",
         "viewAll": "Ikusi Guztiak"
+    },
+    "admin": {
+        "title": "Negozioaren Kudeaketa",
+        "orders": {
+            "title": "Eskaeren Kudeaketa",
+            "searchPlaceholder": "Bilatu eskaera, bezero...",
+            "orderNumber": "Eskaera zk.",
+            "client": "Bezeroa",
+            "status": "Egoera",
+            "payment": "Ordainketa",
+            "paymentMethod": "Ordainketa metodoa",
+            "date": "Data",
+            "type": "Mota",
+            "paid": "Ordainduta",
+            "pending": "Zain",
+            "inPrep": "Prestatzen",
+            "shipped": "Bidalita",
+            "inDelivery": "Banaketan",
+            "delivered": "Entregatuta",
+            "cancelled": "Bertan behera",
+            "homeDelivery": "Etxera",
+            "pickup": "Jasotzea"
+        },
+        "reservations": {
+            "title": "Erreserben Kudeaketa",
+            "searchPlaceholder": "Bilatu kodea, bezeroa, produktua...",
+            "code": "Kodea",
+            "product": "Produktua",
+            "quantity": "Kopurua",
+            "pendingStatus": "Zain",
+            "paidStatus": "Ordainduta",
+            "pickedUp": "Jasota",
+            "noReservations": "Ez dago erreserbarik."
+        },
+        "products": {
+            "title": "Produktuen Kudeaketa",
+            "searchPlaceholder": "Bilatu produktua, kategoria...",
+            "addProduct": "Produktua gehitu",
+            "product": "Produktua",
+            "category": "Kategoria",
+            "reference": "Erreferentzia",
+            "price": "Prezioa",
+            "stock": "Stock-a",
+            "actions": "Ekintzak",
+            "edit": "Editatu",
+            "delete": "Ezabatu",
+            "noImage": "Irudi gabe",
+            "createProduct": "Produktua Sortu",
+            "editProduct": "Produktua Editatu",
+            "name": "Izena",
+            "description": "Deskribapena",
+            "salePrice": "Salmenta Prezioa",
+            "wholesalePrice": "Handizkako Prezioa",
+            "stockStore": "Stock-a (Denda)",
+            "selectCategory": "Kategoria aukeratu",
+            "imageUrl": "Irudi URL",
+            "active": "Aktibo",
+            "save": "Gorde",
+            "deleteTitle": "Produktua ezabatu",
+            "deleteConfirm": "Ziur zaude produktu hau ezabatu nahi duzula? Ekintza hau ezin da desegin.",
+            "cancel": "Utzi"
+        },
+        "issues": {
+            "title": "Intzidentzien Kudeaketa",
+            "type": "Mota",
+            "description": "Deskribapena",
+            "damaged": "Hondatuta",
+            "wrong": "Okerra",
+            "missing": "Falta",
+            "accepted": "Onartuta",
+            "rejected": "Baztertuta",
+            "noIssues": "Ez dago intzidentziarik."
+        }
     }
 }

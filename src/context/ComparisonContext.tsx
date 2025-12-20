@@ -31,7 +31,7 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
 
     const addToCompare = (product: Product) => {
         if (selectedProducts.length >= 4) {
-            alert('Puedes comparar un máximo de 4 productos');
+            // Max 4 products allowed
             return;
         }
         if (!isInComparison(product.id)) {

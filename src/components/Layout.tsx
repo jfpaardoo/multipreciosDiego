@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingCart, User, Menu, Instagram, Facebook, Store, Heart } from 'lucide-react';
+import { ShoppingCart, User, Menu, Instagram, Facebook, Store } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { useWishlist } from '../context/WishlistContext';
 import { Button } from './ui/button';
 import { LanguageSelector } from './LanguageSelector';
 import { AccessibilityMenu } from './AccessibilityMenu';
@@ -14,7 +13,6 @@ export function Layout() {
     const { t } = useTranslation();
     const { user, profile, signOut, isAdmin, isEncargado } = useAuth();
     const { itemCount } = useCart();
-    const { wishlist } = useWishlist();
     const navigate = useNavigate();
     const location = useLocation();
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -62,7 +60,7 @@ export function Layout() {
                                 {t('layout.nav.faq')}
                             </Link>
                         )}
-                        
+
                         {isAdmin && (
                             <>
                                 {location.pathname !== '/admin' && (
@@ -86,19 +84,6 @@ export function Layout() {
                                     {itemCount > 0 && (
                                         <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-green-600 text-xs text-white flex items-center justify-center">
                                             {itemCount}
-                                        </span>
-                                    )}
-                                </Button>
-                            </Link>
-                        )}
-
-                        {!isAdmin && user && (
-                            <Link to="/wishlist">
-                                <Button variant="ghost" size="icon" className="relative">
-                                    <Heart className="h-5 w-5" />
-                                    {wishlist.length > 0 && (
-                                        <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-red-500 text-xs text-white flex items-center justify-center">
-                                            {wishlist.length}
                                         </span>
                                     )}
                                 </Button>
@@ -259,13 +244,13 @@ export function Layout() {
                 </div>
             </footer>
 
-            {/* Accessibility & Chatbot Tools (from Juan) */}
-            <AccessibilityMenu />
-            <Chatbot />
+            {/* Accessibility & Chatbot Tools (from Juan) - TEMPORALMENTE OCULTOS PARA CAPTURAS */}
+            {/* <AccessibilityMenu /> */}
+            {/* <Chatbot /> */}
 
             {/* Logout Confirmation Modal (from Main) */}
             {showLogoutModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl border dark:border-gray-700">
                         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">{t('layout.logoutModal.title')}</h2>
                         <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
@@ -289,6 +274,8 @@ export function Layout() {
                     </div>
                 </div>
             )}
+            <AccessibilityMenu />
+            <Chatbot />
         </div>
     );
 }

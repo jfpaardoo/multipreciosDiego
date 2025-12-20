@@ -6,6 +6,7 @@ import { Button } from '../components/ui/button';
 import { ChangePasswordForm } from '../components/ChangePasswordForm';
 import { Package, AlertCircle, Calendar, X, User, Pencil, Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { showSuccessAfterReload, showSuccess } from '../utils/toast';
 
 export function Profile() {
     const { t } = useTranslation();
@@ -138,13 +139,13 @@ export function Profile() {
 
         // Validar tipo de archivo
         if (!file.type.startsWith('image/')) {
-            alert('Por favor selecciona una imagen válida');
+            // Invalid image type
             return;
         }
 
         // Validar tamaño (máximo 5MB)
         if (file.size > 5 * 1024 * 1024) {
-            alert('La imagen no debe superar los 5MB');
+            // Image too large
             return;
         }
 
@@ -198,10 +199,11 @@ export function Profile() {
                 }
             }
 
+            showSuccessAfterReload('Foto de perfil actualizada');
             window.location.reload();
         } catch (error: any) {
             console.error('Error uploading photo:', error);
-            alert(`Error al subir la foto: ${error.message || 'Inténtalo de nuevo'}`);
+            console.error(`Error al subir la foto: ${error.message || 'Inténtalo de nuevo'}`);
         } finally {
             setUploadingPhoto(false);
         }
@@ -227,10 +229,11 @@ export function Profile() {
 
             if (error) throw error;
 
+            showSuccessAfterReload('Perfil actualizado correctamente');
             window.location.reload();
         } catch (error) {
             console.error('Error updating profile:', error);
-            alert('Error al actualizar el perfil');
+            console.error('Error al actualizar el perfil');
         } finally {
             setIsSaving(false);
         }
@@ -248,11 +251,10 @@ export function Profile() {
             if (error) throw error;
 
             setShowCancelOrderModal(false);
-            alert('Pedido cancelado correctamente');
+            showSuccessAfterReload('Pedido cancelado correctamente');
             window.location.reload();
         } catch (error) {
             console.error('Error cancelling order:', error);
-            alert('Error al cancelar el pedido');
         }
     };
 
@@ -271,11 +273,10 @@ export function Profile() {
 
             if (error) throw error;
 
-            alert('Pedido actualizado correctamente');
+            showSuccessAfterReload('Pedido actualizado correctamente');
             window.location.reload();
         } catch (error) {
             console.error('Error updating order:', error);
-            alert('Error al actualizar el pedido');
         }
     };
 
@@ -291,11 +292,10 @@ export function Profile() {
             if (error) throw error;
 
             setShowDeleteOrderModal(false);
-            alert('Pedido eliminado correctamente');
+            showSuccessAfterReload('Pedido eliminado correctamente');
             window.location.reload();
         } catch (error) {
             console.error('Error deleting order:', error);
-            alert('Error al eliminar el pedido');
         }
     };
 
@@ -321,12 +321,11 @@ export function Profile() {
 
             if (error) throw error;
 
-            alert('Incidencia actualizada correctamente');
             setSelectedIssue(null);
+            showSuccess('Incidencia actualizada correctamente');
             fetchUserData();
         } catch (error) {
             console.error('Error updating issue:', error);
-            alert('Error al actualizar la incidencia');
         }
     };
 
@@ -359,7 +358,6 @@ export function Profile() {
 
             if (error) {
                 console.error('Error deleting user:', error);
-                alert('Error al eliminar la cuenta: ' + error.message);
                 setIsDeleting(false);
                 return;
             }
@@ -367,7 +365,6 @@ export function Profile() {
             await signOut();
         } catch (error: any) {
             console.error('Error deleting profile:', error);
-            alert('Error al eliminar la cuenta: ' + error.message);
             setIsDeleting(false);
         }
     };
@@ -564,7 +561,7 @@ export function Profile() {
 
             {/* Order Details Modal */}
             {selectedOrder && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-gray-700">
                         <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white">Detalles del Pedido #{selectedOrder.id.slice(0, 8)}</h3>
@@ -697,10 +694,10 @@ export function Profile() {
 
             {/* Cancel Order Confirmation Modal */}
             {showCancelOrderModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Cancelar pedido</h2>
-                        <p className="text-gray-600 mb-6 text-center">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">Cancelar pedido</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
                             ¿Estás seguro de que quieres cancelar este pedido?
                         </p>
                         <div className="flex gap-3 justify-center">
@@ -723,10 +720,10 @@ export function Profile() {
 
             {/* Delete Order Confirmation Modal */}
             {showDeleteOrderModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4">
-                    <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-xl">
-                        <h2 className="text-xl font-bold text-gray-900 mb-4 text-center">Eliminar pedido</h2>
-                        <p className="text-gray-600 mb-6 text-center">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[100] p-4">
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 text-center">Eliminar pedido</h2>
+                        <p className="text-gray-600 dark:text-gray-300 mb-6 text-center">
                             ¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.
                         </p>
                         <div className="flex gap-3 justify-center">
@@ -768,7 +765,7 @@ export function Profile() {
 
             {/* Delete Account Modal */}
             {showDeleteModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
                         <div className="p-6 border-b">
                             <div className="flex items-center gap-3">
@@ -838,7 +835,7 @@ export function Profile() {
 
             {/* Edit Profile Modal */}
             {isEditing && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto border dark:border-gray-700">
                         <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center sticky top-0 bg-white dark:bg-gray-800">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('profile.edit')}</h3>
@@ -849,62 +846,62 @@ export function Profile() {
                         <form onSubmit={handleUpdateProfile} className="p-6 space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.name')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.name')}</label>
                                     <input
                                         type="text"
                                         value={formData.nombre}
                                         onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                         required
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.name')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.name')}</label>
                                     <input
                                         type="text"
                                         value={formData.apellidos}
                                         onChange={(e) => setFormData({ ...formData, apellidos: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.phone')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.phone')}</label>
                                     <input
                                         type="tel"
                                         value={formData.telefono}
                                         onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.dni')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.dni')}</label>
                                     <input
                                         type="text"
                                         value={formData.dni}
                                         onChange={(e) => setFormData({ ...formData, dni: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.address')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.address')}</label>
                                     <input
                                         type="text"
                                         value={formData.direccion}
                                         onChange={(e) => setFormData({ ...formData, direccion: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="text-sm font-medium">{t('profile.fields.postalCode')}</label>
+                                    <label className="text-sm font-medium dark:text-gray-200">{t('profile.fields.postalCode')}</label>
                                     <input
                                         type="text"
                                         value={formData.codigo_postal}
                                         onChange={(e) => setFormData({ ...formData, codigo_postal: e.target.value })}
-                                        className="w-full p-2 border rounded-md"
+                                        className="w-full p-2 border dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 dark:text-white"
                                     />
                                 </div>
                             </div>
-                            <div className="flex justify-end gap-2 pt-4 border-t mt-4">
+                            <div className="flex justify-end gap-2 pt-4 border-t dark:border-gray-700 mt-4">
                                 <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
                                     {t('profile.cancel')}
                                 </Button>
@@ -919,7 +916,7 @@ export function Profile() {
 
             {/* Edit Issue Modal */}
             {selectedIssue && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[100] p-4">
                     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full border dark:border-gray-700">
                         <div className="p-6 border-b dark:border-gray-700 flex justify-between items-center">
                             <h3 className="text-xl font-bold text-gray-900 dark:text-white">{t('issues.edit')}</h3>

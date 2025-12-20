@@ -292,7 +292,10 @@
         "types": {
             "card": "Targeta",
             "bizum": "Bizum",
-            "cash": "Efectiu"
+            "cash": "Efectiu",
+            "transfer": "Transferència",
+            "cashOnDelivery": "Contra Reemborsament",
+            "paypal": "PayPal"
         },
         "cashWarning": "El pagament en efectiu no està disponible per a enviaments a domicili.",
         "processing": "Processant...",
@@ -444,5 +447,78 @@
         "google": "Ressenyes de Google",
         "verified": "Compra Verificada",
         "viewAll": "Veure Totes"
+    },
+    "admin": {
+        "title": "Gestió del negoci",
+        "orders": {
+            "title": "Gestió de comandes",
+            "searchPlaceholder": "Cercar per comanda, client...",
+            "orderNumber": "Nº comanda",
+            "client": "Client",
+            "status": "Estat",
+            "payment": "Pagament",
+            "paymentMethod": "Mètode de pagament",
+            "date": "Data",
+            "type": "Tipus",
+            "paid": "Pagat",
+            "pending": "Pendent",
+            "inPrep": "En preparació",
+            "shipped": "Enviat",
+            "inDelivery": "En repartiment",
+            "delivered": "Lliurat",
+            "cancelled": "Cancel·lat",
+            "homeDelivery": "A Domicili",
+            "pickup": "Recollida"
+        },
+        "reservations": {
+            "title": "Gestió de reserves",
+            "searchPlaceholder": "Cercar per codi, client, producte...",
+            "code": "Codi",
+            "product": "Producte",
+            "quantity": "Quantitat",
+            "pendingStatus": "Pendent",
+            "paidStatus": "Pagada",
+            "pickedUp": "Recollida",
+            "noReservations": "No hi ha reserves."
+        },
+        "products": {
+            "title": "Gestió de productes",
+            "searchPlaceholder": "Cercar per producte, categoria...",
+            "addProduct": "Afegir producte",
+            "product": "Producte",
+            "category": "Categoria",
+            "reference": "Referència",
+            "price": "Preu",
+            "stock": "Estoc",
+            "actions": "Accions",
+            "edit": "Editar",
+            "delete": "Eliminar",
+            "noImage": "Sense img",
+            "createProduct": "Crear Producte",
+            "editProduct": "Editar Producte",
+            "name": "Nom",
+            "description": "Descripció",
+            "salePrice": "Preu Venda",
+            "wholesalePrice": "Preu Major",
+            "stockStore": "Estoc (Botiga)",
+            "selectCategory": "Seleccionar categoria",
+            "imageUrl": "URL Imatge",
+            "active": "Actiu",
+            "save": "Desar",
+            "deleteTitle": "Eliminar producte",
+            "deleteConfirm": "Estàs segur que vols eliminar aquest producte? Aquesta acció no es pot desfer.",
+            "cancel": "Cancel·lar"
+        },
+        "issues": {
+            "title": "Gestió d'incidències",
+            "type": "Tipus",
+            "description": "Descripció",
+            "damaged": "Danyat",
+            "wrong": "Equivocat",
+            "missing": "Faltant",
+            "accepted": "Acceptada",
+            "rejected": "Rebutjada",
+            "noIssues": "No hi ha incidències."
+        }
     }
 }

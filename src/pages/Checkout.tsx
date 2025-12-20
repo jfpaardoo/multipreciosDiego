@@ -10,7 +10,7 @@ import { Trash2, ShoppingBag } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 type DeliveryType = 'DOMICILIO' | 'RECOGIDA';
-type PaymentMethod = 'TARJETA' | 'EFECTIVO' | 'BIZUM';
+type PaymentMethod = 'TARJETA' | 'EFECTIVO' | 'BIZUM' | 'TRANSFERENCIA' | 'CONTRA_REEMBOLSO' | 'PAYPAL';
 
 export function Checkout() {
     const { t } = useTranslation();
@@ -64,8 +64,8 @@ export function Checkout() {
                 .insert({
                     cliente_id: user.id,
                     total: total,
-                    estado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM' ? 'EN_PREPARACION' : 'EN_PREPARACION', // Default state
-                    pagado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM',
+                    estado: 'EN_PREPARACION',
+                    pagado: paymentMethod === 'TARJETA' || paymentMethod === 'BIZUM' || paymentMethod === 'TRANSFERENCIA' || paymentMethod === 'PAYPAL',
                     a_domicilio: deliveryType === 'DOMICILIO',
                     metodo_pago: paymentMethod,
                     direccion_envio: deliveryType === 'DOMICILIO' ? address : null,
@@ -110,7 +110,7 @@ export function Checkout() {
 
             clearCart();
             setSuccess(true);
-            
+
             // Redirigir después de mostrar el mensaje de éxito
             setTimeout(() => {
                 navigate('/profile');
@@ -219,31 +219,38 @@ export function Checkout() {
 
                     <div>
                         <label className="block text-sm font-medium mb-2">{t('checkout.paymentMethod')}</label>
-                        <div className="grid grid-cols-3 gap-2">
-                            {(['TARJETA', 'BIZUM', 'EFECTIVO'] as PaymentMethod[]).map((method) => {
-                                let label: string = method;
-                                if (method === 'TARJETA') label = t('checkout.types.card');
-                                if (method === 'BIZUM') label = t('checkout.types.bizum');
-                                if (method === 'EFECTIVO') label = t('checkout.types.cash');
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            {(['TARJETA', 'BIZUM', 'TRANSFERENCIA', 'CONTRA_REEMBOLSO', 'PAYPAL', 'EFECTIVO'] as PaymentMethod[]).map((method) => {
+                                const labels: Record<PaymentMethod, string> = {
+                                    'TARJETA': t('checkout.types.card'),
+                                    'BIZUM': t('checkout.types.bizum'),
+                                    'EFECTIVO': t('checkout.types.cash'),
+                                    'TRANSFERENCIA': t('checkout.types.transfer'),
+                                    'CONTRA_REEMBOLSO': t('checkout.types.cashOnDelivery'),
+                                    'PAYPAL': t('checkout.types.paypal')
+                                };
+
+                                // Efectivo solo para recogida, Contra Reembolso solo para domicilio
+                                const isHidden =
+                                    (method === 'EFECTIVO' && deliveryType === 'DOMICILIO') ||
+                                    (method === 'CONTRA_REEMBOLSO' && deliveryType === 'RECOGIDA');
+
+                                if (isHidden) return null;
 
                                 return (
                                     <button
                                         key={method}
-                                        disabled={method === 'EFECTIVO' && deliveryType === 'DOMICILIO'}
-                                        className={`py-2 px-2 text-sm rounded border ${paymentMethod === method
+                                        className={`py-2 px-2 text-sm rounded border transition-colors ${paymentMethod === method
                                             ? 'bg-black text-white border-black'
-                                            : 'bg-white text-gray-700'
-                                            } ${method === 'EFECTIVO' && deliveryType === 'DOMICILIO' ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                            : 'bg-white text-gray-700 hover:bg-gray-50'
+                                            }`}
                                         onClick={() => setPaymentMethod(method)}
                                     >
-                                        {label}
+                                        {labels[method]}
                                     </button>
                                 )
                             })}
                         </div>
-                        {paymentMethod === 'EFECTIVO' && deliveryType === 'DOMICILIO' && (
-                            <p className="text-xs text-red-500 mt-1">{t('checkout.cashWarning')}</p>
-                        )}
                     </div>
 
                     {error && (

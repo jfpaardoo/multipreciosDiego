@@ -292,7 +292,10 @@
         "types": {
             "card": "Tarjeta",
             "bizum": "Bizum",
-            "cash": "Efectivo"
+            "cash": "Efectivo",
+            "transfer": "Transferencia",
+            "cashOnDelivery": "Contra Reembolso",
+            "paypal": "PayPal"
         },
         "cashWarning": "El pago en efectivo no está disponible para envíos a domicilio.",
         "processing": "Procesando...",
@@ -444,5 +447,78 @@
         "google": "Reseñas de Google",
         "verified": "Compra Verificada",
         "viewAll": "Ver Todas"
+    },
+    "admin": {
+        "title": "Gestión del negocio",
+        "orders": {
+            "title": "Gestión de pedidos",
+            "searchPlaceholder": "Buscar por pedido, cliente...",
+            "orderNumber": "Nº pedido",
+            "client": "Cliente",
+            "status": "Estado",
+            "payment": "Pago",
+            "paymentMethod": "Método de pago",
+            "date": "Fecha",
+            "type": "Tipo",
+            "paid": "Pagado",
+            "pending": "Pendiente",
+            "inPrep": "En preparación",
+            "shipped": "Enviado",
+            "inDelivery": "En reparto",
+            "delivered": "Entregado",
+            "cancelled": "Cancelado",
+            "homeDelivery": "A Domicilio",
+            "pickup": "Recogida"
+        },
+        "reservations": {
+            "title": "Gestión de reservas",
+            "searchPlaceholder": "Buscar por código, cliente, producto...",
+            "code": "Código",
+            "product": "Producto",
+            "quantity": "Cantidad",
+            "pendingStatus": "Pendiente",
+            "paidStatus": "Pagada",
+            "pickedUp": "Recogida",
+            "noReservations": "No hay reservas."
+        },
+        "products": {
+            "title": "Gestión de productos",
+            "searchPlaceholder": "Buscar por producto, categoría...",
+            "addProduct": "Añadir producto",
+            "product": "Producto",
+            "category": "Categoría",
+            "reference": "Referencia",
+            "price": "Precio",
+            "stock": "Stock",
+            "actions": "Acciones",
+            "edit": "Editar",
+            "delete": "Eliminar",
+            "noImage": "Sin img",
+            "createProduct": "Crear Producto",
+            "editProduct": "Editar Producto",
+            "name": "Nombre",
+            "description": "Descripción",
+            "salePrice": "Precio Venta",
+            "wholesalePrice": "Precio Mayor",
+            "stockStore": "Stock (Tienda)",
+            "selectCategory": "Seleccionar categoría",
+            "imageUrl": "URL Imagen",
+            "active": "Activo",
+            "save": "Guardar",
+            "deleteTitle": "Eliminar producto",
+            "deleteConfirm": "¿Estás seguro de que quieres eliminar este producto? Esta acción no se puede deshacer.",
+            "cancel": "Cancelar"
+        },
+        "issues": {
+            "title": "Gestión de incidencias",
+            "type": "Tipo",
+            "description": "Descripción",
+            "damaged": "Dañado",
+            "wrong": "Equivocado",
+            "missing": "Faltante",
+            "accepted": "Aceptada",
+            "rejected": "Rechazada",
+            "noIssues": "No hay incidencias."
+        }
     }
 }

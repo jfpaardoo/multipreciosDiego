@@ -50,7 +50,6 @@ export function ProductForm({ initialData = {}, isEditing = false }: ProductForm
             navigate('/admin/products');
         } catch (error) {
             console.error('Error saving product:', error);
-            alert('Error al guardar el producto');
         } finally {
             setLoading(false);
         }
